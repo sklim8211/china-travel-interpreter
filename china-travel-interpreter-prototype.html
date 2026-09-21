@@ -38,6 +38,10 @@
     #cti-prototype .turn button{width:100%;padding:15px;border-radius:12px;margin-top:8px;text-align:left;font-weight:600}.turn button:first-of-type{background:#e8f7f0}.turn button:last-of-type{background:#eef2ff}
     #cti-prototype .place{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:16px;margin:10px 0}.place strong{display:block;margin-bottom:8px}.place small{color:#6b7280;line-height:1.5}
     #cti-prototype .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111827;color:#fff;padding:10px 14px;border-radius:10px;font-size:12px;display:none;z-index:4}
+    #cti-prototype .ai-choice{position:fixed;inset:0;background:rgba(15,23,42,.42);z-index:8;display:flex;align-items:center;justify-content:center;padding:20px}
+    #cti-prototype .ai-choice-card{background:#fff;border-radius:18px;padding:22px;width:min(340px,100%);box-shadow:0 20px 50px rgba(15,23,42,.22)}
+    #cti-prototype .ai-choice-card h3{margin:0 0 7px;font-size:19px}.ai-choice-card p{margin:0 0 16px;color:#6b7280;font-size:13px}
+    #cti-prototype .ai-choice-card button{width:100%;padding:14px;border-radius:12px;margin-top:9px;text-align:left;font-weight:600}.ai-choice-card .choice-chatgpt{background:#111827;color:#fff}.ai-choice-card .choice-gemini{background:#eef2ff;color:#1e3a8a}.ai-choice-card .choice-cancel{background:#fff;border:1px solid #e5e7eb;color:#6b7280}
   </style>
   <div class="phone">
     <div class="top">중국 여행 통역 · 오프라인 문장판</div>
@@ -48,7 +52,7 @@
         <select class="lang" id="language-select" aria-label="통역 언어 선택"><option value="zh-CN">중국어 (간체)</option><option value="en-US">영어</option><option value="ja-JP">일본어</option></select>
         <div class="language-hint" id="language-hint">현재 통역 방향: 한국어 ↔ 중국어</div>
         <div class="hero"><strong id="ai-title">한국어 ↔ 중국어 통역 시작</strong><span id="ai-description">통역 규칙을 준비하고 음성 대화 화면으로 이동합니다.</span></div>
-        <button class="primary" data-action="ai-start">AI 통역 시작</button>
+        <button class="primary" data-action="ai-choice">AI 통역 시작</button>
         <div class="quick"><button data-action="turn">↔️ 차례 통역</button><button data-action="places">📍 내 여행 정보</button></div>
         <div class="grid">
           <button class="tile" data-category="taxi">🚕 택시·교통<small>목적지 · 요금 · 하차</small></button>
@@ -93,6 +97,7 @@
     </div>
   </div>
   <div class="toast" role="status" aria-live="polite"></div>
+  <div id="ai-choice" class="ai-choice hidden"><div class="ai-choice-card"><h3>AI 통역 서비스 선택</h3><p id="ai-choice-description">선택한 언어의 통역 규칙을 준비합니다.</p><button class="choice-chatgpt" data-action="launch-chatgpt">ChatGPT로 시작</button><button class="choice-gemini" data-action="launch-gemini">Gemini로 시작</button><button class="choice-cancel" data-action="close-ai-choice">취소</button></div></div>
   <div id="place-display" class="hidden" style="position:fixed;inset:0;background:#111827;color:#fff;z-index:10;padding:32px 22px;display:none;align-items:center;justify-content:center;text-align:center"><div><div id="place-display-title" style="font-size:18px;color:#cbd5e1;margin-bottom:20px"></div><div id="place-display-text" style="font-size:34px;font-weight:700;line-height:1.35;word-break:keep-all"></div><button class="secondary" data-action="close-place" style="margin-top:32px">닫기</button></div></div>
   <script>
     (()=>{
@@ -133,10 +138,12 @@
       updateLanguageUI();
       const aiPrompt=()=>`당신은 한국어와 ${languageNames[targetLanguage]} 사이의 여행 통역사입니다. 한국어가 들리면 ${languageNames[targetLanguage]}로, ${languageNames[targetLanguage]}가 들리면 한국어로만 통역하세요. 설명·해설·답변은 하지 말고 번역만 하세요. 한 사람이 말을 끝낼 때까지 기다리세요.`;
       const copyPrompt=async()=>{try{await navigator.clipboard.writeText(aiPrompt());say('통역 프롬프트를 복사했습니다')}catch(e){say('프롬프트를 복사하지 못했습니다')}};
+      const openAiChoice=()=>{root.querySelector('#ai-choice-description').textContent='현재 설정: 한국어 ↔ '+languageNames[targetLanguage]+' · 통역 규칙을 복사한 뒤 서비스를 엽니다.';root.querySelector('#ai-choice').classList.remove('hidden')};
       const savePlaces=()=>{localStorage.setItem('cti_places',JSON.stringify({hotelName:root.querySelector('#hotel-name').value,hotelAddress:root.querySelector('#hotel-address').value,destinationName:root.querySelector('#destination-name').value,destinationAddress:root.querySelector('#destination-address').value}));say('여행 정보를 저장했습니다')};
       const loadPlaces=()=>{try{const p=JSON.parse(localStorage.getItem('cti_places'));if(!p)return;['hotel-name','hotel-address','destination-name','destination-address'].forEach(k=>{if(p[{"hotel-name":"hotelName","hotel-address":"hotelAddress","destination-name":"destinationName","destination-address":"destinationAddress"}[k]])root.querySelector('#'+k).value=p[{"hotel-name":"hotelName","hotel-address":"hotelAddress","destination-name":"destinationName","destination-address":"destinationAddress"}[k]]})}catch(e){}}; loadPlaces();
       root.addEventListener('click',e=>{const a=e.target.closest('[data-action]')?.dataset.action;if(!a)return;if(a==='home')show('home');if(a==='list')show('list');if(a==='online')show('online');if(a==='offline')show('list');if(a==='turn')show('turn');if(a==='places')show('places');if(a==='ai-start'){copyPrompt();window.open('https://chatgpt.com/','_blank','noopener')};if(a==='other-turn')say('상대방이 말한 뒤 한국어로 확인합니다');if(a==='my-turn')say('한국어로 말한 뒤 중국어로 들려줍니다');if(a==='save-places')savePlaces();if(a==='speak-place'){selected=['숙소 주소',root.querySelector('#hotel-address').value,''];speakChinese()};if(a==='show-hotel'){showPlace('숙소',root.querySelector('#hotel-name').value+'\n'+root.querySelector('#hotel-address').value)};if(a==='show-place'){showPlace('목적지',root.querySelector('#destination-name').value+'\n'+root.querySelector('#destination-address').value)};if(a==='close-place'){root.querySelector('#place-display').style.display='none'};if(a==='open-translator'){const url='https://translate.google.com/?sl=ko&tl='+encodeURIComponent(targetLanguage)+'&op=conversation';window.open(url,'_blank','noopener');say(languageNames[targetLanguage]+' 온라인 번역을 엽니다')};if(a==='speak')speakChinese();if(a==='show')say('상대방에게 화면을 보여주세요');if(a==='favorite')say('즐겨찾기에 저장했습니다')});
       const showPlace=(title,text)=>{root.querySelector('#place-display-title').textContent=title;root.querySelector('#place-display-text').textContent=text;root.querySelector('#place-display').style.display='flex'};
+      root.addEventListener('click',e=>{const a=e.target.closest('[data-action]')?.dataset.action;if(a==='ai-choice')openAiChoice();if(a==='launch-chatgpt'){root.querySelector('#ai-choice').classList.add('hidden');window.open('https://chatgpt.com/','_blank','noopener');copyPrompt()}if(a==='launch-gemini'){root.querySelector('#ai-choice').classList.add('hidden');window.open('https://gemini.google.com/app','_blank','noopener');copyPrompt()}if(a==='close-ai-choice')root.querySelector('#ai-choice').classList.add('hidden')});
     })();
   </script>
 </div>
