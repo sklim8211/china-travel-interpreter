@@ -125,7 +125,7 @@
         const shown=displayItem(selected), utterance=new SpeechSynthesisUtterance(shown[1]);
         utterance.lang=targetLanguage; utterance.rate=.82; utterance.pitch=1;
         window.speechSynthesis.speak(utterance);
-        say('중국어 음성을 재생합니다');
+        say(languageNames[targetLanguage]+' 음성을 재생합니다');
       };
       root.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{current=b.dataset.category;root.querySelector('[data-list-title]').textContent=data[current].title;root.querySelector('[data-phrases]').innerHTML=data[current].items.map((x,i)=>`<button class="phrase" data-index="${i}">${x[0]}<span>›</span></button>`).join('');root.querySelectorAll('[data-index]').forEach(p=>p.onclick=()=>{selected=data[current].items[+p.dataset.index];const shown=displayItem(selected);root.querySelector('[data-ko]').textContent=shown[0];root.querySelector('[data-zh]').textContent=shown[1];root.querySelector('[data-py]').textContent=shown[2];show('detail')});show('list')});
       const updateLanguageUI=()=>{const name=languageNames[targetLanguage];root.querySelector('#language-hint').textContent='현재 통역 방향: 한국어 ↔ '+name;root.querySelector('#ai-title').textContent='한국어 ↔ '+name+' 통역 시작';root.querySelector('#footer-language').textContent='한국어 ↔ '+name;root.querySelector('#online-title').textContent='한국어 ↔ '+name+' 온라인 통역'};
