@@ -29,6 +29,7 @@
     #cti-prototype .hidden{display:none}
     #cti-prototype .footer{display:flex;justify-content:space-between;color:#9ca3af;font-size:11px;margin-top:28px}
     #cti-prototype .lang{width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 13px;margin:0 0 12px;font:inherit;color:#111827}
+    #cti-prototype .language-hint{background:#eef2ff;color:#3730a3;border-radius:10px;padding:10px 12px;font-size:12px;margin:-2px 0 14px}
     #cti-prototype .hero{background:#111827;color:#fff;border-radius:16px;padding:18px;margin:0 0 14px}
     #cti-prototype .hero strong{font-size:17px;display:block;margin-bottom:5px}.hero span{font-size:12px;color:#cbd5e1}
     #cti-prototype .quick{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:12px 0}
@@ -45,7 +46,8 @@
         <h1>중국 여행 통역</h1><div class="sub">필요한 말을 한 번 눌러 보여주고 들려주세요.</div>
         <div class="status"><i class="dot"></i> 오프라인 문장 사용 가능</div>
         <select class="lang" id="language-select" aria-label="통역 언어 선택"><option value="zh-CN">중국어 (간체)</option><option value="en-US">영어</option><option value="ja-JP">일본어</option></select>
-        <div class="hero"><strong>AI 통역을 바로 시작하세요</strong><span>통역 규칙을 준비하고 음성 대화 화면으로 이동합니다.</span></div>
+        <div class="language-hint" id="language-hint">현재 통역 방향: 한국어 ↔ 중국어</div>
+        <div class="hero"><strong id="ai-title">한국어 ↔ 중국어 통역 시작</strong><span id="ai-description">통역 규칙을 준비하고 음성 대화 화면으로 이동합니다.</span></div>
         <button class="primary" data-action="ai-start">AI 통역 시작</button>
         <div class="quick"><button data-action="turn">↔️ 차례 통역</button><button data-action="places">📍 내 여행 정보</button></div>
         <div class="grid">
@@ -58,7 +60,7 @@
         </div>
         <button class="primary" data-action="online">온라인 대화 통역 열기</button>
         <button class="secondary" data-action="offline">오프라인 문장 모음</button>
-        <div class="footer"><span>중국어 ↔ 한국어</span><span>설정</span></div>
+        <div class="footer"><span id="footer-language">한국어 ↔ 중국어</span><span>설정</span></div>
       </section>
       <section data-screen="list" class="hidden">
         <button class="back" data-action="home">← 홈으로</button><h2 data-list-title>택시·교통</h2>
@@ -71,7 +73,7 @@
         <div class="row"><button class="secondary" data-action="speak">다시 듣기</button><button class="secondary" data-action="favorite">☆ 즐겨찾기</button></div>
       </section>
       <section data-screen="online" class="hidden">
-        <button class="back" data-action="home">← 홈으로</button><h2>온라인 대화 통역</h2>
+        <button class="back" data-action="home">← 홈으로</button><h2 id="online-title">한국어 ↔ 중국어 온라인 통역</h2>
         <div class="status"><i class="dot"></i> 연결됨 · 기존 번역 앱을 사용할 수 있습니다</div>
         <div class="card"><div class="ko">상대방의 중국어를 듣고<br>한국어로 확인하세요.</div><div class="hint">내 앱은 오프라인 문장판으로 즉시 돌아올 수 있습니다.</div></div>
         <button class="primary" data-action="open-translator">번역 앱 열기</button><button class="secondary" data-action="offline">오프라인 문장 모음</button>
@@ -126,7 +128,9 @@
         say('중국어 음성을 재생합니다');
       };
       root.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{current=b.dataset.category;root.querySelector('[data-list-title]').textContent=data[current].title;root.querySelector('[data-phrases]').innerHTML=data[current].items.map((x,i)=>`<button class="phrase" data-index="${i}">${x[0]}<span>›</span></button>`).join('');root.querySelectorAll('[data-index]').forEach(p=>p.onclick=()=>{selected=data[current].items[+p.dataset.index];const shown=displayItem(selected);root.querySelector('[data-ko]').textContent=shown[0];root.querySelector('[data-zh]').textContent=shown[1];root.querySelector('[data-py]').textContent=shown[2];show('detail')});show('list')});
-      root.querySelector('#language-select').onchange=(e)=>{targetLanguage=e.target.value;say(languageNames[targetLanguage]+'로 설정했습니다')};
+      const updateLanguageUI=()=>{const name=languageNames[targetLanguage];root.querySelector('#language-hint').textContent='현재 통역 방향: 한국어 ↔ '+name;root.querySelector('#ai-title').textContent='한국어 ↔ '+name+' 통역 시작';root.querySelector('#footer-language').textContent='한국어 ↔ '+name;root.querySelector('#online-title').textContent='한국어 ↔ '+name+' 온라인 통역'};
+      root.querySelector('#language-select').onchange=(e)=>{targetLanguage=e.target.value;updateLanguageUI();say(languageNames[targetLanguage]+'로 설정했습니다')};
+      updateLanguageUI();
       const aiPrompt=()=>`당신은 한국어와 ${languageNames[targetLanguage]} 사이의 여행 통역사입니다. 한국어가 들리면 ${languageNames[targetLanguage]}로, ${languageNames[targetLanguage]}가 들리면 한국어로만 통역하세요. 설명·해설·답변은 하지 말고 번역만 하세요. 한 사람이 말을 끝낼 때까지 기다리세요.`;
       const copyPrompt=async()=>{try{await navigator.clipboard.writeText(aiPrompt());say('통역 프롬프트를 복사했습니다')}catch(e){say('프롬프트를 복사하지 못했습니다')}};
       const savePlaces=()=>{localStorage.setItem('cti_places',JSON.stringify({hotelName:root.querySelector('#hotel-name').value,hotelAddress:root.querySelector('#hotel-address').value,destinationName:root.querySelector('#destination-name').value,destinationAddress:root.querySelector('#destination-address').value}));say('여행 정보를 저장했습니다')};
