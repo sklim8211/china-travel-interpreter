@@ -1,6 +1,79 @@
 <meta charset="UTF-8">
 <div id="cti-prototype">
   <style>
+    #cti-prototype [data-screen="quick-info"] #emergency-country,
+    #cti-prototype [data-screen="quick-info"] #emergency-city,
+    #cti-prototype [data-screen="quick-info"] #emergency-prompt,
+    #cti-prototype [data-screen="quick-info"] #emergency-result,
+    #cti-prototype [data-screen="quick-info"] [data-action="make-emergency-prompt"],
+    #cti-prototype [data-screen="quick-info"] [data-action="copy-emergency-prompt"],
+    #cti-prototype [data-screen="quick-info"] [data-action="open-emergency-ai"],
+    #cti-prototype [data-screen="quick-info"] [data-action="save-emergency-result"]{display:none!important}
+    #cti-prototype .help-scenarios{margin:14px 0;padding:12px;border:1px solid #e5e7eb;border-radius:14px;background:#fff}
+    #cti-prototype .help-scenarios>strong{display:block;font-size:15px}
+    #cti-prototype .scenario-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin:10px 0}
+    #cti-prototype .scenario-tabs button{padding:9px 5px;border:1px solid #dbe3ef;border-radius:10px;background:#f8fafc;font-weight:600;font-size:12px}
+    #cti-prototype .scenario-tabs button.active{background:#eef2ff;border-color:#818cf8;color:#3730a3}
+    #cti-prototype .scenario-output>div{display:flex;gap:8px;padding:7px 0;border-bottom:1px solid #eef0f3;font-size:13px;line-height:1.45}
+    #cti-prototype .scenario-output>div:last-child{border-bottom:0}
+    #cti-prototype .scenario-output strong{width:58px;color:#6b7280;flex:none}
+    #cti-prototype .help-scenarios .lang{display:block;width:100%;min-height:42px;margin:12px 0;border:1px solid #dbe3ef;border-radius:12px;background:#fff;padding:0 12px;color:#172033;font-size:14px}
+    #cti-prototype .phrase-choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0 12px}
+    #cti-prototype .phrase-choices button{min-height:46px;padding:9px 10px;border:1px solid #dbe3ef;border-radius:12px;background:#fff;color:#273246;font-size:13px;font-weight:600;line-height:1.35;text-align:left}
+    #cti-prototype .phrase-choices button.active{border-color:#6878ff;background:#eef0ff;color:#2939aa}
+    #cti-prototype .phrase-select{display:block;width:100%;min-height:46px;margin:10px 0 12px;padding:0 38px 0 13px;border:1px solid #dbe3ef;border-radius:12px;background:#fff;color:#172033;font-size:14px;font-weight:600}
+    #cti-prototype .phrase-detail{padding:10px 12px;border-radius:12px;background:#f7f8fc}
+    #cti-prototype .scenario-output .phrase-detail{display:flex;align-items:flex-start;gap:12px;padding:12px 14px;font-size:17px;line-height:1.5;overflow-wrap:anywhere}
+    #cti-prototype .scenario-output .phrase-detail strong{width:58px;flex:none;color:#6b7280;font-size:13px;padding-top:3px}
+    #cti-prototype .scenario-output .phrase-detail span{flex:1;color:#172033;font-weight:600}
+    #cti-prototype .phrase-actions{display:flex;gap:8px;margin-top:8px}
+    #cti-prototype .phrase-actions button{flex:1;min-height:38px;border:1px solid #dbe3ef;border-radius:10px;background:#fff;color:#4b5563;font-size:13px;font-weight:600}
+    .phrase-large-layer{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:24px;background:rgba(15,23,42,.55)}
+    .phrase-large-card{position:relative;width:min(92vw,420px);padding:56px 24px 30px;border-radius:22px;background:#fff;text-align:center;box-shadow:0 20px 50px rgba(15,23,42,.25)}
+    .phrase-large-card small{display:block;margin-bottom:18px;color:#6b7280;font-size:14px}
+    .phrase-large-card strong{display:block;color:#172033;font-size:28px;line-height:1.45;word-break:keep-all}
+    .phrase-large-close{position:absolute;top:14px;right:14px;border:0;background:#f1f3f7;border-radius:9px;padding:8px 10px;color:#4b5563}
+    @media (max-width:420px){#cti-prototype .phrase-choices{grid-template-columns:1fr}}
+    #cti-prototype [data-screen="quick-info"] .emergency-helper{display:block!important;margin-top:18px;padding:12px 14px;border:1px solid #e5e7eb;border-radius:16px;background:#f8fafc}
+    #cti-prototype [data-screen="quick-info"] .emergency-helper summary{cursor:pointer;font-weight:700;color:#374151}
+    #cti-prototype [data-screen="quick-info"] .emergency-helper small{display:block;color:#6b7280;line-height:1.5;margin:8px 0}
+    #cti-prototype [data-screen="quick-info"] .emergency-helper textarea{min-height:120px;line-height:1.5}
+    #cti-prototype [data-screen="quick-info"] #quick-card-list>.secondary,
+    #cti-prototype [data-screen="quick-info"] .emergency-helper{display:none!important}
+    #cti-prototype [data-screen="quick-info"] #quick-card-list:empty:after{content:'저장된 비상연락정보가 없습니다.';display:block;grid-column:1/-1;padding:24px 12px;text-align:center;color:#6b7280}
+    #cti-prototype [data-screen="quick-info"] #quick-card-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+    #cti-prototype [data-screen="quick-info"] #quick-card-list .practical-tile,
+    #cti-prototype [data-screen="quick-info"] #quick-card-list>.secondary{min-height:132px;margin:0;padding:16px 12px;border-radius:18px;box-sizing:border-box;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:7px}
+    #cti-prototype [data-screen="quick-info"] #quick-card-list .practical-tile strong{font-size:16px;line-height:1.3}
+    #cti-prototype [data-screen="quick-info"] #quick-card-list .practical-tile small{font-size:12px;line-height:1.4;margin:0}
+    #cti-prototype [data-screen="quick-info"] #quick-card-list .practical-tile .tile-action{font-size:11px;margin:0}
+    @media(max-width:420px){#cti-prototype [data-screen="quick-info"] #quick-card-list{gap:9px}#cti-prototype [data-screen="quick-info"] #quick-card-list .practical-tile,#cti-prototype [data-screen="quick-info"] #quick-card-list>.secondary{min-height:122px;padding:12px 8px}}
+    #cti-prototype .home-intro-row{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(112px,.75fr);gap:8px;align-items:stretch;margin:0 0 14px}
+    #cti-prototype .home-intro-row .gibyeori-welcome{margin:0;min-width:0}
+    #cti-prototype .home-intro-row .gibyeori-welcome img{width:48px;height:48px}
+    #cti-prototype .home-intro-row .gibyeori-welcome strong{font-size:13px}
+    #cti-prototype .home-intro-row .gibyeori-welcome small{font-size:10px}
+    #cti-prototype .home-intro-row .home-sos{margin:0;min-height:78px;padding:10px;display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:4px}
+    #cti-prototype .home-intro-row .home-sos>span{font-size:25px}
+    #cti-prototype .home-intro-row .home-sos strong{font-size:13px;line-height:1.2}
+    #cti-prototype .home-intro-row .home-sos small{font-size:10px;line-height:1.25}
+    #cti-prototype .home-sos{width:100%;display:flex;align-items:center;gap:13px;margin:0 0 14px;padding:12px 16px;border:1px solid #fecaca;border-radius:16px;background:#fff5f5;color:#111827;text-align:left;box-sizing:border-box}
+    #cti-prototype .home-sos>span{font-size:34px;line-height:1}
+    #cti-prototype .home-sos strong{display:block;font-size:16px}
+    #cti-prototype .home-sos small{display:block;color:#6b7280;font-size:12px;line-height:1.4;margin-top:3px}
+    #cti-prototype .sos-card{background:#fff5f5!important;border:1px solid #fecaca!important;color:#111827!important}
+    #cti-prototype .sos-card .sos-large{font-size:32px;line-height:1}
+    #cti-prototype #essential-detail-why>div{display:flex;justify-content:space-between;gap:14px;padding:9px 0;border-bottom:1px solid #e5e7eb}
+    #cti-prototype #essential-detail-why>div:last-child{border-bottom:0}
+    #cti-prototype #essential-detail-why>div strong{font-size:14px;color:#6b7280;white-space:nowrap}
+    #cti-prototype #essential-detail-why>div span{font-size:15px;color:#111827;text-align:right;word-break:keep-all}
+    #cti-prototype .stage-before{position:relative;overflow:hidden;padding-right:96px}
+    #cti-prototype .stage-before .stage-gibyeori{position:absolute;right:16px;bottom:12px;width:68px;height:68px;object-fit:contain;pointer-events:none}
+    #cti-prototype .quick-info-entry{width:100%;min-height:92px;margin:14px 0;padding:14px 18px;border:1px solid #fecaca;border-radius:18px;background:#fff7f7;color:#111827;text-align:left;display:grid;grid-template-columns:56px 1fr;grid-template-rows:auto auto;column-gap:10px;align-items:center;box-sizing:border-box}
+    #cti-prototype .quick-info-entry .sos-icon{grid-row:1 / span 2;font-size:38px;line-height:1;text-align:center}
+    #cti-prototype .quick-info-entry strong{font-size:18px;line-height:1.25}
+    #cti-prototype .quick-info-entry small{font-size:13px;color:#6b7280;line-height:1.4;margin-top:3px}
+    #cti-prototype .offline-card{background:#eefbf5!important;border:1px solid #b7ead0!important;color:#111827!important}
     #cti-prototype [data-screen="traveler-choice"] .tile{height:92px;min-height:92px;box-sizing:border-box;border-radius:18px;background:#f7faff;border-color:#dbeafe}
     #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-free"]{background:#eef6ff;border-color:#cfe3ff}
     #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-semi"]{background:#f7f2ff;border-color:#e5d8ff}
@@ -82,7 +155,7 @@
         <div class="top" style="margin:-20px -18px 18px">기별이와의 여행준비</div>
         <h1>기별이와의 여행준비</h1>
         <div class="sub">지금 필요한 여행의 단계를 선택하세요.</div>
-        <div class="gibyeori-welcome"><img src="assets/gibyeori/joy.png" alt="즐겁게 웃는 기별이"><div><strong>안녕하세요 기별이예요.</strong><small>저와 함께 여행준비해요</small></div></div>
+        <div class="home-intro-row"><div class="gibyeori-welcome"><img src="assets/gibyeori/joy.png" alt="즐겁게 웃는 기별이"><div><strong>안녕하세요 기별이예요.</strong><small>저와 함께 여행준비해요</small></div></div><button class="home-sos" data-action="quick-info"><span>🆘</span><div><strong>SOS 비상연락정보</strong><small>비상시 목적지·숙소·긴급 연락처를 바로 확인하세요.</small></div></button></div>
         <button class="secondary standalone-plan-entry" data-action="plan-start">✨ AI와 여행계획 짜기<small>여행을 확정하기 전에 나라·도시별 계획을 먼저 살펴보세요.</small></button>
         <div class="home-stage"><button class="stage-before" data-action="traveler-choice"><span class="stage-icon">🧳</span><strong>여행 준비</strong><small>여행 방식·목적지·날짜와 여행 일정 카드를 준비합니다.</small></button><button class="stage-during" data-action="during-hub"><span class="stage-icon">🗣️</span><strong>여행 중 사용</strong><small>AI 통역을 중심으로 통역 문장과 여행 정보를 바로 사용합니다.</small></button><button class="stage-after" data-action="value-info"><span class="stage-icon">🏠</span><strong>돌아오기 준비</strong><small>영수증·환불·귀국 교통편을 확인합니다.</small></button></div>
       </section>
@@ -315,14 +388,14 @@
         <button class="secondary" data-action="value-complete">✅ 직접 확인했습니다</button>
         <div class="hint" style="font-size:14px">확인 완료를 누르면 목록에 체크되고 다음 항목으로 돌아갑니다.</div>
       </section>
-      <section data-screen="audit" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>여행 정보 안심 점검</h2><div class="sub">예약·상품·안내문을 붙여 넣으면 AI가 조건을 빠르게 점검합니다.</div><select class="lang" id="audit-type"><option>호텔·숙소</option><option>항공권·기차</option><option>투어·입장권</option><option>렌터카</option><option>보험·eSIM</option><option>기타 예약</option></select><textarea id="audit-text" class="lang" style="min-height:180px;resize:vertical" placeholder="예약 페이지의 조건, 요금, 취소·환불 규정을 그대로 붙여 넣으세요."></textarea><button class="primary" data-action="make-audit">점검 프롬프트 만들기</button><div class="hint">판단 기준: 충족 · 미충족 · 정보 없음. 정보가 없으면 충족으로 보지 않습니다.</div></section>
+      <section data-screen="audit" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>여행 정보 안심 점검</h2><div class="sub">예약·상품·안내문을 붙여 넣으면 AI가 조건을 빠르게 점검합니다.</div><select class="lang" id="audit-type"><option>호텔·숙소</option><option>항공권</option><option>열차권</option><option>투어·입장권</option><option>렌터카</option><option>보험·eSIM</option><option>기타 예약</option></select><textarea id="audit-text" class="lang" style="min-height:180px;resize:vertical" placeholder="예약 페이지의 조건, 요금, 취소·환불 규정을 그대로 붙여 넣으세요."></textarea><button class="primary" data-action="make-audit">점검 프롬프트 만들기</button><div class="hint">판단 기준: 충족 · 미충족 · 정보 없음. 정보가 없으면 충족으로 보지 않습니다.</div></section>
       <section data-screen="turn" class="hidden">
         <button class="back" data-action="home">← 홈으로</button><h2>차례 통역</h2>
         <div class="turn"><p>말이 겹치지 않도록 한 사람씩 눌러 말합니다.</p><button data-action="other-turn">🎧 상대방이 말해요<br><small>중국어 → 한국어</small></button><button data-action="my-turn">🎙 내가 말해요<br><small>한국어 → 중국어</small></button></div>
         <div class="hint">실제 AI 통역은 온라인 AI 음성 앱에서 진행하고, 이 화면은 대화 순서를 안내합니다.</div>
       </section>
-      <section data-screen="places" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>📌 내 여행 일정 카드</h2><div class="sub">카드를 눌러 큰 화면에서 입력하고 저장하세요.</div><div id="travel-card-list"></div><button class="secondary" data-action="quick-info">🆘 여행 중 바로 쓰는 정보</button><button class="secondary" data-action="clear-places">입력 내용 모두 삭제</button><div class="hint">저장한 내용은 이 기기에만 보관됩니다.</div></section>
-      <section data-screen="quick-info" class="hidden"><button class="back" data-action="places">← 내 여행 일정 카드</button><h2>🆘 여행 중 바로 쓰는 정보</h2><div class="sub">여행 중 바로 꺼내 보여주거나 연락할 정보를 따로 보관합니다.</div><div id="quick-card-list"></div></section>
+      <section data-screen="places" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>📌 내 여행 일정 카드</h2><div class="sub">카드를 눌러 큰 화면에서 입력하고 저장하세요.</div><div id="travel-card-list"></div><details class="reservation-inline"><summary>📎 예약정보 바로 붙여넣기</summary><small>예약확인서 내용을 붙여넣으면 이 화면에서 바로 카드에 나눠 담습니다.</small><select id="inline-audit-type" class="lang"><option>호텔·숙소</option><option>항공권</option><option>열차권</option><option>투어·입장권</option><option>렌터카</option><option>보험·eSIM</option><option>기타 예약</option></select><textarea id="inline-audit-text" class="lang" rows="6" placeholder="예약확인서 내용을 붙여 넣으세요."></textarea><button class="primary" data-action="inline-import-reservation">카드에 바로 저장</button></details><button class="secondary" data-action="clear-places">입력 내용 모두 삭제</button><div class="hint">저장한 내용은 이 기기에만 보관됩니다.</div></section>
+      <section data-screen="quick-info" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>🆘 SOS 비상연락정보</h2><div class="sub">비상시 바로 보여주거나 연락할 정보를 모아 둡니다.</div><div id="quick-card-list"></div><details class="emergency-helper"><summary>🌍 현지 긴급번호 알아보기</summary><small>국가와 도시를 입력하면 공식 확인용 프롬프트를 만들어 드립니다.</small><input id="emergency-country" class="lang" placeholder="여행 국가 예: 일본"><input id="emergency-city" class="lang" placeholder="여행 도시 예: 도쿄"><button class="secondary" data-action="make-emergency-prompt">확인 프롬프트 만들기</button><textarea id="emergency-prompt" class="lang" rows="9" placeholder="생성된 프롬프트"></textarea><button class="secondary" data-action="copy-emergency-prompt">프롬프트 복사</button><button class="secondary" data-action="open-emergency-ai">ChatGPT 열기</button><textarea id="emergency-result" class="lang" rows="6" placeholder="AI가 확인한 결과를 붙여 넣으세요."></textarea><button class="primary" data-action="save-emergency-result">SOS 정보에 저장</button></details></section>
       <section data-screen="travel-card-entry" class="hidden"><button class="back" data-action="card-back">← 여행 일정 카드</button><h2 id="travel-card-entry-title"></h2><div class="sub">필요한 정보만 크게 입력하세요.</div><div id="travel-card-fields"></div><button class="primary" data-action="card-save">저장하기</button><button class="secondary" data-action="card-large">🔍 큰 글씨로 보기</button><button class="secondary" data-action="card-speak">🔊 음성으로 듣기</button><button class="secondary" data-action="card-show">상대방에게 보여주기</button><button class="secondary" data-action="card-delete">이 카드 삭제</button></section>
     </div>
   </div>
@@ -424,6 +497,9 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
   <script>
     document.querySelector('#cti-prototype [data-action="during-hub"]')?.addEventListener('click',()=>document.querySelectorAll('#cti-prototype [data-screen]').forEach(s=>s.classList.toggle('hidden',s.dataset.screen!=='during-hub')));
   </script>
+  <script>
+  (()=>{const root=document.querySelector('#cti-prototype'),wrap=root?.querySelector('.help-scenarios');if(!root||!wrap)return;const addHotelPolice=()=>{const select=wrap.querySelector('.phrase-select');if(!select||select.dataset.policeAdded)return;select.dataset.policeAdded='true';const option=document.createElement('option');option.value='hotel-police';option.textContent='가까운 경찰서가 어디인가요?';select.appendChild(option)};wrap.addEventListener('click',e=>{if(e.target.closest('[data-scenario="hotel"]'))setTimeout(addHotelPolice,0)});wrap.addEventListener('change',e=>{if(e.target.value!=='hotel-police')return;const lang=wrap.querySelector('#scenario-language')?.value||'zh-CN',texts={'zh-CN':'最近的警察局在哪里？','ja-JP':'近くの警察署はどこですか。','en-US':'Where is the nearest police station?'};wrap.querySelector('.phrase-detail').innerHTML='<strong>'+({'zh-CN':'중국어','ja-JP':'일본어','en-US':'영어'}[lang]||'방문 언어')+'</strong><span>'+texts[lang]+'</span>'})})();
+  </script>
   <style>
     #cti-prototype .language-hint{display:none}
     #cti-prototype .during-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,168px);align-items:stretch;gap:12px;margin-top:18px}
@@ -437,12 +513,11 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
     @media(max-width:340px){#cti-prototype .during-actions{grid-template-columns:1fr}}
   </style>
   <script>
-      document.querySelector('#cti-prototype [data-screen="places"] [data-action="quick-info"]')?.remove();
       const duringScreen=document.querySelector('#cti-prototype [data-screen="during-hub"]');
     if(duringScreen&&!duringScreen.dataset.cardsReady){
       duringScreen.dataset.cardsReady='true';
       const placesButton=duringScreen.querySelector('[data-action="places"]');
-      if(placesButton)placesButton.insertAdjacentHTML('afterend','<button class="during-card" data-action="quick-info">🆘 여행 중 바로 쓰는 정보<small>목적지 · 긴급 연락처<br>보험 · 숙소 연락처</small></button>');
+      if(placesButton)placesButton.insertAdjacentHTML('afterend','<button class="during-card offline-card" data-action="open-translator">🌐 번역앱 열기<small>Google 번역을 열어요<br>앱에 오프라인 언어를 저장해 두세요</small></button>');
       const actions=[...duringScreen.querySelectorAll('button[data-action]')].filter(b=>b.dataset.action!=='home');
       const wrap=document.createElement('div');wrap.className='during-actions';actions.forEach(b=>{b.classList.add('during-card');wrap.appendChild(b)});duringScreen.appendChild(wrap);
     }
@@ -543,4 +618,241 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
       const sheetGuide=sheet.querySelector('h3');if(sheetGuide)sheetGuide.insertAdjacentHTML('beforebegin','<img class="sheet-poke" src="assets/gibyeori/poke.png" alt="선택을 돕는 기별이">');
     })();
   </script>
+<script>
+  (()=>{const s=document.querySelector('#cti-prototype #language-select');if(s&&!s.querySelector('option[value="ja-JP"]')){const o=document.createElement('option');o.value='ja-JP';o.textContent='일본어';s.appendChild(o)}})();
+  (()=>{const root=document.querySelector('#cti-prototype');if(!root)return;root.querySelectorAll('[data-screen="traveler-choice"] small').forEach(e=>{e.textContent=e.textContent.replace('항공·숙소·교통','항공·열차·숙소·현지 이동')});const prompt=root.querySelector('#plan-prompt-text');root.addEventListener('click',e=>{if(e.target.closest('[data-action="plan-generate"]'))setTimeout(()=>{if(prompt)prompt.value=prompt.value.replaceAll('숙소·교통 제안','숙소·현지 이동 제안').replaceAll('공항·도시 내·도시 간 이동 방법','공항·도시 내·도시 간 현지 이동 방법').replaceAll('교통 운행 여부','현지 이동 운행 여부')},0)})})();
+  </script>
+  <script>
+  (()=>{
+    const root=document.querySelector('#cti-prototype');
+    if(!root)return;
+    const audit=root.querySelector('[data-screen="audit"]');
+    if(!audit||audit.dataset.cardImportReady)return;
+    audit.dataset.cardImportReady='true';
+    const button=document.createElement('button');
+    button.className='secondary';
+    button.dataset.action='import-reservation-cards';
+    button.textContent='내 여행 카드에 자동 입력';
+    audit.querySelector('[data-action="make-audit"]').insertAdjacentElement('afterend',button);
+    const date=s=>{const m=String(s||'').match(/(20\d{2})[.\-/년 ]+(\d{1,2})[.\-/월 ]+(\d{1,2})/);return m?[m[1]+'-'+String(m[2]).padStart(2,'0')+'-'+String(m[3]).padStart(2,'0')]:''};
+    const pick=(text,patterns)=>{for(const re of patterns){const m=text.match(re);if(m)return (m[1]||'').trim()}return ''};
+    const save=(key,value)=>{const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');if(!Array.isArray(all[key]))all[key]=[];const old=all[key][0]||{};all[key][0]={...old,...value};localStorage.setItem('cti_travel_cards',JSON.stringify(all))};
+    const importCards=()=>{
+      const text=(root.querySelector('#audit-text')?.value||'').trim();
+      if(!text){alert('예약확인서 내용을 먼저 붙여 넣어주세요.');return}
+      const type=root.querySelector('#audit-type')?.value||'';
+      const isHotel=/호텔|숙소|체크인|체크아웃/i.test(type+' '+text);
+      const isTrain=type==='열차권'||(/기차|열차|철도|역/.test(text)&&!/항공|공항|편명/.test(text));
+      const isFlight=type==='항공권'||(/항공|항공권|편명|공항/.test(text)&&!/기차|열차|철도|출발역|도착역/.test(text));
+      const isTicket=/투어|입장권|티켓/.test(type+' '+text);
+      let count=0;
+      if(isHotel){save('hotel',{'hotel-name':pick(text,[/(?:호텔|숙소)\s*(?:명|이름)?\s*[:：]\s*([^\n]+)/i,/^([^\n]+호텔[^\n]*)$/im]),'hotel-checkin':date(pick(text,[/체크인[^\d]*(20\d{2}[.\-/년 ]+\d{1,2}[.\-/월 ]+\d{1,2})/i])),'hotel-checkout':date(pick(text,[/체크아웃[^\d]*(20\d{2}[.\-/년 ]+\d{1,2}[.\-/월 ]+\d{1,2})/i])),'hotel-booking':pick(text,[/(?:예약번호|예약 코드|confirmation)\s*[:：#]?\s*([^\s\n]+)/i]),'hotel-address':pick(text,[/(?:주소|address)\s*[:：]\s*([^\n]+)/i]),'hotel-phone':pick(text,[/(?:전화|연락처|phone)\s*[:：]\s*([^\n]+)/i])});count++}
+      if(isFlight){save('flight',{'flight-airline':pick(text,[/(?:항공사|편명|flight)\s*[:：]\s*([^\n]+)/i]),'flight-date':date(pick(text,[/(?:출발일|출발 날짜|departure)\s*[:：]?\s*(20\d{2}[.\-/년 ]+\d{1,2}[.\-/월 ]+\d{1,2})/i])),'flight-time':pick(text,[/(?:출발 시간|departure time)\s*[:：]?\s*([^\n]+)/i]),'flight-route':pick(text,[/(?:출발지|구간|route)\s*[:：]?\s*([^\n]+)/i]),'flight-booking':pick(text,[/(?:예약번호|예약 코드|booking)\s*[:：#]?\s*([^\s\n]+)/i])});count++}
+      if(isTrain){save('train',{'train-name':pick(text,[/(?:열차명|열차번호|train)\s*[:：]?\s*([^\n]+)/i]),'train-date':date(pick(text,[/(?:탑승일|탑승 날짜|출발일)\s*[:：]?\s*(20\d{2}[.\-/년 ]+\d{1,2}[.\-/월 ]+\d{1,2})/i])),'train-time':pick(text,[/(?:출발 시간|탑승 시간)\s*[:：]?\s*([^\n]+)/i]),'train-route':pick(text,[/(?:출발역|구간|route)\s*[:：]?\s*([^\n]+)/i]),'train-booking':pick(text,[/(?:예약번호|예약 코드|booking)\s*[:：#]?\s*([^\s\n]+)/i])});count++}
+      if(isTicket){save('ticket',{'ticket-name':pick(text,[/(?:티켓|투어|입장권)\s*(?:명|이름)?\s*[:：]?\s*([^\n]+)/i]),'ticket-date':date(pick(text,[/(?:사용일|사용 날짜|방문일)\s*[:：]?\s*(20\d{2}[.\-/년 ]+\d{1,2}[.\-/월 ]+\d{1,2})/i])),'ticket-time':pick(text,[/(?:사용 시간|입장 시간)\s*[:：]?\s*([^\n]+)/i]),'ticket-place':pick(text,[/(?:장소|address|venue)\s*[:：]\s*([^\n]+)/i]),'ticket-booking':pick(text,[/(?:예약번호|예약 코드|booking)\s*[:：#]?\s*([^\s\n]+)/i])});count++}
+      if(!count){alert('예약 종류를 판별하지 못했습니다. 항공권·열차·숙소·티켓 중 하나를 선택해 다시 붙여 넣어주세요.');return}
+      localStorage.setItem('cti_reservation_import_source',text);
+      alert('확인 가능한 항목을 내 여행 카드에 입력했습니다. 빈 항목은 예약 원문을 확인해 직접 보완해 주세요.');
+      const places=root.querySelector('[data-action="home"]');
+      if(places){const target=root.querySelector('[data-action="places"]');if(target)target.click()}
+    };
+    root.addEventListener('click',e=>{if(e.target.closest('[data-action="import-reservation-cards"]'))importCards()});
+  })();
+  </script>
+  <script>
+  (()=>{
+    const root=document.querySelector('#cti-prototype');
+    if(!root)return;
+    root.addEventListener('click',e=>{
+      if(!e.target.closest('[data-action="inline-import-reservation"]'))return;
+      const source=root.querySelector('#inline-audit-text');
+      const type=root.querySelector('#inline-audit-type');
+      const audit=root.querySelector('#audit-text');
+      const auditType=root.querySelector('#audit-type');
+      const importer=root.querySelector('[data-action="import-reservation-cards"]');
+      if(!source?.value.trim()){alert('예약확인서 내용을 먼저 붙여 넣어주세요.');return}
+      if(!audit||!auditType||!importer){alert('자동 입력 기능을 준비하지 못했습니다.');return}
+      audit.value=source.value;
+      auditType.value=type.value;
+      importer.click();
+      source.value='';
+    });
+  })();
+  </script>
+  <style>
+    #cti-prototype .reservation-inline{margin:14px 0;padding:14px 16px;border:1px solid #dbe3ef;border-radius:16px;background:#f8fafc}
+    #cti-prototype .reservation-inline summary{cursor:pointer;font-weight:700;font-size:16px;color:#172033}
+    #cti-prototype .reservation-inline small{display:block;color:#6b7280;line-height:1.5;margin:10px 0}
+    #cti-prototype .reservation-inline select,#cti-prototype .reservation-inline textarea{margin-top:8px}
+  </style>
+  <script>
+  (()=>{
+    const root=document.querySelector('#cti-prototype');
+    if(!root)return;
+    const showOnly=screen=>{root.querySelectorAll('[data-screen]').forEach(s=>s.classList.toggle('hidden',s!==screen));screen.classList.remove('hidden')};
+    const stored=(key)=>{try{const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');return (all[key]||[])[0]||{}}catch(e){return {}}};
+    const labels={flight:{'flight-airline':'항공사·편명','flight-date':'출발 날짜','flight-time':'출발 시간','flight-route':'출발지 → 도착지','flight-booking':'예약번호'},train:{'train-name':'열차명·번호','train-date':'탑승 날짜','train-time':'출발 시간','train-route':'출발역 → 도착역','train-booking':'예약번호'},hotel:{'hotel-name':'숙소명','hotel-checkin':'체크인','hotel-checkout':'체크아웃','hotel-booking':'예약번호','hotel-address':'주소','hotel-phone':'전화번호','hotel-cancel':'무료 취소 마감'},insurance:{'insurance-name':'보험사','insurance-policy':'증권번호','insurance-phone':'긴급 연락처','insurance-note':'보장·신고 메모'}};
+    const summary=(obj,key)=>Object.entries(obj).filter(([,v])=>v).map(([k,v])=>'<div><strong>'+(labels[key]?.[k]||k)+'</strong><span>'+String(v).replace(/[<>&]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[m]))+'</span></div>').join('');
+    root.addEventListener('click',e=>{
+      const el=e.target.closest('[data-action="essential-open"]');
+      if(!el)return;
+      e.preventDefault();e.stopImmediatePropagation();
+      const title=el.querySelector('strong')?.textContent||'';
+      const index=el.dataset.index||'0';
+      root.dataset.essentialIndex=index;
+      root.dataset.essentialTitle=title;
+      let key=title.includes('항공')?'flight':title.includes('열차')?'train':title.includes('숙소')?'hotel':title.includes('보험')?'insurance':null;
+      const data=key?stored(key):{};
+      const detail=root.querySelector('[data-screen="essential-detail"]');
+      root.querySelector('#essential-detail-title').textContent=title;
+      root.querySelector('#essential-detail-why').innerHTML=summary(data,key)||'아직 내 여행 카드에 입력된 정보가 없습니다.';
+      root.querySelector('#essential-detail-how').textContent=summary(data,key)?'입력된 결과를 확인하세요. 수정이 필요하면 내 여행 카드에서 내용을 변경할 수 있습니다.':'내 여행 카드에서 예약정보를 먼저 입력해 주세요.';
+      showOnly(detail);
+    },true);
+    const fixLabels=()=>root.querySelectorAll('#essential-checklist-items strong').forEach(n=>{const next=n.textContent.replaceAll('항공권·열차 정보 저장','항공권·열차 정보 확인').replaceAll('保险·긴급 연락처 저장','보험·긴급 연락처 확인').replaceAll('보험·긴급 연락처 저장','보험·긴급 연락처 확인');if(next!==n.textContent)n.textContent=next});
+    new MutationObserver(fixLabels).observe(root.querySelector('#essential-checklist-items')||root,{subtree:true,childList:true});
+    fixLabels();
+    const helper=root.querySelector('.emergency-helper');
+    if(helper){helper.open=true;const summary=helper.querySelector('summary');if(summary)summary.textContent='🗣️ 상황별 도움 문장';const note=helper.querySelector('small');if(note)note.textContent='언어를 선택하고 필요한 상황의 짧은 문장을 바로 확인하세요.';const tabs=helper.querySelector('.scenario-tabs');if(tabs&&!helper.querySelector('#scenario-language')){const sel=document.createElement('select');sel.id='scenario-language';sel.className='lang';sel.innerHTML='<option value="zh-CN">중국어</option><option value="ja-JP">일본어</option><option value="en-US">영어</option>';tabs.parentNode.insertBefore(sel,tabs);sel.addEventListener('change',()=>{const main=root.querySelector('#language-select');if(main){main.value=sel.value;main.dispatchEvent(new Event('change'))}})}['#emergency-country','#emergency-city','#emergency-prompt','#emergency-result','[data-action="make-emergency-prompt"]','[data-action="copy-emergency-prompt"]','[data-action="open-emergency-ai"]','[data-action="save-emergency-result"]'].forEach(sel=>helper.querySelectorAll(sel).forEach(el=>el.remove()));if(!helper.querySelector('.official-emergency-link')){const link=document.createElement('a');link.href='https://0404.go.kr/';link.target='_blank';link.rel='noopener';link.className='official-emergency-link';link.textContent='🌍 국가별 현지 긴급번호·공관 공식 안내 열기';helper.appendChild(link)}}
+  })();
+  </script>
+  <script>
+  (()=>{
+    const root=document.querySelector('#cti-prototype');
+    if(!root)return;
+    const syncStay=()=>{try{const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}'),hotel=(all.hotel||[])[0];if(!hotel||!(hotel['hotel-name']||hotel['hotel-address']||hotel['hotel-phone']))return;if(!Array.isArray(all.stay))all.stay=[];all.stay[0]={...(all.stay[0]||{}),'stay-name':hotel['hotel-name']||'','stay-address':hotel['hotel-address']||'','stay-phone':hotel['hotel-phone']||''};localStorage.setItem('cti_travel_cards',JSON.stringify(all))}catch(e){}};
+    root.addEventListener('click',e=>{if(!e.target.closest('[data-action="import-reservation-cards"],[data-action="inline-import-reservation"]'))return;setTimeout(syncStay,50)});
+  })();
+  </script>
+  <script>
+  (()=>{
+    const root=document.querySelector('#cti-prototype');
+    if(!root)return;
+    const cards=()=>root.querySelectorAll('[data-screen="quick-info"] [data-card="destination"] strong').forEach(n=>{if(n.textContent.includes('목적지 카드'))n.textContent=n.textContent.replace('목적지 카드','주요 장소 카드')});
+    const emergencyDefaults=()=>{try{const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');if(!Array.isArray(all.emergency))all.emergency=[];if(!all.emergency[0]||!all.emergency[0]['emergency-phone']){all.emergency[0]={...(all.emergency[0]||{}),'emergency-name':'중국 현지 긴급전화','emergency-phone':'110 공안 · 120 응급 · 119 소방 · 122 교통','emergency-note':'한국 영사콜센터 +82-2-3210-0404\n현지 공관 긴급번호는 여행 도시별로 확인하세요.'};localStorage.setItem('cti_travel_cards',JSON.stringify(all))}}catch(e){}};
+    const importInsurance=e=>{const btn=e.target.closest('[data-action="inline-import-reservation"],[data-action="import-reservation-cards"]');if(!btn)return;const type=root.querySelector('#inline-audit-type')?.value||root.querySelector('#audit-type')?.value||'';if(type!=='보험·eSIM')return;const text=root.querySelector('#inline-audit-text')?.value||root.querySelector('#audit-text')?.value||'';if(!text.trim())return;e.stopImmediatePropagation();const pick=re=>(text.match(re)?.[1]||'').trim();const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');all.insurance=[{'insurance-name':pick(/(?:보험사|보험 회사|회사명)\s*[:：]\s*([^\n]+)/i),'insurance-policy':pick(/(?:증권번호|보험번호|policy)\s*[:：#]?\s*([^\s\n]+)/i),'insurance-phone':pick(/(?:긴급 연락처|긴급지원|전화|phone)\s*[:：]\s*([^\n]+)/i),'insurance-note':text}];localStorage.setItem('cti_travel_cards',JSON.stringify(all));alert('보험 정보를 보험 카드와 SOS 정보에 저장했습니다.');if(root.querySelector('#inline-audit-text'))root.querySelector('#inline-audit-text').value=''};
+    root.addEventListener('click',importInsurance,true);
+    emergencyDefaults();cards();new MutationObserver(cards).observe(root,{subtree:true,childList:true});
+  })();
+  </script>
+<script>
+(()=>{
+ const root=document.querySelector('#cti-prototype'),box=root?.querySelector('.emergency-helper');if(!root||!box||box.querySelector('.help-scenarios'))return;
+ const wrap=document.createElement('div');wrap.className='help-scenarios';wrap.innerHTML='<strong>상황별 도움 문장</strong><small>필요한 상황을 눌러 한국어·영어·방문 언어를 확인하세요.</small><div class="scenario-tabs"><button type="button" data-scenario="hospital">병원</button><button type="button" data-scenario="pharmacy">약국</button><button type="button" data-scenario="hotel">호텔 도움</button><button type="button" data-scenario="police">경찰서</button></div><div class="scenario-output"></div>';
+ box.insertBefore(wrap,box.querySelector('#emergency-result'));
+ const language=document.createElement('select');language.id='scenario-language';language.className='lang';language.setAttribute('aria-label','도움 문장 언어 선택');language.innerHTML='<option value="zh-CN">중국어</option><option value="ja-JP">일본어</option><option value="en-US">영어</option>';wrap.querySelector('.scenario-tabs').before(language);
+ const scenarioSelect=document.createElement('select');scenarioSelect.id='scenario-type';scenarioSelect.className='lang';scenarioSelect.setAttribute('aria-label','도움 상황 선택');scenarioSelect.innerHTML='<option value="hospital">병원</option><option value="pharmacy">약국</option><option value="hotel">호텔 도움</option><option value="police">경찰서</option>';language.after(scenarioSelect);wrap.querySelector('.scenario-tabs').style.display='none';scenarioSelect.addEventListener('change',()=>wrap.querySelector('[data-scenario="'+scenarioSelect.value+'"]').click());
+ const data={hospital:[['접수하고 진료를 받고 싶습니다.','I would like to register and see a doctor.','我想挂号看医生。','受付をして診察を受けたいです。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。'],['이 증상이 언제부터 시작됐는지 설명하겠습니다.','I will explain when these symptoms started.','我来说明这些症状从什么时候开始的。','いつからこの症状が始まったか説明します。'],['알레르기가 있습니다.','I have an allergy.','我有过敏。','アレルギーがあります。']],pharmacy:[['이 증상에 맞는 약을 추천해 주세요.','Please recommend medicine for these symptoms.','请推荐适合这些症状的药。','この症状に合う薬をおすすめしてください。'],['하루에 몇 번 복용해야 하나요?','How many times a day should I take it?','一天要服用几次？','一日に何回飲めばいいですか。'],['처방전이 필요합니까?','Do I need a prescription?','需要处方吗？','処方箋は必要ですか？'],['여행자보험으로 처리할 수 있나요?','Can I use my travel insurance for this?','可以用旅行保险报销吗？','旅行保険を使えますか。']],hotel:[['도와주세요. 몸이 아픕니다.','Please help me. I am not feeling well.','请帮助我。我身体不舒服。','助けてください。具合が悪いです。'],['가까운 병원이나 약국을 알려주세요.','Please tell me where the nearest hospital or pharmacy is.','请告诉我最近的医院或药店在哪里。','近くの病院や薬局を教えてください。'],['구급차를 불러주세요.','Please call an ambulance.','请叫救护车。','救急車を呼んでください。']],police:[['도난 신고를 하고 싶습니다.','I would like to report a theft.','我想报案，东西被偷了。','盗難届を出したいです。'],['여권을 잃어버렸습니다.','I lost my passport.','我的护照丢了。','パスポートをなくしました。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。']]};
+ const render=k=>{let items=data[k];if(k==='hotel'){items=items.concat([["가까운 경찰서가 어디인가요?","Where is the nearest police station?","最近的警察局在哪里？","近くの警察署はどこですか。"]])}if(k==='police'){items=items.concat([["사건이 발생한 장소와 시간을 설명하겠습니다.","I will explain where and when it happened.","我来说明事情发生的地点和时间。","発生した場所と時間を説明します。"],["통역이 필요합니다.","I need an interpreter.","我需要翻译。","通訳が必要です。"],["신고 확인서가 필요합니다.","I need a copy of the police report.","我需要报案证明。","届出証明書が必要です。"]])}const lang=language.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2,label=lang==='ja-JP'?'일본어':lang==='en-US'?'영어':'중국어';wrap.querySelector('.scenario-output').innerHTML='<select class="phrase-select" aria-label="상황 문장 선택">'+items.map((x,i)=>'<option value="'+i+'">'+x[0]+'</option>').join('')+'</select><div class="phrase-detail"><strong>'+label+'</strong><span>'+items[0][key]+'</span></div><div class="phrase-actions"><button type="button" data-phrase-speak>🔊 소리 읽기</button><button type="button" data-phrase-large>🔍 크게 보기</button></div>';};
+ wrap.addEventListener('change',e=>{const select=e.target.closest('.phrase-select');if(!select)return;const k=wrap.querySelector('.scenario-tabs button.active')?.dataset.scenario||'hospital',x=data[k][Number(select.value)],lang=language.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2,label=lang==='ja-JP'?'일본어':lang==='en-US'?'영어':'중국어';wrap.querySelector('.phrase-detail').innerHTML='<strong>'+label+'</strong><span>'+x[key]+'</span>'});
+ wrap.addEventListener('change',e=>{const select=e.target.closest('.phrase-select');if(!select)return;const k=wrap.querySelector('.scenario-tabs button.active')?.dataset.scenario||'hospital',x=data[k][Number(select.value)],lang=language.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2,label=lang==='ja-JP'?'일본어':lang==='en-US'?'영어':'중국어';wrap.querySelector('.phrase-detail').innerHTML='<strong>'+label+'</strong><span>'+x[key]+'</span>'});
+ wrap.addEventListener('click',e=>{const k=wrap.querySelector('.scenario-tabs button.active')?.dataset.scenario||'hospital',select=wrap.querySelector('.phrase-select'),x=data[k][Number(select?.value||0)]||({3:["사건이 발생한 장소와 시간을 설명하겠습니다.","I will explain where and when it happened.","我来说明事情发生的地点和时间。","発生した場所と時間を説明します。"],4:["통역이 필요합니다.","I need an interpreter.","我需要翻译。","通訳が必要です。"],5:["신고 확인서가 필요합니다.","I need a copy of the police report.","我需要报案证明。","届出証明書が必要です。"],"hotel-police":["가까운 경찰서가 어디인가요?","Where is the nearest police station?","最近的警察局在哪里？","近くの警察署はどこですか。"]}[select?.value]),lang=language.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2;if(e.target.closest('[data-phrase-speak]')){if('speechSynthesis' in window){speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(x[key]);u.lang=lang;u.rate=.88;u.pitch=1.0;const voices=speechSynthesis.getVoices(),exact=voices.filter(v=>v.lang.toLowerCase().replaceAll('_','-')===lang.toLowerCase().replaceAll('_','-')),preferred=lang==='en-US'?['Samantha','Alex','Karen','Daniel']:lang==='ja-JP'?['Kyoko','Otoya']:['Ting-Ting','Mei-Jia','Sin-ji'];const natural=exact.find(v=>preferred.some(name=>v.name.toLowerCase().includes(name.toLowerCase())));if(lang!=='en-US'&&(natural||exact[0]))u.voice=natural||exact[0];speechSynthesis.speak(u)}else alert('이 브라우저에서는 음성 읽기를 지원하지 않습니다.')}if(e.target.closest('[data-phrase-large]')){const layer=document.createElement('div');layer.className='phrase-large-layer';layer.innerHTML='<div class="phrase-large-card"><button type="button" class="phrase-large-close">닫기</button><small>'+({'zh-CN':'중국어','ja-JP':'일본어','en-US':'영어'}[lang]||'방문 언어')+'</small><strong>'+x[key]+'</strong></div>';document.body.appendChild(layer);layer.addEventListener('click',ev=>{if(ev.target===layer||ev.target.closest('.phrase-large-close'))layer.remove()})}});
+ wrap.addEventListener('click',e=>{const b=e.target.closest('[data-scenario]');if(b){wrap.querySelectorAll('[data-scenario]').forEach(x=>x.classList.remove('active'));b.classList.add('active');scenarioSelect.value=b.dataset.scenario;render(b.dataset.scenario)}});language.addEventListener('change',()=>render(scenarioSelect.value||'hospital'));scenarioSelect.value='hospital';wrap.querySelector('[data-scenario="hospital"]').classList.add('active');render('hospital');
+})();
+  </script>
+  <style>
+    #cti-prototype [data-screen="quick-info"] .emergency-helper{display:block!important}
+    #cti-prototype [data-screen="quick-info"] #quick-card-list:empty:after,#cti-prototype [data-screen="quick-info"] #quick-card-list:not(:has(.practical-tile)):after{content:'아직 저장된 SOS 정보가 없습니다. 아래 준비 영역에서 국가·도시별 정보를 확인해 저장하세요.';display:block;grid-column:1/-1;padding:22px 12px;text-align:center;color:#6b7280;line-height:1.5}
+  </style>
 </div>
+<script>
+(()=>{
+ const root=document.querySelector('#cti-prototype');if(!root)return;
+ try{const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');if(all.emergency?.[0]?.['emergency-name']==='중국 현지 긴급전화'){delete all.emergency;localStorage.setItem('cti_travel_cards',JSON.stringify(all))}}catch(e){}
+ root.addEventListener('click',e=>{
+  const a=e.target.closest('[data-action]')?.dataset.action;if(!a)return;
+  if(a==='make-emergency-prompt'){const c=root.querySelector('#emergency-country').value.trim(),city=root.querySelector('#emergency-city').value.trim();if(!c||!city){alert('국가와 도시를 입력해 주세요.');return}root.querySelector('#emergency-prompt').value=`${c} ${city} 여행자를 위한 현지 긴급 연락처를 공식 출처 기준으로 확인해 주세요. 경찰, 구급, 소방, 교통 신고번호와 대한민국 대사관·총영사관 긴급 연락처를 알려주세요. 각 번호 옆에 기관명, 사용 상황, 공식 출처 URL, 확인 날짜를 표시하세요. 확인되지 않은 번호는 추측하지 말고 확인 필요라고 표시하세요. 결과는 SOS 비상연락정보에 바로 옮길 수 있도록 번호별 목록으로 작성하세요.`}
+  if(a==='copy-emergency-prompt'){const v=root.querySelector('#emergency-prompt').value.trim();if(v)navigator.clipboard?.writeText(v).then(()=>alert('프롬프트를 복사했습니다.'))}
+  if(a==='open-emergency-ai')window.open('https://chatgpt.com/','_blank','noopener');
+  if(a==='save-emergency-result'){const v=root.querySelector('#emergency-result').value.trim();if(!v){alert('AI 결과를 먼저 붙여 넣어 주세요.');return}const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');all.emergency=[{'emergency-name':'현지 긴급 연락처','emergency-phone':'','emergency-note':v}];localStorage.setItem('cti_travel_cards',JSON.stringify(all));alert('SOS 비상연락정보에 저장했습니다.');}
+ });
+})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth||synth.__ctiVoiceStable)return;synth.__ctiVoiceStable=true;const speak=synth.speak.bind(synth),choose=lang=>{const base=(lang||'').toLowerCase().split('-')[0],voices=synth.getVoices(),same=voices.filter(v=>v.lang.toLowerCase().replace('_','-').startsWith(base)),words=['female','woman','girl','女','여성','zira','susan','samantha','yuuki','mei-jia','ting-ting'];return same.find(v=>words.some(w=>v.name.toLowerCase().includes(w)))||same.find(v=>/female|woman|girl|女|여성/i.test(v.name))||same[0]||voices.find(v=>v.lang.toLowerCase().startsWith(base))||voices[0]};synth.speak=u=>{if(u&&u.lang){const v=choose(u.lang);if(v)u.voice=v;u.rate=.76;u.pitch=1.08}speak(u)}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth)return;window.ctiReadText=(text,lang)=>{if(!text)return;synth.cancel();const play=()=>{const base=lang.toLowerCase().split('-')[0],voice=synth.getVoices().find(v=>v.lang.toLowerCase().replace('_','-').startsWith(base));if(!voice){alert(({'zh-CN':'중국어','en-US':'영어','ja-JP':'일본어'}[lang]||'선택한 언어')+' 음성을 사용할 수 없습니다.');return}const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.voice=voice;u.rate=.78;u.pitch=1;synth.speak(u)};if(synth.getVoices().length)play();else synth.addEventListener('voiceschanged',play,{once:true})}})();
+</script>
+<script>
+(()=>{const root=document.querySelector('#cti-prototype');if(!root)return;window.ctiReadText=(text,lang)=>{const synth=window.speechSynthesis;if(!synth)return false;synth.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=.76;u.pitch=1.08;const voices=synth.getVoices(),same=voices.filter(v=>v.lang.toLowerCase().startsWith(lang.toLowerCase().split('-')[0]));u.voice=same[0];synth.speak(u);return true};root.addEventListener('click',e=>{if(!e.target.closest('[data-phrase-speak]'))return;const screen=e.target.closest('[data-screen="quick-info"]');if(!screen)return;e.stopImmediatePropagation();const box=e.target.closest('.help-scenarios'),select=box?.querySelector('.phrase-select');if(!select)return;const k=box.querySelector('.scenario-tabs button.active')?.dataset.scenario||'hospital',lang=box.querySelector('#scenario-language')?.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2,base={hospital:['접수하고 진료를 받고 싶습니다.','I would like to register and see a doctor.','我想挂号看医生。','受付をして診察を受けたいです。'],pharmacy:['이 증상에 맞는 약을 추천해 주세요.','Please recommend medicine for these symptoms.','请推荐适合这些症状的药。','この症状に合う薬をおすすめしてください。'],hotel:['도와주세요. 몸이 아픕니다.','Please help me. I am not feeling well.','请帮助我。我身体不舒服。','助けてください。具合が悪いです。'],police:['경찰의 도움이 필요합니다.','I need police assistance.','我需要警察帮助。','警察の助けが必要です。']}[k];ctiReadText(base?.[key]||select.selectedOptions[0].textContent,lang)},true)})();
+(()=>{const root=document.querySelector('#cti-prototype'),select=root?.querySelector('#language-select'),hint=root?.querySelector('[data-screen="detail"] .hint'),speaker=root?.querySelector('[data-screen="detail"] .speaker');if(!root||!select)return;const names={'zh-CN':'중국어','en-US':'영어','ja-JP':'일본어'},sync=()=>{const text=(names[select.value]||'방문 언어')+'로 듣기';if(hint)hint.textContent=text;if(speaker)speaker.setAttribute('aria-label',text)};select.addEventListener('change',sync);sync()})();
+(()=>{const root=document.querySelector('#cti-prototype');if(!root)return;const names={'zh-CN':'중국어','en-US':'영어','ja-JP':'일본어'},pickVoice=(voices,lang)=>{const base=lang.toLowerCase().split('-')[0],same=voices.filter(v=>v.lang.toLowerCase().replace('_','-').startsWith(base)),preferred=lang==='en-US'?['samantha','alex','karen','daniel']:lang==='ja-JP'?['kyoko','otoya']:['ting-ting','mei-jia','sin-ji'];return same[0]};window.ctiReadText=(text,lang)=>{const synth=window.speechSynthesis;if(!synth||!text)return;synth.cancel();const speak=()=>{const voices=synth.getVoices(),voice=pickVoice(voices,lang);if(!voice){alert((names[lang]||'선택한 언어')+' 음성을 사용할 수 없습니다.');return}const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.voice=voice;u.rate=.78;u.pitch=1.02;synth.speak(u)};if(synth.getVoices().length)speak();else synth.addEventListener('voiceschanged',speak,{once:true})};root.addEventListener('click',e=>{const action=e.target.closest('[data-action]')?.dataset.action,phrase=e.target.closest('[data-phrase-speak]');if(action!=='speak'&&!phrase)return;e.stopImmediatePropagation();if(phrase){const box=e.target.closest('.help-scenarios'),lang=box?.querySelector('#scenario-language')?.value||'zh-CN',text=box?.querySelector('.phrase-detail span')?.textContent.trim();ctiReadText(text,lang);return}const lang=root.querySelector('#language-select')?.value||'zh-CN',text=root.querySelector('[data-screen="detail"] [data-zh]')?.textContent.trim();ctiReadText(text,lang)},true)})();
+</script>
+<script>
+(()=>{const root=document.querySelector('#cti-prototype');if(!root)return;const original=window.ctiReadText;window.ctiReadText=(text,lang)=>{const shown=root.querySelector('.help-scenarios .phrase-detail span')?.textContent.trim();return original(shown||text,lang)}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth||synth.__ctiPhraseTextFix)return;synth.__ctiPhraseTextFix=true;const speak=synth.speak.bind(synth);synth.speak=u=>{const screen=document.querySelector('[data-screen="quick-info"]');const shown=screen?.querySelector('.help-scenarios .phrase-detail span')?.textContent.trim();if(shown&&u&&u.lang)u.text=shown;speak(u)}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth||synth.__ctiPoliceTextFix)return;synth.__ctiPoliceTextFix=true;const police=[['도난 신고를 하고 싶습니다.','I would like to report a theft.','我想报案，东西被偷了。','盗難届を出したいです。'],['여권을 잃어버렸습니다.','I lost my passport.','我的护照丢了。','パスポートをなくしました。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。'],['사건이 발생한 장소와 시간을 설명하겠습니다.','I will explain where and when it happened.','我来说明事情发生的地点和时间。','発生した場所と時間を説明します。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。'],['신고 확인서가 필요합니다.','I need a copy of the police report.','我需要报案证明。','届出証明書が必要です。']],hotelPolice=['가까운 경찰서가 어디인가요?','Where is the nearest police station?','最近的警察局在哪里？','近くの警察署はどこですか。'],speak=synth.speak.bind(synth);synth.speak=u=>{const screen=document.querySelector('[data-screen="quick-info"]'),box=screen?.querySelector('.help-scenarios'),select=box?.querySelector('.phrase-select'),scenario=box?.querySelector('#scenario-type')?.value||box?.querySelector('.scenario-tabs button.active')?.dataset.scenario,lang=box?.querySelector('#scenario-language')?.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2;if(u&&select&&scenario==='police'){const x=police[Number(select.value)];if(x)u.text=x[key]}if(u&&select&&scenario==='hotel'&&select.value==='hotel-police')u.text=hotelPolice[key];speak(u)}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth||synth.__ctiPoliceFinalFix)return;synth.__ctiPoliceFinalFix=true;const police=['I would like to report a theft.','I lost my passport.','I need an interpreter.','I will explain where and when it happened.','I need an interpreter.','I need a copy of the police report.'],hotel='Where is the nearest police station?',speak=synth.speak.bind(synth);synth.speak=u=>{const box=document.querySelector('[data-screen="quick-info"] .help-scenarios'),select=box?.querySelector('.phrase-select'),active=box?.querySelector('.scenario-tabs button.active')?.dataset.scenario,scenario=active||box?.querySelector('#scenario-type')?.value,lang=box?.querySelector('#scenario-language')?.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2;if(u&&select&&scenario==='police'){const i=Number(select.value);if(lang==='en-US'&&police[i])u.text=police[i]}if(u&&select&&scenario==='hotel'&&select.value==='hotel-police'&&lang==='en-US')u.text=hotel;speak(u)}})();
+</script>
+<script>
+(()=>{const root=document.querySelector('#cti-prototype');if(!root||root.__ctiReadScopeFix)return;root.__ctiReadScopeFix=true;const original=window.ctiReadText;window.ctiReadText=(text,lang)=>{const quick=root.querySelector('[data-screen="quick-info"]');const active=quick&&getComputedStyle(quick).display!=='none';const shown=active?quick.querySelector('.help-scenarios .phrase-detail span')?.textContent.trim():'';return original(shown||text,lang)}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth)return;const native=SpeechSynthesis.prototype.speak.bind(synth);synth.speak=u=>native(u);window.ctiReadText=(text,lang)=>{if(!text)return false;synth.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.rate=.76;u.pitch=1.08;const base=(lang||'').toLowerCase().split('-')[0],voice=synth.getVoices().find(v=>v.lang.toLowerCase().replace('_','-').startsWith(base));if(voice)u.voice=voice;native(u);return true}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth)return;const native=SpeechSynthesis.prototype.speak.bind(synth),pick=lang=>{const base=(lang||'').toLowerCase().split('-')[0],voices=synth.getVoices(),same=voices.filter(v=>v.lang.toLowerCase().replace('_','-').startsWith(base)),words=['female','woman','girl','女','여성','zira','susan','samantha','yuuki','mei-jia','ting-ting'];return same.find(v=>words.some(w=>v.name.toLowerCase().includes(w)))||same.find(v=>/female|woman|girl|女|여성/i.test(v.name))||same[0]||voices.find(v=>v.lang.toLowerCase().startsWith(base))||voices[0]};synth.speak=u=>{if(u&&u.lang){const v=pick(u.lang);if(v)u.voice=v;u.rate=.76;u.pitch=1.08}native(u)};window.ctiReadText=(text,lang)=>{if(!text)return false;synth.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=lang;u.voice=pick(lang);u.rate=.76;u.pitch=1.08;synth.speak(u);return true}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth||synth.__ctiSosOnlyFix)return;synth.__ctiSosOnlyFix=true;const police=[['도난 신고를 하고 싶습니다.','I would like to report a theft.','我想报案，东西被偷了。','盗難届を出したいです。'],['여권을 잃어버렸습니다.','I lost my passport.','我的护照丢了。','パスポートをなくしました。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。'],['사건이 발생한 장소와 시간을 설명하겠습니다.','I will explain where and when it happened.','我来说明事情发生的地点和时间。','発生した場所と時間を説明します。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。'],['신고 확인서가 필요합니다.','I need a copy of the police report.','我需要报案证明。','届出証明書が必要です。']],hotel=['가까운 경찰서가 어디인가요?','Where is the nearest police station?','最近的警察局在哪里？','近くの警察署はどこですか。'],native=SpeechSynthesis.prototype.speak.bind(synth);synth.speak=u=>{const box=document.querySelector('[data-screen="quick-info"] .help-scenarios'),select=box?.querySelector('.phrase-select'),active=box?.querySelector('.scenario-tabs button.active')?.dataset.scenario,scenario=active||box?.querySelector('#scenario-type')?.value,lang=box?.querySelector('#scenario-language')?.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2;if(u&&select&&scenario==='police'){const x=police[Number(select.value)];if(x)u.text=x[key]}if(u&&select&&scenario==='hotel'&&select.value==='hotel-police')u.text=hotel[key];native(u)}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth||synth.__ctiSosTextMap)return;synth.__ctiSosTextMap=true;const rows=[['접수하고 진료를 받고 싶습니다.','I would like to register and see a doctor.','我想挂号看医生。','受付をして診察を受けたいです。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。'],['이 증상이 언제부터 시작됐는지 설명하겠습니다.','I will explain when these symptoms started.','我来说明这些症状从什么时候开始的。','いつからこの症状が始まったか説明します。'],['이 증상에 맞는 약을 추천해 주세요.','Please recommend medicine for these symptoms.','请推荐适合这些症状的药。','この症状に合う薬をおすすめしてください。'],['하루에 몇 번 복용해야 하나요?','How many times a day should I take it?','一天要服用几次？','一日に何回飲めばいいですか。'],['처방전이 필요합니까?','Do I need a prescription?','需要处方吗？','処方箋は必要ですか？'],['여행자보험으로 처리할 수 있나요?','Can I use my travel insurance for this?','可以用旅行保险报销吗？','旅行保険を使えますか。'],['도와주세요. 몸이 아픕니다.','Please help me. I am not feeling well.','请帮助我。我身体不舒服。','助けてください。具合が悪いです。'],['가까운 병원이나 약국을 알려주세요.','Please tell me where the nearest hospital or pharmacy is.','请告诉我最近的医院或药店在哪里。','近くの病院や薬局を教えてください。'],['구급차를 불러주세요.','Please call an ambulance.','请叫救护车。','救急車を呼んでください。'],['가까운 경찰서가 어디인가요?','Where is the nearest police station?','最近的警察局在哪里？','近くの警察署はどこですか。'],['도난 신고를 하고 싶습니다.','I would like to report a theft.','我想报案，东西被偷了。','盗難届を出したいです。'],['여권을 잃어버렸습니다.','I lost my passport.','我的护照丢了。','パスポートをなくしました。'],['사건이 발생한 장소와 시간을 설명하겠습니다.','I will explain where and when it happened.','我来说明事情发生的地点和时间。','発生した場所と時間を説明します。'],['신고 확인서가 필요합니다.','I need a copy of the police report.','我需要报案证明。','届出証明書が必要です.']];const native=SpeechSynthesis.prototype.speak.bind(synth);synth.speak=u=>{const box=document.querySelector('[data-screen="quick-info"] .help-scenarios'),opt=box?.querySelector('.phrase-select option:checked'),lang=box?.querySelector('#scenario-language')?.value||'zh-CN',key=lang==='ja-JP'?3:lang==='en-US'?1:2,row=rows.find(x=>x[0]===opt?.textContent.trim());if(u&&row)u.text=row[key];native(u)}})();
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth||synth.__ctiSosDisplayOnly)return;synth.__ctiSosDisplayOnly=true;const native=SpeechSynthesis.prototype.speak.bind(synth);synth.speak=u=>{const box=document.querySelector('[data-screen="quick-info"] .help-scenarios'),shown=box?.querySelector('.phrase-detail span')?.textContent.trim();if(u&&shown)u.text=shown;native(u)}})();
+</script>
+<script>
+</script>
+<script>
+(()=>{const synth=window.speechSynthesis;if(!synth||synth.__ctiHotelPoliceFinal)return;synth.__ctiHotelPoliceFinal=true;const native=SpeechSynthesis.prototype.speak.bind(synth);synth.speak=u=>{const box=document.querySelector('[data-screen="quick-info"] .help-scenarios'),option=box?.querySelector('.phrase-select option:checked');if(u&&option?.textContent.trim()==='가까운 경찰서가 어디인가요?')u.text='Where is the nearest police station?';native(u)}})();
+</script>
+<script>
+/* SOS-FINAL-22 */
+(()=>{
+const root=document.querySelector('#cti-prototype'),old=root?.querySelector('[data-screen="quick-info"] .help-scenarios');if(!old)return;
+const FINAL={hospital:[['접수하고 진료를 받고 싶습니다.','I would like to register and see a doctor.','我想挂号看医生。','受付をして診察を受けたいです。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。'],['이 증상이 언제부터 시작됐는지 설명하겠습니다.','I will explain when these symptoms started.','我来说明这些症状是从什么时候开始的。','いつからこの症状が始まったか説明します。'],['알레르기가 있습니다.','I have an allergy.','我有过敏。','アレルギーがあります。'],['복용 중인 약이 있습니다.','I am currently taking medication.','我正在服用药物。','現在、薬を飲んでいます。'],['여행자보험이 있습니다.','I have travel insurance.','我有旅行保险。','旅行保険に入っています。']],pharmacy:[['이 증상에 사용할 약을 추천해 주세요.','Please recommend medicine for these symptoms.','请推荐适合这些症状的药。','この症状に使える薬をおすすめしてください。'],['하루에 몇 번 복용해야 하나요?','How many times a day should I take it?','一天要服用几次？','一日に何回飲めばいいですか。'],['한 번에 몇 알을 먹어야 하나요?','How many pills should I take at once?','一次要吃几片？','一回に何錠飲めばいいですか。'],['복용 방법을 적어 주세요.','Please write down how to take it.','请写下服用方法。','飲み方を書いてください。'],['처방전이 필요한가요?','Do I need a prescription?','需要处方吗？','処方箋が必要ですか。'],['이 약을 먹으면 안 되는 경우가 있나요?','Are there any cases in which I should not take this medicine?','这种药有没有不能服用的情况？','この薬を飲んではいけない場合はありますか。']],hotel:[['도와주세요. 몸이 아픕니다.','Please help me. I am not feeling well.','请帮助我。我身体不舒服。','助けてください。具合が悪いです。'],['가까운 병원이나 약국을 알려주세요.','Please tell me where the nearest hospital or pharmacy is.','请告诉我最近的医院或药店在哪里。','近くの病院や薬局を教えてください。'],['가까운 경찰서가 어디인가요?','Where is the nearest police station?','最近的警察局在哪里？','近くの警察署はどこですか。'],['구급차를 불러 주세요.','Please call an ambulance.','请叫救护车。','救急車を呼んでください。']],police:[['도난 신고를 하고 싶습니다.','I would like to report a theft.','我想报案，东西被偷了。','盗難届を出したいです。'],['여권을 잃어버렸습니다.','I lost my passport.','我的护照丢了。','パスポートをなくしました。'],['사건이 발생한 장소와 시간을 설명하겠습니다.','I will explain where and when it happened.','我来说明事情发生的地点和时间。','発生した場所と時間を説明します。'],['통역이 필요합니다.','I need an interpreter.','我需要翻译。','通訳が必要です。'],['신고 확인서가 필요합니다.','I need a copy of the police report.','我需要一份报案证明。','届出証明書が必要です。'],['목격자나 관련자를 찾고 싶습니다.','I would like to find witnesses or people involved.','我想寻找目击者或相关人员。','目撃者や関係者を探したいです。']]};
+const sosAudio={
+hospital:["audio/en/hospital-01.mp3","audio/en/hospital-02.mp3","audio/en/hospital-03.mp3","audio/en/hospital-04.mp3","audio/en/hospital-05.mp3","audio/en/hospital-06.mp3"],
+pharmacy:["audio/en/pharmacy-01.mp3","audio/en/pharmacy-02.mp3","audio/en/pharmacy-03.mp3","audio/en/pharmacy-04.mp3","audio/en/pharmacy-05.mp3","audio/en/pharmacy-06.mp3"],
+hotel:["audio/en/hotel-01.mp3","audio/en/hotel-02.mp3","audio/en/hotel-03.mp3","audio/en/hotel-04.mp3"],
+police:["audio/en/police-01.mp3","audio/en/police-02.mp3","audio/en/police-03.mp3","audio/en/police-04.mp3","audio/en/police-05.mp3","audio/en/police-06.mp3"]};
+let sosCurrentAudio=null;
+function stopSosEnglishAudio(){if(sosCurrentAudio){sosCurrentAudio.pause();sosCurrentAudio.currentTime=0;sosCurrentAudio=null}}
+function playSosEnglishAudio(category,index){
+  const src=sosAudio[category]?.[index];
+  if(!src){alert("음성 파일을 재생할 수 없습니다.");return}
+  if('speechSynthesis' in window)speechSynthesis.cancel();
+  stopSosEnglishAudio();
+  const audio=new Audio(src);sosCurrentAudio=audio;audio.currentTime=0;
+  audio.play().catch(()=>{alert("음성 파일을 재생할 수 없습니다.")});
+}
+/* 이전 패치들의 이벤트를 모두 떼어내기 위해 SOS 박스를 새로 교체 */
+const wrap=old.cloneNode(true);old.replaceWith(wrap);
+const language=wrap.querySelector('#scenario-language'),scenario=wrap.querySelector('#scenario-type'),out=wrap.querySelector('.scenario-output');
+const keyOf=l=>l==='ja-JP'?3:l==='en-US'?1:2,labelOf=l=>({'zh-CN':'중국어','ja-JP':'일본어','en-US':'영어'}[l]||'방문 언어');
+const cur=()=>{const k=scenario.value||'hospital',i=Number(wrap.querySelector('.phrase-select')?.value||0);return{k,i,row:FINAL[k][i],lang:language.value||'zh-CN'}};
+const detail=()=>{const c=cur();wrap.querySelector('.phrase-detail').innerHTML='<strong>'+labelOf(c.lang)+'</strong><span>'+c.row[keyOf(c.lang)]+'</span>'};
+const render=()=>{const k=scenario.value||'hospital';wrap.querySelectorAll('.scenario-tabs [data-scenario]').forEach(b=>b.classList.toggle('active',b.dataset.scenario===k));
+ out.innerHTML='<select class="phrase-select" aria-label="상황 문장 선택">'+FINAL[k].map((r,i)=>'<option value="'+i+'">'+r[0]+'</option>').join('')+'</select><div class="phrase-detail"></div><div class="phrase-actions"><button type="button" data-phrase-speak>🔊 소리 읽기</button><button type="button" data-phrase-large>🔍 크게 보기</button></div>';detail()};
+language.addEventListener('change',()=>{stopSosEnglishAudio();detail()});
+scenario.addEventListener('change',()=>{stopSosEnglishAudio();render()});
+wrap.addEventListener('change',e=>{if(e.target.closest('.phrase-select')){stopSosEnglishAudio();detail()}});
+wrap.addEventListener('click',e=>{const t=e.target.closest('[data-scenario]');if(t){scenario.value=t.dataset.scenario;render()}
+ if(e.target.closest('[data-phrase-large]')){const c=cur(),layer=document.createElement('div');layer.className='phrase-large-layer';layer.innerHTML='<div class="phrase-large-card"><button type="button" class="phrase-large-close">닫기</button><small>'+labelOf(c.lang)+'</small><strong>'+c.row[keyOf(c.lang)]+'</strong></div>';document.body.appendChild(layer);layer.addEventListener('click',ev=>{if(ev.target===layer||ev.target.closest('.phrase-large-close'))layer.remove()})}});
+/* 중국어·일본어: 기존 음성 설정(여성 음성 우선, 속도 .76, 높이 1.08) 유지 */
+const pick=l=>{const base=l.toLowerCase().split('-')[0],vs=speechSynthesis.getVoices(),same=vs.filter(v=>v.lang.toLowerCase().replace('_','-').startsWith(base)),w=['female','woman','girl','女','여성','zira','susan','samantha','yuuki','mei-jia','ting-ting'];return same.find(v=>w.some(x=>v.name.toLowerCase().includes(x)))||same[0]};
+const speakOther=(text,l)=>{if(!('speechSynthesis' in window)){alert('이 브라우저에서는 음성 읽기를 지원하지 않습니다.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.lang=l;const v=pick(l);if(v)u.voice=v;u.rate=.76;u.pitch=1.08;SpeechSynthesis.prototype.speak.call(speechSynthesis,u)};
+/* 이전 패치의 소리 읽기 핸들러보다 먼저 받아서 처리 */
+window.addEventListener('click',e=>{const b=e.target.closest?.('[data-phrase-speak]');if(!b||!wrap.contains(b))return;e.stopImmediatePropagation();e.preventDefault();
+ const c=cur();if(c.lang==='en-US'){playSosEnglishAudio(c.k,c.i);return}stopSosEnglishAudio();speakOther(c.row[keyOf(c.lang)],c.lang)},true);
+render();
+})();
+</script>
