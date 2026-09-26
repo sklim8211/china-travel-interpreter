@@ -1,5 +1,34 @@
+<meta charset="UTF-8">
 <div id="cti-prototype">
   <style>
+    #cti-prototype [data-screen="traveler-choice"] .tile{height:92px;min-height:92px;box-sizing:border-box;border-radius:18px;background:#f7faff;border-color:#dbeafe}
+    #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-free"]{background:#eef6ff;border-color:#cfe3ff}
+    #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-semi"]{background:#f7f2ff;border-color:#e5d8ff}
+    #cti-prototype [data-screen="traveler-choice"] h3{margin-top:22px}
+    #cti-prototype [data-screen="traveler-choice"] .grid,#cti-prototype [data-screen="continent-choice"] .grid{grid-auto-rows:128px}
+    #cti-prototype [data-screen="continent-choice"] .tile{height:128px;min-height:128px;box-sizing:border-box;border-radius:18px;display:flex;flex-direction:column;justify-content:center}
+    #cti-prototype [data-screen="continent-choice"] .tile:nth-child(1){background:#eef8ff;border-color:#cde8ff}
+    #cti-prototype [data-screen="continent-choice"] .tile:nth-child(2){background:#f5f0ff;border-color:#e2d6ff}
+    #cti-prototype [data-screen="continent-choice"] .tile:nth-child(3){background:#fff5ed;border-color:#ffdcbf}
+    #cti-prototype [data-screen="continent-choice"] .tile:nth-child(4){background:#eefbf6;border-color:#cceedd}
+    #cti-prototype [data-screen="continent-choice"] .tile:nth-child(5){background:#fff8e8;border-color:#f7e2ae}
+    #cti-prototype [data-screen="continent-choice"] .tile:nth-child(6){background:#eef8f8;border-color:#c9e8e8}
+    #cti-prototype [data-screen="traveler-choice"] .back{padding-bottom:8px}
+    #cti-prototype [data-screen="traveler-choice"] h2{margin-bottom:8px}
+    #cti-prototype [data-screen="traveler-choice"] .sub{margin-bottom:10px}
+    #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-free"],#cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-semi"]{height:58px;min-height:58px;padding:10px 12px;margin:5px 0!important}
+    #cti-prototype [data-screen="traveler-choice"] .tile small{font-size:10px;margin-top:2px}
+    #cti-prototype [data-screen="traveler-choice"] .hint{font-size:11px;margin:7px 0 10px}
+    #cti-prototype [data-screen="traveler-choice"] h3{font-size:16px;margin:10px 0 7px}
+    #cti-prototype [data-screen="traveler-choice"] .grid{grid-auto-rows:82px;gap:7px}
+    #cti-prototype [data-screen="traveler-choice"] .grid .tile{height:82px;min-height:82px;padding:9px 10px;font-size:13px;border-radius:15px}
+    #cti-prototype [data-screen="traveler-choice"] .grid .tile small{font-size:9px;line-height:1.2}
+    #cti-prototype [data-screen="traveler-choice"] .grid .tile:nth-child(1){background:#eef8ff;border-color:#cde8ff}
+    #cti-prototype [data-screen="traveler-choice"] .grid .tile:nth-child(2){background:#f5f0ff;border-color:#e2d6ff}
+    #cti-prototype [data-screen="traveler-choice"] .grid .tile:nth-child(3){background:#fff5ed;border-color:#ffdcbf}
+    #cti-prototype [data-screen="traveler-choice"] .grid .tile:nth-child(4){background:#eefbf6;border-color:#cceedd}
+    #cti-prototype [data-screen="traveler-choice"] .grid .tile:nth-child(5){background:#fff8e8;border-color:#f7e2ae}
+    #cti-prototype [data-screen="traveler-choice"] .grid .tile:nth-child(6){background:#eef8f8;border-color:#c9e8e8}
     #cti-prototype{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display",system-ui,sans-serif;max-width:390px;margin:auto;color:#111827}
     #cti-prototype .phone{background:#f7f8fa;border:1px solid #dfe3e8;border-radius:28px;overflow:hidden;box-shadow:0 16px 40px rgba(15,23,42,.12)}
     #cti-prototype .top{height:28px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;color:#6b7280}
@@ -44,29 +73,21 @@
     #cti-prototype .ai-choice-card{background:#fff;border-radius:18px;padding:22px;width:min(340px,100%);box-shadow:0 20px 50px rgba(15,23,42,.22)}
     #cti-prototype .ai-choice-card h3{margin:0 0 7px;font-size:19px}.ai-choice-card p{margin:0 0 16px;color:#6b7280;font-size:13px}
     #cti-prototype .ai-choice-card button{width:100%;padding:14px;border-radius:12px;margin-top:9px;text-align:left;font-weight:600}.ai-choice-card .choice-chatgpt{background:#111827;color:#fff}.ai-choice-card .choice-gemini{background:#eef2ff;color:#1e3a8a}.ai-choice-card .choice-cancel{background:#fff;border:1px solid #e5e7eb;color:#6b7280}
-    #cti-prototype .practical-wrap{margin-top:14px}.practical-section{font-size:13px;font-weight:700;color:#374151;margin:20px 0 9px}.practical-tile{display:block;width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;text-align:left;margin:9px 0;box-shadow:0 2px 8px rgba(15,23,42,.04)}.practical-tile strong{display:block;font-size:16px;color:#111827}.practical-tile small{display:block;color:#6b7280;line-height:1.5;margin-top:7px}.practical-tile .tile-action{display:block;color:#4f46e5;font-size:12px;font-weight:600;margin-top:11px}.result-row{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin:9px 0}.result-row strong{display:block;font-size:15px}.result-row small{display:block;color:#6b7280;margin-top:5px;line-height:1.45}.result-done{color:#087f5b}.result-pending{color:#b45309}
+    #cti-prototype .practical-wrap{margin-top:14px}.practical-section{font-size:13px;font-weight:700;color:#374151;margin:20px 0 9px}.practical-tile{display:block;width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:16px;text-align:left;margin:9px 0;box-shadow:0 2px 8px rgba(15,23,42,.04)}.practical-tile strong{display:block;font-size:16px;color:#111827}.practical-tile small{display:block;color:#6b7280;line-height:1.5;margin-top:7px}.practical-tile .tile-action{display:block;color:#4f46e5;font-size:12px;font-weight:600;margin-top:11px}.result-row{background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin:9px 0}.result-row strong{display:block;font-size:15px}.result-row small{display:block;color:#6b7280;margin-top:5px;line-height:1.45}.result-done{color:#087f5b}.result-pending{color:#b45309}.home-stage{display:flex;flex-direction:column;gap:12px;margin-top:24px}.home-stage button{width:100%;min-height:150px;border-radius:20px;text-align:left;padding:22px;background:#fff;border:1px solid #e5e7eb;box-shadow:0 6px 18px rgba(15,23,42,.06)}.home-stage button strong{display:block;font-size:21px;margin-bottom:8px}.home-stage button small{display:block;color:#6b7280;font-size:14px;line-height:1.5}.home-stage .stage-before{background:#eef6ff;border-color:#cfe3ff}.home-stage .stage-during{background:#111827;color:#fff;border-color:#111827}.home-stage .stage-during small{color:#cbd5e1}.home-stage .stage-after{background:#f7f4ff;border-color:#e4d9ff}.home-stage .stage-icon{display:block;font-size:32px;margin-bottom:16px}
   </style>
   <div class="phone">
     <div class="top">중국 여행 통역 · 오프라인 문장판</div>
     <div class="screen">
       <section data-screen="home">
-        <div class="top" style="margin:-20px -18px 18px">여행 도우미</div>
-        <h1>여행 도우미</h1>
-        <div class="sub">필요한 기능을 하나씩 천천히 선택하세요.</div>
-        <select class="lang" id="language-select" aria-label="통역 언어 선택"><option value="zh-CN">중국어 (간체)</option><option value="en-US">영어</option><option value="ja-JP">일본어</option></select>
-        <div class="language-hint" id="language-hint">통역 언어: 중국어</div>
-        <div class="hero"><strong id="ai-title">한국어 ↔ 중국어</strong><span id="ai-description">상대방과 대화할 때 사용할 통역 기능입니다.</span></div>
-        <button class="primary" data-action="ai-choice">AI 통역 시작</button>
-        <button class="secondary" data-action="phrases">통역 문장 보기</button>
-        <button class="secondary" data-action="places">📌 내 여행 카드</button>
-        <button class="secondary" data-action="package-entry">🚌 패키지 자유시간</button>
-        <div class="place" style="margin-top:24px;padding:20px">
-          <strong style="font-size:17px">🧳 여행 준비</strong>
-          <small style="display:block;margin:7px 0 12px">여행 방식에 맞춰 필수 준비부터 실속 정보까지 차례로 확인합니다.</small>
-          <button class="primary" data-action="traveler-choice">여행 준비 시작</button>
-        </div>
-        <div class="footer"><span id="footer-language">한국어 ↔ 중국어</span><span>오프라인 문장 사용 가능</span></div>
+        <div class="top" style="margin:-20px -18px 18px">기별이와의 여행준비</div>
+        <h1>기별이와의 여행준비</h1>
+        <div class="sub">지금 필요한 여행의 단계를 선택하세요.</div>
+        <div class="gibyeori-welcome"><img src="assets/gibyeori/joy.png" alt="즐겁게 웃는 기별이"><div><strong>안녕하세요 기별이예요.</strong><small>저와 함께 여행준비해요</small></div></div>
+        <button class="secondary standalone-plan-entry" data-action="plan-start">✨ AI와 여행계획 짜기<small>여행을 확정하기 전에 나라·도시별 계획을 먼저 살펴보세요.</small></button>
+        <div class="home-stage"><button class="stage-before" data-action="traveler-choice"><span class="stage-icon">🧳</span><strong>여행 준비</strong><small>여행 방식·목적지·날짜와 여행 일정 카드를 준비합니다.</small></button><button class="stage-during" data-action="during-hub"><span class="stage-icon">🗣️</span><strong>여행 중 사용</strong><small>AI 통역을 중심으로 통역 문장과 여행 정보를 바로 사용합니다.</small></button><button class="stage-after" data-action="value-info"><span class="stage-icon">🏠</span><strong>돌아오기 준비</strong><small>영수증·환불·귀국 교통편을 확인합니다.</small></button></div>
       </section>
+      <section data-screen="during-hub" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>여행 중 사용</h2><div class="sub">현장에서 필요한 기능을 선택하세요.</div><div class="hero"><strong id="ai-title">한국어 ↔ 중국어</strong><span id="ai-description">상대방과 대화할 때 사용할 통역 기능입니다.</span></div><select class="lang" id="language-select" aria-label="통역 언어 선택"><option value="zh-CN">중국어 (간체)</option><option value="en-US">영어</option></select><div class="language-hint" id="language-hint">통역 언어: 중국어</div><button class="primary" data-action="ai-choice">AI 통역 시작</button><button class="secondary" data-action="phrases">바로 쓰는 상황별 문장</button><button class="secondary" data-action="places">📌 내 여행 카드</button></section>
+      <section data-screen="return-hub" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>돌아오기 준비</h2><div class="sub">귀국 전후에 확인할 내용을 모읍니다.</div><div class="place"><strong>영수증 보관</strong><small>환불과 정산에 필요한 영수증을 확인합니다.</small></div><div class="place"><strong>보증금·환불 확인</strong><small>숙소와 교통 관련 환불 여부를 확인합니다.</small></div><div class="place"><strong>귀국 교통편</strong><small>공항 또는 역까지의 이동을 확인합니다.</small></div><button class="primary" data-action="essential-after">귀국 전·후 준비 확인</button></section>
       <section data-screen="list" class="hidden">
         <button class="back" data-action="home">← 홈으로</button><h2 data-list-title>통역 문장</h2><div class="quick"><button data-category="taxi">택시</button><button data-category="food">식당</button><button data-category="hotel">호텔</button><button data-category="shopping">쇼핑</button><button data-category="direction">길 찾기</button><button data-category="emergency">응급</button></div>
         <div data-phrases></div>
@@ -99,7 +120,7 @@
       <section data-screen="continent-choice" class="hidden">
         <button class="back" data-action="traveler-back">← 여행 방식</button>
         <h2>어디로 떠나나요?</h2>
-        <div class="sub">대륙을 먼저 고르면 여행지를 쉽게 찾을 수 있습니다.</div>
+        <div class="sub">대륙을 먼저 고르면 여행지를 쉽게 찾을 수 있습니다.</div><div class="gibyeori-guide compact-guide"><img src="assets/gibyeori/nod.png" alt="여행 선택을 돕는 기별이"><div><strong>기별이가 여행지를 찾고 있어요.</strong><small>먼저 여행 대륙을 골라볼까요?</small></div></div>
         <div class="grid">
           <button class="tile" data-action="continent-asia">🌏 아시아<small>가까워도 나라마다 다릅니다</small></button>
           <button class="tile" data-action="continent-europe">🏰 유럽<small>국경을 넘어도 준비는 필요합니다</small></button>
@@ -112,7 +133,7 @@
       <section data-screen="country-choice" class="hidden">
         <button class="back" data-action="continent-back">← 대륙 선택</button>
         <h2 id="country-choice-title">아시아 여행지</h2>
-        <div class="sub">준비된 국가부터 선택할 수 있습니다.</div>
+        <div class="sub">준비된 국가부터 선택할 수 있습니다.</div><div class="gibyeori-guide compact-guide"><img src="assets/gibyeori/joy.png" alt="여행지를 고르는 기별이"><div><strong>어느 나라로 갈까요?</strong><small>기별이와 여행지를 골라보세요.</small></div></div>
         <div class="grid">
           <button class="tile" data-action="country-jp">🇯🇵 일본<small>준비된 여행 실속 정보</small></button>
           <button class="tile" data-action="country-cn">🇨🇳 중국<small>여행 정보 준비 중</small></button>
@@ -122,11 +143,100 @@
       </section>
       <section data-screen="traveler-choice" class="hidden">
         <button class="back" data-action="home">← 홈으로</button>
-        <h2>어떤 여행인가요?</h2>
-        <div class="sub">여행 방식에 맞춰 필요한 정보를 먼저 보여드릴게요.</div>
+        <h2>여행 준비 시작</h2>
+        <div class="sub">여행 방식과 여행지를 한 화면에서 선택하세요.</div>
         <button class="tile" data-action="choose-free" style="width:100%;margin:8px 0">🧭 자유여행<small>항공·숙소·교통을 직접 선택해요</small></button>
         <button class="tile" data-action="choose-semi" style="width:100%;margin:8px 0">🧳 반자유여행<small>일부 일정은 직접 움직여요</small></button>
-                <div class="hint">선택한 방식은 나중에 다시 바꿀 수 있습니다. 정보 자체가 사라지는 것은 아닙니다.</div>
+        <div class="hint">선택한 방식은 나중에 다시 바꿀 수 있습니다.</div>
+        <h3>여행 대륙</h3>
+        <div class="grid"><button class="tile" data-action="continent-asia">🌏 아시아<small>가까워도 나라마다 다릅니다</small></button><button class="tile" data-action="continent-europe">🏰 유럽<small>국경을 넘어도 준비는 필요합니다</small></button><button class="tile" data-action="continent-na">🗽 북아메리카<small>넓게 움직일수록 계획이 중요합니다</small></button><button class="tile" data-action="continent-sa">🌎 남아메리카<small>이동 조건을 먼저 확인하세요</small></button><button class="tile" data-action="continent-africa">🐘 아프리카<small>지역별 차이를 확인하세요</small></button><button class="tile" data-action="continent-oceania">🌊 오세아니아<small>도시와 섬의 이동을 따로 봅니다</small></button></div>
+      </section>
+      <section data-screen="plan-step-1" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-choice">← 여행 준비 시작</button>
+        <div class="gibyeori-guide"><img src="assets/gibyeori/nod.png" alt="고개를 끄덕이는 기별이"><div><strong>기별이의 여행 플래너</strong><small>아직 정하지 않은 내용은 대략적으로 알려주셔도 괜찮아요.</small></div></div>
+        <div class="plan-kicker">AI 여행계획 알아보기 · 1/4</div><h2>목적지와 기간</h2>
+        <div class="sub">아직 정해지지 않은 내용은 비워두거나 대략적으로 적어도 됩니다.</div>
+        <label>여행 국가<div class="plan-choices"><button type="button" class="plan-choice" data-target="destination" data-value="중국">중국</button><button type="button" class="plan-choice" data-target="destination" data-value="일본">일본</button><button type="button" class="plan-choice" data-target="destination" data-value="태국">태국</button><button type="button" class="plan-choice" data-target="destination" data-value="베트남">베트남</button><button type="button" class="plan-choice" data-target="destination" data-value="직접 입력">직접 입력</button></div><input class="lang plan-input" data-plan="destination" placeholder="선택지에 없으면 국가를 직접 입력"></label>
+        <label>방문 도시<input class="lang plan-input" data-plan="cities" placeholder="예: 상하이, 베이징 / 아직 정하지 않음"></label>
+        <label>출발 지역<input class="lang plan-input" data-plan="origin" placeholder="예: 서울, 부산"></label>
+        <label>여행 기간<div class="plan-choices"><button type="button" class="plan-choice" data-target="duration" data-value="당일치기">당일치기</button><button type="button" class="plan-choice" data-target="duration" data-value="2박 3일">2박 3일</button><button type="button" class="plan-choice" data-target="duration" data-value="3박 4일">3박 4일</button><button type="button" class="plan-choice" data-target="duration" data-value="4박 5일">4박 5일</button><button type="button" class="plan-choice" data-target="duration" data-value="직접 입력">직접 입력</button></div><input class="lang plan-input" data-plan="duration" placeholder="선택지에 없으면 기간을 직접 입력"></label>
+        <label class="check-line"><input type="checkbox" class="plan-check" data-plan="flexible"> 날짜를 유연하게 조정할 수 있어요</label>
+        <button class="primary" data-action="plan-next-1">다음: 여행자 정보</button>
+      </section>
+      <section data-screen="plan-step-2" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-1">← 목적지와 기간</button>
+        <div class="plan-kicker">AI 여행계획 알아보기 · 2/4</div><h2>함께 가는 사람</h2>
+        <div class="sub">동행자와 연령대에 맞춰 이동량과 휴식 시간을 조정합니다.</div>
+        <label>여행 인원<input class="lang plan-input" data-plan="partySize" type="number" min="1" placeholder="예: 2"></label>
+        <label>동반 관계<div class="plan-choices"><button type="button" class="plan-choice" data-target="relationship" data-value="혼자">혼자</button><button type="button" class="plan-choice" data-target="relationship" data-value="가족">가족</button><button type="button" class="plan-choice" data-target="relationship" data-value="친구">친구</button><button type="button" class="plan-choice" data-target="relationship" data-value="부부·연인">부부·연인</button><button type="button" class="plan-choice" data-target="relationship" data-value="직접 입력">직접 입력</button></div><input class="lang plan-input" data-plan="relationship" placeholder="선택지에 없으면 직접 입력"></label>
+        <label>연령대<div class="plan-choices multi"><button type="button" class="plan-choice" data-target="ages" data-value="영유아">영유아</button><button type="button" class="plan-choice" data-target="ages" data-value="어린이">어린이</button><button type="button" class="plan-choice" data-target="ages" data-value="10대">10대</button><button type="button" class="plan-choice" data-target="ages" data-value="20~30대">20~30대</button><button type="button" class="plan-choice" data-target="ages" data-value="40~50대">40~50대</button><button type="button" class="plan-choice" data-target="ages" data-value="60대 이상">60대 이상</button><button type="button" class="plan-choice" data-target="ages" data-value="직접 입력">직접 입력</button></div><input class="lang plan-input" data-plan="ages" placeholder="선택지에 없으면 연령대를 직접 입력"></label>
+        <label>특별히 고려할 점<div class="plan-prompt">제가 특별히 고려할 사항이 있으면 자세하게 적어주세요. 반영할게요.</div><textarea class="lang plan-input" data-plan="care" rows="3" placeholder="예: 무릎이 불편한 70대가 있어요. 오래 걷는 일정은 피하고 싶어요."></textarea></label>
+        <button class="primary" data-action="plan-next-2">다음: 여행 스타일</button>
+      </section>
+      <section data-screen="plan-step-3" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-2">← 함께 가는 사람</button>
+        <div class="plan-kicker">AI 여행계획 알아보기 · 3/4</div><h2>원하는 여행 스타일</h2>
+        <div class="sub">좋아하는 것과 피하고 싶은 것을 알려주면 일정의 분위기가 달라집니다.</div>
+        <label>여행 속도<div class="plan-choices"><button type="button" class="plan-choice" data-target="pace" data-value="느긋하게">느긋하게</button><button type="button" class="plan-choice" data-target="pace" data-value="보통">보통</button><button type="button" class="plan-choice" data-target="pace" data-value="알차게">알차게</button></div><input class="lang plan-input" data-plan="pace" placeholder="원하면 여행 속도를 직접 입력"></label>
+        <label>관심사<div class="plan-choices multi"><button type="button" class="plan-choice" data-target="interests" data-value="맛집">맛집</button><button type="button" class="plan-choice" data-target="interests" data-value="쇼핑">쇼핑</button><button type="button" class="plan-choice" data-target="interests" data-value="역사·문화">역사·문화</button><button type="button" class="plan-choice" data-target="interests" data-value="야경">야경</button><button type="button" class="plan-choice" data-target="interests" data-value="자연">자연</button><button type="button" class="plan-choice" data-target="interests" data-value="직접 입력">직접 입력</button></div><input class="lang plan-input" data-plan="interests" placeholder="선택지에 없는 관심사를 직접 입력"></label>
+        <label>꼭 가보고 싶은 곳<textarea class="lang plan-input" data-plan="mustVisit" rows="2" placeholder="예: 상하이 디즈니랜드, 현지 야시장"></textarea></label>
+        <label>피하고 싶은 것<textarea class="lang plan-input" data-plan="avoid" rows="2" placeholder="예: 너무 이른 일정, 긴 도보 이동"></textarea></label>
+        <button class="primary" data-action="plan-next-3">다음: 예산과 이동</button>
+      </section>
+      <section data-screen="plan-step-4" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-3">← 여행 스타일</button>
+        <div class="plan-kicker">AI 여행계획 알아보기 · 4/4</div><h2>예산과 숙소·이동</h2>
+        <div class="sub">정확한 금액이 아니어도 범위를 알려주면 현실적인 계획을 만들 수 있습니다.</div>
+        <label>총 예산<div class="plan-choices"><button type="button" class="plan-choice" data-target="budget" data-value="100만 원 이하">100만 원 이하</button><button type="button" class="plan-choice" data-target="budget" data-value="100~200만 원">100~200만 원</button><button type="button" class="plan-choice" data-target="budget" data-value="200~300만 원">200~300만 원</button><button type="button" class="plan-choice" data-target="budget" data-value="300~500만 원">300~500만 원</button><button type="button" class="plan-choice" data-target="budget" data-value="500~700만 원">500~700만 원</button><button type="button" class="plan-choice" data-target="budget" data-value="700~1,000만 원">700~1,000만 원</button><button type="button" class="plan-choice" data-target="budget" data-value="1,000만 원 이상">1,000만 원 이상</button><button type="button" class="plan-choice" data-target="budget" data-value="직접 입력">직접 입력</button></div><input class="lang plan-input" data-plan="budget" placeholder="예: 총 250만 원 또는 1인 100만 원"></label>
+        <label>숙소 조건<input class="lang plan-input" data-plan="lodging" placeholder="예: 역 근처 호텔, 조용한 숙소"></label>
+        <label>선호하는 이동 방법<div class="plan-choices multi"><button type="button" class="plan-choice" data-target="transport" data-value="대중교통 중심">대중교통 중심</button><button type="button" class="plan-choice" data-target="transport" data-value="택시를 적절히 이용">택시 이용</button><button type="button" class="plan-choice" data-target="transport" data-value="걷는 것도 좋아함">걷는 여행</button><button type="button" class="plan-choice" data-target="transport" data-value="이동을 적게 하고 싶음">이동 적게</button><button type="button" class="plan-choice" data-target="transport" data-value="직접 입력">직접 입력</button></div><input class="lang plan-input" data-plan="transport" placeholder="선택지에 없으면 이동 방법을 직접 입력"></label>
+        <label>추가로 바라는 점<textarea class="lang plan-input" data-plan="notes" rows="3" placeholder="AI가 꼭 알아야 할 내용을 자유롭게 적어주세요."></textarea></label>
+        <button class="primary" data-action="plan-review">입력 내용 확인하기</button>
+      </section>
+      <section data-screen="plan-review" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-4">← 예산과 숙소·이동</button>
+        <div class="plan-kicker">AI 여행계획 알아보기 · 확인</div><h2>입력한 여행 조건</h2>
+        <div class="sub">내용을 확인한 뒤 계획을 만들어 보세요. 아직 예약이나 확정은 진행되지 않습니다.</div>
+        <div id="plan-summary" class="plan-summary"></div>
+        <button class="primary" data-action="plan-generate">AI 여행계획 요청문 만들기</button>
+        <div class="hint">운영시간·가격·휴일 등 변동 정보는 계획 안에서 확인 필요 항목으로 따로 표시합니다.</div>
+      </section>
+      <section data-screen="plan-prompt" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-review">← 입력 내용 확인</button>
+        <div class="gibyeori-guide"><img src="assets/gibyeori/nod.png" alt="프롬프트를 준비하는 기별이"><div><strong>AI에게 보낼 요청문을 준비했어요.</strong><small>아래 요청문을 복사해 ChatGPT나 Gemini에 붙여 넣어주세요.</small></div></div>
+        <div class="plan-kicker">AI 여행계획 요청문</div><h2>프롬프트 준비</h2>
+        <textarea id="plan-prompt-text" class="lang" rows="12" readonly></textarea>
+        <button class="primary" data-action="plan-copy-prompt">프롬프트 복사하기</button>
+        <div class="row"><button class="secondary" data-action="plan-open-chatgpt">ChatGPT 열기</button><button class="secondary" data-action="plan-open-gemini">Gemini 열기</button></div>
+        <button class="secondary" data-action="plan-paste-result">AI 결과 붙여넣기</button>
+      </section>
+      <section data-screen="plan-import" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-prompt">← 프롬프트 준비</button>
+        <div class="gibyeori-guide"><img src="assets/gibyeori/joy.png" alt="AI 결과를 기다리는 기별이"><div><strong>AI가 만든 여행계획을 가져와 주세요.</strong><small>AI 답변 전체를 복사해서 아래에 붙여 넣으면 됩니다.</small></div></div>
+        <h2>AI 결과 붙여넣기</h2>
+        <div class="sub">결과 형식은 수정하지 않아도 괜찮습니다.</div>
+        <textarea id="plan-import-text" class="lang" rows="14" placeholder="ChatGPT 또는 Gemini의 답변을 여기에 붙여 넣으세요."></textarea>
+        <button class="primary" data-action="plan-show-imported">여행계획 결과 보기</button>
+      </section>
+      <section data-screen="plan-import-result" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-import">← AI 결과 붙여넣기</button>
+        <div class="gibyeori-guide result-guide"><img src="assets/gibyeori/relieved.png" alt="여행계획을 확인하는 기별이"><div><strong>AI 여행계획을 가져왔어요.</strong><small>내용을 확인한 뒤 마음에 들면 메인 준비로 가져올 수 있습니다.</small></div></div>
+        <div class="plan-kicker">AI 여행계획 결과</div><h2>여행계획 확인</h2>
+        <div id="plan-import-output" class="plan-result-box plan-raw-output"></div>
+        <button class="primary" data-action="plan-handoff">이 계획으로 준비 시작</button>
+      </section>
+      <section data-screen="plan-result" class="hidden plan-screen">
+        <button class="back" data-action="plan-back-review">← 입력 내용 확인</button>
+        <div class="gibyeori-guide result-guide"><img src="assets/gibyeori/relieved.png" alt="안심한 표정의 기별이"><div><strong>기별이가 여행계획을 정리했어요.</strong><small>입력한 조건을 바탕으로 만든 미리보기입니다.</small></div></div>
+        <div class="plan-kicker">AI 여행계획 미리보기</div><h2 id="plan-result-title">여행계획 결과</h2>
+        <div id="plan-result-meta" class="plan-result-meta"></div>
+        <div class="plan-care"><strong>이번 계획의 배려</strong><p id="plan-result-care"></p></div>
+        <h3 class="plan-section-title">전체 일정 요약</h3><div id="plan-result-days"></div>
+        <h3 class="plan-section-title">숙소·이동 제안</h3><div id="plan-result-stay" class="plan-result-box"></div>
+        <h3 class="plan-section-title">예상 비용</h3><div id="plan-result-budget" class="plan-result-box"></div>
+        <h3 class="plan-section-title">확인 필요</h3><div class="gibyeori-notice"><img src="assets/gibyeori/anxious.png" alt="걱정하는 기별이"><div>운영시간·가격·휴일·예약 가능 여부는 변동될 수 있습니다. 방문 전 공식 사이트와 예약처에서 최종 확인하세요.</div></div>
+        <button class="primary" data-action="plan-handoff">이 계획으로 준비 시작</button>
+        <button class="secondary" data-action="plan-edit">이 계획 다시 수정하기</button>
       </section>
       <section data-screen="trip-dates" class="hidden"><button class="back" data-action="country-back">← 나라 선택</button><h2>여행 날짜</h2><div class="sub">날짜를 저장하면 확인 항목을 여행 일정에 맞춰 보여드립니다.</div><div class="place"><strong>여행 시작일</strong><input id="trip-start" class="lang" type="date"><strong>여행 종료일</strong><input id="trip-end" class="lang" type="date"></div><button class="primary" data-action="save-trip-dates">저장하고 준비 시작</button><button class="secondary" data-action="skip-trip-dates">날짜 없이 계속</button></section>
       <section data-screen="result-sheet" class="hidden">
@@ -229,7 +339,7 @@
         direction:{title:'길 찾기',items:[['화장실이 어디인가요?','洗手间在哪里？','Xǐshǒujiān zài nǎlǐ?','Where is the restroom?','トイレはどこですか。'],['지하철역이 어디인가요?','地铁站在哪里？','Dìtiě zhàn zài nǎlǐ?','Where is the subway station?','地下鉄の駅はどこですか。'],['천천히 말해 주세요.','请说慢一点。','Qǐng shuō màn yìdiǎn.','Please speak slowly.','ゆっくり話してください。'],['영어를 할 수 있나요?','你会说英语吗？','Nǐ huì shuō Yīngyǔ ma?','Do you speak English?','英語を話せますか。'],['이곳은 어디인가요?','这里是哪里？','Zhèlǐ shì nǎlǐ?','Where are we?','ここはどこですか。'],['몇 번 출구로 가야 하나요?','应该走几号出口？','Yīnggāi zǒu jǐ hào chūkǒu?','Which exit should I take?','何番出口ですか。'],['도보로 얼마나 걸리나요?','走路要多长时间？','Zǒulù yào duō cháng shíjiān?','How long does it take on foot?','歩いてどのくらいかかりますか。'],['길을 잃었습니다.','我迷路了。','Wǒ mílù le.','I am lost.','道に迷いました。']]},
         emergency:{title:'병원·응급',items:[['도와주세요.','请帮帮我。','Qǐng bāngbang wǒ.','Please help me.','助けてください。'],['병원에 가야 합니다.','我需要去医院。','Wǒ xūyào qù yīyuàn.','I need to go to a hospital.','病院に行く必要があります。'],['알레르기가 있습니다.','我有过敏。','Wǒ yǒu guòmǐn.','I have an allergy.','アレルギーがあります。'],['경찰을 불러 주세요.','请叫警察。','Qǐng jiào jǐngchá.','Please call the police.','警察を呼んでください。'],['구급차를 불러 주세요.','请叫救护车。','Qǐng jiào jiùhùchē.','Please call an ambulance.','救急車を呼んでください。'],['여기가 아파요.','这里疼。','Zhèlǐ téng.','It hurts here.','ここが痛いです。'],['이 약을 먹고 있습니다.','我正在吃这种药。','Wǒ zhèngzài chī zhè zhǒng yào.','I am taking this medicine.','この薬を飲んでいます。'],['보험이 있습니다.','我有保险。','Wǒ yǒu bǎoxiǎn.','I have insurance.','保険に入っています。']]}
       };
-      let current='taxi', selected=null, targetLanguage='zh-CN', travelerMode=localStorage.getItem('cti_traveler_mode')||'free';
+      let current='taxi', selected=null, targetLanguage='zh-CN', travelerMode=localStorage.getItem('cti_traveler_mode')||'free';if(!['zh-CN','en-US'].includes(targetLanguage))targetLanguage='zh-CN';
       const languageNames={'zh-CN':'중국어','en-US':'영어','ja-JP':'일본어'};
       const translations={
         '이 주소로 가 주세요.':{en:['Please take me to this address.',''],ja:['この住所までお願いします。','']},'여기서 내려 주세요.':{en:['Please let me off here.',''],ja:['ここで降ろしてください。','']},'얼마나 걸리나요?':{en:['How long will it take?',''],ja:['どのくらいかかりますか。','']},'택시비가 얼마인가요?':{en:['How much is the taxi fare?',''],ja:['タクシー料金はいくらですか。','']},
@@ -243,17 +353,18 @@
       const root=document.getElementById('cti-prototype'), toast=root.querySelector('.toast');
       const show=(name)=>root.querySelectorAll('[data-screen]').forEach(s=>s.classList.toggle('hidden',s.dataset.screen!==name)); const modeNames={free:'자유여행',semi:'반자유여행',package:'패키지 자유시간'};
       const say=(msg)=>{toast.textContent=msg;toast.style.display='block';setTimeout(()=>toast.style.display='none',1600)};
+      const chooseFemaleVoice=(lang)=>{const voices=window.speechSynthesis.getVoices(),same=voices.filter(v=>v.lang.toLowerCase().startsWith(lang.toLowerCase().split('-')[0])),femaleWords=['female','woman','girl','女','여성','zira','susan','samantha','yuuki','mei-jia','ting-ting'];return same.find(v=>femaleWords.some(w=>v.name.toLowerCase().includes(w)))||same.find(v=>/female|woman|girl|女|여성/i.test(v.name))||same[0]||voices.find(v=>v.lang.toLowerCase().startsWith('zh'))||voices[0]};
       const speakChinese=()=>{
         if(!selected){say('먼저 문장을 선택해 주세요');return}
         if(!('speechSynthesis' in window)){say('이 브라우저에서는 음성을 지원하지 않습니다');return}
         window.speechSynthesis.cancel();
         const shown=displayItem(selected), utterance=new SpeechSynthesisUtterance(shown[1]);
-        utterance.lang=targetLanguage; utterance.rate=.82; utterance.pitch=1;
+        utterance.lang=targetLanguage; utterance.rate=.76; utterance.pitch=1.08;utterance.voice=chooseFemaleVoice(targetLanguage);
         window.speechSynthesis.speak(utterance);
         say(languageNames[targetLanguage]+' 음성을 재생합니다');
       };
       root.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>{current=b.dataset.category;root.querySelector('[data-list-title]').textContent=data[current].title;root.querySelector('[data-phrases]').innerHTML=data[current].items.map((x,i)=>`<button class="phrase" data-index="${i}">${x[0]}<span>›</span></button>`).join('');root.querySelectorAll('[data-index]').forEach(p=>p.onclick=()=>{selected=data[current].items[+p.dataset.index];const shown=displayItem(selected);root.querySelector('[data-ko]').textContent=shown[0];root.querySelector('[data-zh]').textContent=shown[1];root.querySelector('[data-py]').textContent=shown[2];show('detail')});show('list')});
-      const updateLanguageUI=()=>{const name=languageNames[targetLanguage];root.querySelector('#language-hint').textContent='통역 언어: '+name;root.querySelector('#ai-title').textContent='한국어 ↔ '+name+' 통역 시작';root.querySelector('#footer-language').textContent='한국어 ↔ '+name;root.querySelector('#online-title').textContent='한국어 ↔ '+name+' 온라인 통역'};
+      const updateLanguageUI=()=>{const name=languageNames[targetLanguage];root.querySelector('#language-hint').textContent='통역 언어: '+name;root.querySelector('#ai-title').textContent='한국어 ↔ '+name+' 통역 시작';const footerLanguage=root.querySelector('#footer-language');if(footerLanguage)footerLanguage.textContent='한국어 ↔ '+name;root.querySelector('#online-title').textContent='한국어 ↔ '+name+' 온라인 통역'};
       root.querySelector('#language-select').onchange=(e)=>{targetLanguage=e.target.value;updateLanguageUI();say(languageNames[targetLanguage]+'로 설정했습니다')};
       updateLanguageUI();
       const valueInfo={more:[{t:'면세 쇼핑 조건',d:'면세점 지정 여부와 여권·구매 물품·영수증을 출국 때 준비해야 합니다.',a:'구매 전 면세 조건과 출국 시 소지 의무를 확인하세요.',s:'일본정부관광국(JNTO)',date:'2026-09-23',url:'https://www.japan.travel/en/plan/japans-tax-exemption/'},{t:'교통패스 손익 계산',d:'패스 가격만 보지 말고 실제 이동 횟수·적용 노선·추가 특급권을 함께 비교하세요.',a:'일정의 이동 경로를 먼저 적고 개별 승차권 합계와 비교하세요.',s:'JR EAST 공식 안내',date:'2026-09-23',url:'https://www.jreast.co.jp/en/multi/ticket/'}],less:[{t:'호텔 보증금·추가 비용',d:'객실요금 외 보증금·숙박세·입욕세·서비스료가 붙을 수 있습니다.',a:'예약 전 보증금 금액·반환 시점·공제 조건을 확인하세요.',s:'예약 조건 원문 확인 필요',date:'2026-09-23',url:'https://www.japan.travel/en/plan/'},{t:'민박 신고·허가 여부',d:'일본 민박은 신고·등록 등 제도상 요건이 있으므로 숙소의 공식 정보와 실제 주소를 확인해야 합니다.',a:'숙소명·주소·신고 표시가 일치하는지 확인하세요.',s:'일본 관광청 민박제도 포털',date:'2026-09-23',url:'https://www.mlit.go.jp/kankocho/minpaku/'}],help:[{t:'예약 취소·환불 기록',d:'예약 화면, 약관, 결제 영수증, 업체와의 메시지를 한곳에 보관하세요.',a:'문제가 생기면 먼저 원문과 결제 증거를 확보한 뒤 예약 플랫폼과 결제수단에 문의하세요.',s:'서비스 권장 절차',date:'2026-09-23',url:''},{t:'교통권 변경·환불',d:'철도 티켓은 변경·환불 조건이 티켓 종류와 상황에 따라 다릅니다.',a:'구매 전 공식 운영사의 해당 티켓 규정을 확인하세요.',s:'JR EAST Ticket Exchange and Refund Policy',date:'2026-09-23',url:'https://www.jreast.co.jp/en/multi/ticket/changes.html'}]};
@@ -302,8 +413,134 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
       const loadPlaces=()=>{try{const p=JSON.parse(localStorage.getItem('cti_places'));if(!p)return;Object.keys(p).forEach(k=>{const el=root.querySelector('#'+k);if(el)el.value=p[k]})}catch(e){}}; loadPlaces();
       root.addEventListener('click',e=>{const a=e.target.closest('[data-action]')?.dataset.action;if(!a)return;if(a==='home')show('home');if(a==='result-sheet'){show('result-sheet');renderResultSheet()};if(a==='result-back'){show('essential-info');renderEssential()};if(a==='practical-card'){const id=e.target.closest('[data-action="practical-card"]').dataset.id,all=practicalCommon.concat(practicalByMode[travelerMode]||[]),x=all.find(v=>v.id===id)||all[0];root.dataset.practicalId=x.id;root.querySelector('#practical-detail-title').textContent=x.t;root.querySelector('#practical-detail-why').textContent=x.why;root.querySelector('#practical-detail-how').textContent=x.how;show('practical-detail')};if(a==='practical-back')show('practical-cards');if(a==='practical-done'){const id=root.dataset.practicalId||'practical';resultRecord(id,root.querySelector('#practical-detail-title').textContent,'확인 완료','확인 완료');show('practical-cards');renderPracticalCards();say('확인 완료로 표시했습니다')};if(a==='practical-ai'){say('관련 자료를 준비해 AI 도움을 받을 수 있습니다')};if(a==='country-back'){show('country-choice')};if(a==='traveler-back'){show('traveler-choice')};if(a==='continent-back'){show('continent-choice')};if(a==='continent-asia'){root.querySelector('#country-choice-title').textContent='아시아 여행지';show('country-choice')};if(a==='continent-europe'||a==='continent-na'||a==='continent-sa'||a==='continent-africa'||a==='continent-oceania'){say('이 대륙의 국가 정보는 준비 중입니다')};if(a==='save-trip-dates'){localStorage.setItem('cti_trip_dates',JSON.stringify({start:root.querySelector('#trip-start').value,end:root.querySelector('#trip-end').value}));applyDatePhase();if(travelerMode==='package'){show('package-info');renderPackage()}else{show('essential-info');renderEssential()}say('날짜를 저장했습니다')};if(a==='skip-trip-dates'){if(travelerMode!=='package')applyDatePhase();if(travelerMode==='package'){show('package-info');renderPackage()}else{show('essential-info');renderEssential()}};if(a==='package-before'){show('package-info');renderPackage()};if(a==='package-during'){show('package-info');renderPackage('during')};if(a==='package-after'){show('package-info');renderPackage('after')};if(a==='package-item'){const el=e.target.closest('[data-action="package-item"]'),title=el.querySelector('strong').textContent,key='cti_package_'+title;root.dataset.packageKey=key;root.dataset.packageTitle=title;root.querySelector('#package-detail-title').textContent=title;const p=JSON.parse(localStorage.getItem('cti_places')||'{}');const shared=title==='숙소명·전화번호'?[p.hotelName||'',p.hotelPhone||''].filter(Boolean).join(' · '):title==='비상 연락처'?(p.emergencyInfo||''):'';root.querySelector('#package-detail-input').value=localStorage.getItem(key)||shared;show('package-detail')};if(a==='package-back'){show('package-info');renderPackage()};if(a==='package-save'){const val=root.querySelector('#package-detail-input').value;localStorage.setItem(root.dataset.packageKey,val);if(root.dataset.packageTitle==='숙소명·전화번호'){const p=JSON.parse(localStorage.getItem('cti_places')||'{}');const parts=val.split('·').map(x=>x.trim());if(parts[0])p.hotelName=parts[0];if(parts[1])p.hotelPhone=parts[1];localStorage.setItem('cti_places',JSON.stringify(p))}if(root.dataset.packageTitle==='비상 연락처'){const p=JSON.parse(localStorage.getItem('cti_places')||'{}');p.emergencyInfo=val;localStorage.setItem('cti_places',JSON.stringify(p))}resultRecord(root.dataset.packageKey||'package-info',root.dataset.packageTitle||'패키지 정보',val,'직접 입력');say('저장했습니다');show('package-info');renderPackage()};if(a==='package-large'){showPlace(root.dataset.packageTitle||'입력 정보',root.querySelector('#package-detail-input').value||'입력된 정보가 없습니다')};if(a==='package-delete'){localStorage.removeItem(root.dataset.packageKey);root.querySelector('#package-detail-input').value='';say('삭제했습니다')};if(a==='open-practical-cards'){show('practical-cards');renderPracticalCards();const modeText={free:'자유여행 실속 챙기기',semi:'반자유여행 실속 챙기기',package:'패키지 자유시간 실속 챙기기'};root.querySelector('[data-screen="value-info"] h2').textContent='💡 '+modeText[travelerMode];root.querySelector('[data-screen="value-info"] .sub').textContent='필수 준비 다음에 확인하면 비용·시간·손실을 줄일 수 있는 정보입니다.';renderValue('more')};if(a==='record-back'){show('essential-info');renderEssential()};if(a==='record-save'){const val=root.querySelector('#record-detail-input').value.trim(),rk=root.dataset.recordKey||essentialRecordKey(root.dataset.recordTitle||root.dataset.essentialTitle);const records=JSON.parse(localStorage.getItem('cti_essential_records')||'{}');records[rk]=val;localStorage.setItem('cti_essential_records',JSON.stringify(records));resultRecord(rk,root.dataset.essentialTitle||'필수 기록',val,'직접 입력');say('기록을 저장했습니다');show('essential-info');renderEssential()};if(a==='record-large'){showPlace(root.dataset.essentialTitle||'기록',root.querySelector('#record-detail-input').value||'입력된 정보가 없습니다')};if(a==='record-delete'){const rk=root.dataset.recordKey;const records=JSON.parse(localStorage.getItem('cti_essential_records')||'{}');delete records[rk];localStorage.setItem('cti_essential_records',JSON.stringify(records));root.querySelector('#record-detail-input').value='';say('기록을 삭제했습니다')};if(a==='essential-back'){show('essential-info');renderEssential()};if(a==='essential-before'){checklistPhase='before';renderEssential()};if(a==='essential-during'){checklistPhase='during';renderEssential()};if(a==='essential-after'){checklistPhase='after';renderEssential()};if(a==='essential-open'){const i=+e.target.closest('[data-action="essential-open"]').dataset.index,items=(essentialByMode[travelerMode]||essentialByMode.free)[checklistPhase],x=items[i];root.dataset.essentialIndex=i;root.dataset.essentialTitle=x;if(isEssentialRecord(x)){const target=essentialCardTarget(x);if(target){show('places');renderTravelCards();openTravelCard(target,null,(target==='emergency'||target==='insurance')?'quick':'travel');return}const rk=essentialRecordKey(x),records=JSON.parse(localStorage.getItem('cti_essential_records')||'{}');root.dataset.recordKey=rk;root.querySelector('#record-detail-title').textContent=x;root.querySelector('#record-detail-input').value=records[rk]||'';show('record-detail');return}root.querySelector('#essential-detail-title').textContent=x;const g=essentialGuide[x]||{why:'이 항목을 빠뜨리면 일정·비용·연락에 문제가 생길 수 있습니다.',how:x+' 관련 안내문·예약 화면·일정표에서 내용을 확인하세요.'};root.querySelector('#essential-detail-why').textContent='• '+g.why;root.querySelector('#essential-detail-how').textContent='• '+g.how;show('essential-detail')};if(a==='essential-done'){const k=checklistPhase+'-'+root.dataset.essentialIndex,d=JSON.parse(localStorage.getItem('cti_checklist')||'{}');d[k]=true;localStorage.setItem('cti_checklist',JSON.stringify(d));resultRecord('essential-check','필수 준비 확인',checklistPhase+' 단계 확인 완료','확인 완료');show('essential-info');renderEssential();say('확인 완료로 표시했습니다')};if(a==='value-back'){show('value-info');renderValue(root.dataset.valueGroup||'more')};if(a==='value-open'){const el=e.target.closest('[data-action="value-open"]');valueDetail(el.dataset.group,+el.dataset.index)};if(a==='value-complete'){const g=root.dataset.valueGroup||'more',i=+(root.dataset.valueIndex||0),x=getValueItems(g)[i],d=JSON.parse(localStorage.getItem('cti_value_done')||'{}');d[x.t]=true;localStorage.setItem('cti_value_done',JSON.stringify(d));show('value-info');renderValue(g);say('✅ '+x.t+'을(를) 완료했습니다. 다음 항목을 선택하세요.')};if(a==='value-prompt-detail'){valuePrompt(root.dataset.valueGroup||'more',+(root.dataset.valueIndex||0))};if(a==='materials-large'){showPlace('준비 자료',root.querySelector('#value-detail-meta').innerText)};if(a==='traveler-choice')show('traveler-choice');if(a==='package-entry'){travelerMode='package';localStorage.setItem('cti_traveler_mode',travelerMode);show('continent-choice');say('패키지 자유시간을 선택했습니다. 대륙을 골라주세요')};if(a==='country-jp'){localStorage.setItem('cti_country','jp');const d=JSON.parse(localStorage.getItem('cti_trip_dates')||'{}');root.querySelector('#trip-start').value=d.start||'';root.querySelector('#trip-end').value=d.end||'';show('trip-dates');say('여행 날짜를 선택하세요')};if(a==='country-cn'||a==='country-sea'||a==='country-europe'||a==='country-na'){say('이 나라는 준비 중입니다')};if(a==='choose-free'){travelerMode='free';localStorage.setItem('cti_traveler_mode',travelerMode);show('continent-choice');say('자유여행을 선택했습니다. 대륙을 골라주세요')};if(a==='choose-semi'){travelerMode='semi';localStorage.setItem('cti_traveler_mode',travelerMode);show('continent-choice');say('반자유여행을 선택했습니다. 대륙을 골라주세요')};if(a==='choose-package'){travelerMode='package';localStorage.setItem('cti_traveler_mode',travelerMode);show('continent-choice');say('패키지 자유시간을 선택했습니다. 대륙을 골라주세요')};if(a==='phrases')show('categories');if(a==='phrases'){current='taxi';root.querySelector('[data-list-title]').textContent=data[current].title;root.querySelector('[data-phrases]').innerHTML=data[current].items.map((x,i)=>`<button class="phrase" data-index="${i}">${x[0]}<span>›</span></button>`).join('');root.querySelectorAll('[data-index]').forEach(p=>p.onclick=()=>{selected=data[current].items[+p.dataset.index];const shown=displayItem(selected);root.querySelector('[data-ko]').textContent=shown[0];root.querySelector('[data-zh]').textContent=shown[1];root.querySelector('[data-py]').textContent=shown[2];show('detail')});show('categories')};if(a==='categories')show('categories');if(a==='list')show('list');if(a==='online')show('online');if(a==='offline')show('categories');if(a==='turn')show('turn');if(a==='places'){show('places');renderTravelCards()};if(a==='quick-info'){show('quick-info');renderQuickCards()};if(a==='travel-card-open'){(()=>{const el=e.target.closest('[data-action="travel-card-open"]');openTravelCard(el.dataset.card,el.dataset.id??null,el.dataset.group||'travel')})()};if(a==='card-back'){show('places');renderTravelCards()};if(a==='card-save'){saveTravelCard()};if(a==='card-large'||a==='card-speak'||a==='card-show'){const defs=activeTravelGroup==='quick'?quickCardDefs:travelCardDefs,d=defs[activeTravelCard],vals=d.fields.map(f=>root.querySelector('#card-'+f[0])?.value.trim()).filter(Boolean),text=vals.join(String.fromCharCode(10));if(a==='card-large'||a==='card-show')showPlace(d.title,text||'입력된 정보가 없습니다');if(a==='card-speak'){selected=[d.title,text,''];speakChinese()}};if(a==='card-delete'){const all=cardStore();if(activeTravelId===null){all[activeTravelCard]=[]}else{all[activeTravelCard].splice(activeTravelId,1)}localStorage.setItem('cti_travel_cards',JSON.stringify(all));say('카드를 삭제했습니다');show('places');renderTravelCards()};if(a==='audit')show('audit');if(a==='value-info'){show('value-info');checklistPhase='before';renderChecklist();root.querySelector('#traveler-mode-hint').textContent=modeNames[travelerMode]+'에 맞춰 필요한 정보를 먼저 보여드립니다.';renderValue('more')};if(a==='phase-before'){checklistPhase='before';renderValue('more')};if(a==='phase-during'){checklistPhase='during';renderValue('less')};if(a==='phase-after'){checklistPhase='after';renderValue('help')};if(a==='value-large'){const el=e.target.closest('[data-action="value-large"]');const x=valueInfo[el.dataset.group][+el.dataset.index];showPlace(x.t,x.d+String.fromCharCode(10)+String.fromCharCode(10)+'지금 할 일: '+x.a)};if(a==='toggle-check'){const key=e.target.closest('[data-action="toggle-check"]').dataset.check;const d=JSON.parse(localStorage.getItem('cti_checklist')||'{}');d[key]=!d[key];localStorage.setItem('cti_checklist',JSON.stringify(d));renderChecklist()};if(a==='value-prompt'){valuePrompt(e.target.closest('[data-action="value-prompt"]').dataset.group,+e.target.closest('[data-action="value-prompt"]').dataset.index)};if(a==='value-more'){renderValue('more')};if(a==='value-less'){renderValue('less')};if(a==='value-help'){renderValue('help')};if(a==='make-audit')makeAudit();if(a==='ai-start'){copyPrompt();window.open('https://chatgpt.com/','_blank','noopener')};if(a==='other-turn')say('상대방이 말한 뒤 한국어로 확인합니다');if(a==='my-turn')say('한국어로 말한 뒤 중국어로 들려줍니다');if(a==='save-places')savePlaces();if(a==='clear-places'){if(confirm('내 여행 카드의 입력 내용을 모두 삭제할까요?')){localStorage.removeItem('cti_places');root.querySelectorAll('[data-screen="places"] input, [data-screen="places"] textarea').forEach(el=>el.value='');say('삭제했습니다')}};if(a==='speak-place'){selected=['숙소 주소',root.querySelector('#hotel-address').value,''];speakChinese()};if(a==='show-hotel'){showPlace('숙소',root.querySelector('#hotel-name').value+String.fromCharCode(10)+root.querySelector('#hotel-address').value)};if(a==='show-place'){showPlace('목적지',root.querySelector('#destination-name').value+String.fromCharCode(10)+root.querySelector('#destination-address').value)};if(a==='close-place'){root.querySelector('#place-display').style.display='none'};if(a==='open-translator'){const url='https://translate.google.com/?sl=ko&tl='+encodeURIComponent(targetLanguage)+'&op=conversation';window.open(url,'_blank','noopener');say(languageNames[targetLanguage]+' 온라인 번역을 엽니다')};if(a==='speak')speakChinese();if(a==='show')say('상대방에게 화면을 보여주세요');if(a==='favorite')say('즐겨찾기에 저장했습니다')});
       const showPlace=(title,text)=>{root.querySelector('#place-display-title').textContent=title;root.querySelector('#place-display-text').textContent=text;root.querySelector('#place-display').classList.remove('hidden');root.querySelector('#place-display').style.display='flex'};
-      root.addEventListener('click',e=>{const a=e.target.closest('[data-action]')?.dataset.action;if(a==='ai-choice')openAiChoice();if(a==='launch-chatgpt'){root.querySelector('#ai-choice').classList.add('hidden');window.open('https://chatgpt.com/','_blank','noopener');copyPrompt()}if(a==='launch-gemini'){root.querySelector('#ai-choice').classList.add('hidden');window.open('https://gemini.google.com/app','_blank','noopener');copyPrompt()}if(a==='close-ai-choice')root.querySelector('#ai-choice').classList.add('hidden')});
+      root.addEventListener('click',e=>{const a=e.target.closest('[data-action]')?.dataset.action;if(a==='during-hub')show('during-hub');if(a==='ai-choice')openAiChoice();if(a==='launch-chatgpt'){root.querySelector('#ai-choice').classList.add('hidden');window.open('https://chatgpt.com/','_blank','noopener');copyPrompt()}if(a==='launch-gemini'){root.querySelector('#ai-choice').classList.add('hidden');window.open('https://gemini.google.com/app','_blank','noopener');copyPrompt()}if(a==='close-ai-choice')root.querySelector('#ai-choice').classList.add('hidden')});
+      essentialByMode.free.after=['영수증 보관','보증금·환불 확인','추가 카드 청구 확인','면세품·영수증 확인','귀국 교통편 확인'];essentialByMode.semi.after=[...essentialByMode.free.after];essentialByMode.package.after=[...essentialByMode.free.after];
+      const returnHub=root.querySelector('[data-screen="return-hub"]');if(returnHub&&!returnHub.dataset.updated){returnHub.dataset.updated='true';const returnButton=returnHub.querySelector('.primary');returnHub.querySelectorAll('.place').forEach(n=>n.remove());returnButton.insertAdjacentHTML('beforebegin','<div class="place"><strong>영수증 보관</strong><small>환불과 정산에 필요한 영수증을 보관했는지 확인합니다.</small></div><div class="place"><strong>보증금·환불 확인</strong><small>숙소와 교통 관련 보증금·환불 여부를 확인합니다.</small></div><div class="place"><strong>추가 카드 청구 확인</strong><small>귀국 후 추가 결제나 예상하지 못한 청구를 확인합니다.</small></div><div class="place"><strong>면세품·영수증 확인</strong><small>면세품과 영수증을 빠뜨리지 않았는지 확인합니다.</small></div><div class="place"><strong>귀국 교통편 확인</strong><small>공항 또는 역까지 이동할 교통편을 마지막으로 확인합니다.</small></div>')}
+      root.addEventListener('click',e=>{const a=e.target.closest('[data-action]')?.dataset.action;if(a==='choose-free'||a==='choose-semi'||a==='choose-package')show('traveler-choice');if(a==='continent-asia'){root.querySelector('#country-choice-title').textContent='아시아 여행지';show('country-choice')}if(a==='continent-back')show('traveler-choice');if(a==='value-info'){show('return-hub')}});
+      const duringHubButton=root.querySelector('[data-action="during-hub"]');
+      if(duringHubButton)duringHubButton.onclick=()=>show('during-hub');
+    })();
+  </script>
+  <script>
+    document.querySelector('#cti-prototype [data-action="during-hub"]')?.addEventListener('click',()=>document.querySelectorAll('#cti-prototype [data-screen]').forEach(s=>s.classList.toggle('hidden',s.dataset.screen!=='during-hub')));
+  </script>
+  <style>
+    #cti-prototype .language-hint{display:none}
+    #cti-prototype .during-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,168px);align-items:stretch;gap:12px;margin-top:18px}
+    #cti-prototype .during-card{width:100%!important;height:168px!important;min-height:168px!important;margin:0!important;box-sizing:border-box;border-radius:20px!important;padding:18px 14px!important;text-align:center!important;font-size:17px;font-weight:700;line-height:1.28;word-break:keep-all;box-shadow:0 6px 16px rgba(15,23,42,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+    #cti-prototype .during-card small{font-size:12px;font-weight:400;line-height:1.45;color:#6b7280;text-align:center;word-break:keep-all}
+    #cti-prototype .during-card:first-child{background:#111827;color:#fff}
+    #cti-prototype .during-card:first-child small{color:#d1d5db}
+    #cti-prototype .during-card:nth-child(2){background:#eef6ff;border:1px solid #cfe3ff}
+    #cti-prototype .during-card:nth-child(3){background:#f7f4ff;border:1px solid #e4d9ff}
+    #cti-prototype .during-card:nth-child(4){background:#fff7ed;border:1px solid #fed7aa}
+    @media(max-width:340px){#cti-prototype .during-actions{grid-template-columns:1fr}}
+  </style>
+  <script>
+      document.querySelector('#cti-prototype [data-screen="places"] [data-action="quick-info"]')?.remove();
+      const duringScreen=document.querySelector('#cti-prototype [data-screen="during-hub"]');
+    if(duringScreen&&!duringScreen.dataset.cardsReady){
+      duringScreen.dataset.cardsReady='true';
+      const placesButton=duringScreen.querySelector('[data-action="places"]');
+      if(placesButton)placesButton.insertAdjacentHTML('afterend','<button class="during-card" data-action="quick-info">🆘 여행 중 바로 쓰는 정보<small>목적지 · 긴급 연락처<br>보험 · 숙소 연락처</small></button>');
+      const actions=[...duringScreen.querySelectorAll('button[data-action]')].filter(b=>b.dataset.action!=='home');
+      const wrap=document.createElement('div');wrap.className='during-actions';actions.forEach(b=>{b.classList.add('during-card');wrap.appendChild(b)});duringScreen.appendChild(wrap);
+    }
+  </script>
+  <style>
+    #cti-prototype .plan-entry{background:#f4f1ff;border-color:#ddd6fe;text-align:left;padding:14px 15px;margin:4px 0 12px}
+    #cti-prototype .standalone-plan-entry{background:#f4f1ff;border-color:#ddd6fe;text-align:left;padding:15px 16px;margin-top:14px}
+    #cti-prototype .standalone-plan-entry small{display:block;color:#6b7280;font-size:11px;font-weight:400;line-height:1.45;margin-top:5px}
+    #cti-prototype .prep-option{width:100%;min-height:126px;margin:10px 0;text-align:left;padding:18px;background:#fff}
+    #cti-prototype .prep-option strong{display:block;font-size:17px;margin-bottom:7px}
+    #cti-prototype .prep-option small{display:block;color:#6b7280;font-size:12px;line-height:1.5;font-weight:400}
+    #cti-prototype .plan-option{background:#f4f1ff;border-color:#ddd6fe}
+    #cti-prototype .confirm-option{background:#eef6ff;border-color:#cfe3ff}
+    #cti-prototype .plan-entry small{display:block;color:#6b7280;font-size:11px;font-weight:400;line-height:1.45;margin-top:5px}
+    #cti-prototype .plan-kicker{font-size:12px;color:#4f46e5;font-weight:700;margin:2px 0 8px}
+    #cti-prototype .plan-screen label{display:block;font-size:13px;font-weight:700;margin:13px 0;color:#374151}
+    #cti-prototype .plan-screen label .lang{display:block;margin-top:7px;margin-bottom:0;font-weight:400}
+    #cti-prototype .plan-screen textarea{resize:vertical;line-height:1.45}
+    #cti-prototype .check-line{display:flex!important;align-items:center;gap:8px;font-weight:400!important;color:#6b7280!important;margin:14px 0!important}
+    #cti-prototype .check-line input{width:18px;height:18px;margin:0}
+    #cti-prototype .plan-summary{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:6px 15px;margin:14px 0}
+    #cti-prototype .plan-summary-row{display:flex;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid #f0f1f3;font-size:13px}
+    #cti-prototype .plan-summary-row:last-child{border-bottom:0}
+    #cti-prototype .plan-summary-row strong{color:#6b7280;flex:0 0 86px}
+    #cti-prototype .plan-summary-row span{text-align:right;white-space:pre-wrap;overflow-wrap:anywhere}
+    #cti-prototype .plan-result-meta{background:#eef6ff;border:1px solid #cfe3ff;border-radius:14px;padding:13px 14px;color:#374151;font-size:13px;line-height:1.6}
+    #cti-prototype .plan-care{background:#f4f1ff;border:1px solid #ddd6fe;border-radius:14px;padding:14px;margin:12px 0}.plan-care strong{font-size:14px}.plan-care p{margin:7px 0 0;color:#4b5563;font-size:12px;line-height:1.55}
+    #cti-prototype .plan-section-title{font-size:15px;margin:18px 0 8px}
+    #cti-prototype .plan-day{background:#fff;border:1px solid #e5e7eb;border-radius:13px;padding:12px 13px;margin:8px 0}.plan-day strong{display:block;font-size:13px}.plan-day small{display:block;color:#6b7280;line-height:1.5;margin-top:4px}
+    #cti-prototype .plan-result-box{background:#fff;border:1px solid #e5e7eb;border-radius:13px;padding:13px;color:#4b5563;font-size:12px;line-height:1.6}
+    #cti-prototype .plan-raw-output{white-space:pre-wrap;overflow-wrap:anywhere;max-height:480px;overflow:auto;font-size:13px;color:#1f2937}
+    #cti-prototype .gibyeori-welcome{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #f1e2c8;border-radius:16px;padding:8px 12px;margin:4px 0 14px}.gibyeori-welcome img{width:58px;height:58px;object-fit:contain}.gibyeori-welcome strong,.gibyeori-guide strong{display:block;font-size:14px}.gibyeori-welcome small,.gibyeori-guide small{display:block;color:#6b7280;font-size:11px;line-height:1.45;margin-top:4px}
+    #cti-prototype .gibyeori-guide{display:flex;align-items:center;gap:9px;background:#f4f1ff;border:1px solid #ddd6fe;border-radius:15px;padding:8px 11px;margin:0 0 12px}.gibyeori-guide img{width:54px;height:54px;object-fit:contain}.gibyeori-guide.result-guide{background:#eefbf6;border-color:#cceedd}
+    #cti-prototype .gibyeori-notice{display:flex;align-items:center;gap:9px;background:#fff8ed;border:1px solid #fed7aa;border-radius:13px;padding:9px 11px;color:#6b4b2a;font-size:12px;line-height:1.5}.gibyeori-notice img{width:48px;height:48px;object-fit:contain;flex:none}
+    #cti-prototype .compact-guide{margin:0 0 12px}.compact-guide img{width:48px;height:48px}
+    #cti-prototype .plan-choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}.plan-choice{background:#fff;border:1px solid #dbe1ea!important;border-radius:999px;padding:8px 10px;font-size:12px;color:#374151}.plan-choice.selected{background:#eef2ff;border-color:#818cf8!important;color:#3730a3;font-weight:700}
+    #cti-prototype .plan-prompt{background:#f8fafc;border-radius:10px;padding:9px 10px;color:#6b7280;font-size:11px;line-height:1.55;font-weight:400;margin-top:7px}
+    #cti-prototype .plan-choices.sheet-source{display:none}
+    #cti-prototype .plan-selector{width:100%;background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:12px 13px;text-align:left;color:#6b7280;font:inherit;font-size:13px;margin-top:7px;position:relative}.plan-selector::after{content:'⌄';position:absolute;right:13px;color:#9ca3af}
+    #cti-prototype .plan-selector.has-value{color:#111827}
+    #cti-prototype .plan-input.choice-input{display:none}
+    #cti-prototype .plan-sheet-backdrop{position:fixed;inset:0;background:rgba(15,23,42,.38);z-index:20;display:flex;align-items:flex-end;justify-content:center}
+    #cti-prototype .plan-sheet{background:#fff;width:min(390px,100%);border-radius:20px 20px 0 0;padding:18px 18px 24px;box-shadow:0 -10px 30px rgba(15,23,42,.2)}
+    #cti-prototype .sheet-poke{display:block;width:64px;height:64px;object-fit:contain;margin:-34px auto 0;background:#fff;border-radius:50%}
+    #cti-prototype .plan-sheet h3{margin:0 0 12px;font-size:17px}.plan-sheet-options{display:grid;gap:8px}.plan-sheet-option{width:100%;background:#f8fafc;border:1px solid #e5e7eb;border-radius:12px;padding:13px;text-align:left;font:inherit;font-size:14px}.plan-sheet-option.selected{background:#eef2ff;border-color:#818cf8;color:#3730a3;font-weight:700}.plan-sheet-actions{display:flex;gap:8px;margin-top:12px}.plan-sheet-actions button{flex:1;padding:12px;border-radius:12px;font:inherit;font-size:13px}.plan-sheet-done{background:#111827;color:#fff}.plan-sheet-cancel{background:#f3f4f6;color:#374151}
+  </style>
+  <script>
+    (()=>{
+      const root=document.querySelector('#cti-prototype');
+      if(!root)return;
+      const planKeys=['destination','cities','origin','duration','flexible','partySize','relationship','ages','care','pace','interests','mustVisit','avoid','budget','lodging','transport','notes'];
+      const planNames={destination:'여행 국가',cities:'방문 도시',origin:'출발 지역',duration:'여행 기간',flexible:'날짜 조정',partySize:'여행 인원',relationship:'동반 관계',ages:'연령대',care:'고려할 점',pace:'여행 속도',interests:'관심사',mustVisit:'꼭 가보고 싶은 곳',avoid:'피하고 싶은 것',budget:'총 예산',lodging:'숙소 조건',transport:'이동 방법',notes:'추가 요청'};
+      let planData={};
+      const planShow=name=>{root.querySelectorAll('[data-screen]').forEach(s=>s.classList.toggle('hidden',s.dataset.screen!==name));root.querySelector('.screen')?.scrollTo?.(0,0)};
+      const readPlan=()=>{root.querySelectorAll('[data-plan]').forEach(el=>{planData[el.dataset.plan]=el.type==='checkbox'?el.checked:el.value.trim()})};
+      const writePlan=()=>{root.querySelectorAll('[data-plan]').forEach(el=>{const v=planData[el.dataset.plan];if(el.type==='checkbox')el.checked=!!v;else el.value=v||''})};
+      const summary=()=>{readPlan();const el=root.querySelector('#plan-summary');el.innerHTML=planKeys.filter(k=>planData[k]!==''&&planData[k]!==undefined&&planData[k]!==false).map(k=>`<div class="plan-summary-row"><strong>${planNames[k]}</strong><span>${planData[k]===true?'가능':planData[k]}</span></div>`).join('')||'<div class="hint">아직 입력한 내용이 없습니다.</div>'};
+      const renderPlanResult=()=>{const p=planData,destination=p.destination||'선택한 목적지',duration=p.duration||'입력한 기간',pace=p.pace||'보통';root.querySelector('#plan-result-title').textContent=destination+' 여행계획';root.querySelector('#plan-result-meta').textContent=[destination,duration,p.partySize?(p.partySize+'명'):null,p.budget].filter(Boolean).join(' · ');root.querySelector('#plan-result-care').textContent=(p.avoid||p.care||p.pace)?`${p.pace||'보통'} 속도를 기준으로 ${p.avoid?'피하고 싶은 조건을 반영해 ':''}${p.care?'동행자의 고려사항을 확인하며 ':''}하루 일정에 이동과 휴식 시간을 함께 배치했습니다.`:'입력한 목적지와 기간을 기준으로 핵심 일정과 이동 부담을 균형 있게 배치했습니다.';const days=Math.max(3,Math.min(5,parseInt((p.duration||'').match(/\d+/)?.[0]||4,10)+1));const titles=['도착·숙소 주변 적응','대표 명소와 현지 식사','관심사 중심 일정','여유 있는 동네 탐방','귀국 준비와 이동'];root.querySelector('#plan-result-days').innerHTML=titles.slice(0,days).map((t,i)=>`<div class="plan-day"><strong>${i+1}일차 · ${t}</strong><small>${i===0?'도착 시간에 맞춰 체크인과 가까운 일정으로 시작합니다.':i===days-1?'체크아웃과 공항 이동을 고려해 여유 있게 마무리합니다.':(p.interests||'주요 명소·맛집')+' 중심으로 이동 구간을 줄여 구성합니다.'}</small></div>`).join('');root.querySelector('#plan-result-stay').textContent=(p.lodging||'주요 교통거점 주변 숙소')+'을 우선 검토하고, 실제 가격·예약 가능 여부는 예약처에서 확인합니다. 이동은 '+(p.transport||'대중교통 중심')+'으로 제안합니다.';root.querySelector('#plan-result-budget').textContent=p.budget?`입력한 예산 ${p.budget} 안에서 숙박·식비·교통·관광비를 나누어 검토합니다.`:'예산이 입력되지 않아 비용 범위를 별도로 확인해야 합니다.'};
+      const buildPrompt=()=>{const p=planData;return `[역할]\n당신은 여행자의 조건을 세심하게 반영하는 여행 컨시어지입니다. 결과를 단순히 나열하지 말고, 먼저 이번 여행의 방향과 사용자 조건을 어떻게 배려했는지 설명하세요. 모르는 정보는 추측하지 말고 확인 필요로 표시하세요.\n\n[여행자 조건]\n- 국가: ${p.destination||'미정'}\n- 방문 도시: ${p.cities||'미정'}\n- 출발 지역: ${p.origin||'미정'}\n- 기간: ${p.duration||'미정'}\n- 인원: ${p.partySize||'미정'}명 / ${p.relationship||'미정'}\n- 연령대: ${p.ages||'미정'}\n- 여행 속도: ${p.pace||'미정'}\n- 관심사: ${p.interests||'미정'}\n- 예산 범위: ${p.budget||'미정'}\n- 숙소 조건: ${p.lodging||'미정'}\n- 이동 방법: ${p.transport||'미정'}\n- 특별 고려사항: ${p.care||'없음'}\n- 꼭 가고 싶은 곳: ${p.mustVisit||'없음'}\n- 피하고 싶은 것: ${p.avoid||'없음'}\n- 추가 요청: ${p.notes||'없음'}\n\n[작성 규칙]\n1. 국가 공통 정보와 도시별 정보를 구분하세요.\n2. 일정은 입력한 기간에 맞추고 이동·식사·휴식 시간을 현실적으로 배치하세요.\n3. 사용자의 연령대·동행자·예산·속도·특별 고려사항을 실제 일정에 반영하세요.\n4. 첫 부분에서 ‘이번 여행 한눈에 보기’와 ‘입력 조건을 어떻게 반영했는지’를 설명하세요.\n5. 꼭 가고 싶은 곳과 피하고 싶은 조건을 반영하거나, 반영하지 못한 이유를 설명하세요.\n6. 운영시간·가격·휴일·예약 가능 여부는 변동 가능성과 공식 확인 필요를 표시하세요.\n7. 사용자가 계획을 다시 수정할 수 있도록 마지막에 다음 행동을 안내하세요.\n\n[출력 형식]\n## 1. 이번 여행 한눈에 보기\n여행 제목, 여행 분위기, 핵심 추천, 예상 예산 범위를 2~4문장으로 설명하세요.\n\n## 2. 이번 여행에 반영한 배려\n연령대·동행자·속도·관심사·예산·특별 고려사항을 어떻게 반영했는지 항목별로 설명하세요.\n\n## 3. 전체 일정 요약\n날짜, 도시·지역, 핵심 일정, 이동 부담, 숙박 지역을 표로 작성하세요.\n\n## 4. 일자별 상세 일정\n각 날짜마다 시간대, 일정, 이동 방법, 예상 시간, 식사·휴식, 예상 비용, 확인 필요사항을 작성하세요.\n\n## 5. 방문 후보지\n장소, 도시·지역, 추천 이유, 체류 시간, 비용, 확인 필요사항을 표로 작성하세요.\n\n## 6. 숙소·교통 제안\n숙소 추천 지역·이유·가격 범위와 공항·도시 내·도시 간 이동 방법을 설명하세요.\n\n## 7. 예상 비용 범위\n숙박·식비·교통·관광·쇼핑·예비비·전체 예상 범위를 표로 작성하세요.\n\n## 8. 상황별 대안\n비가 올 때, 피곤할 때, 예산을 줄일 때, 일정이 늦어질 때의 대안을 제시하세요.\n\n## 9. 확인 필요 정보\n운영시간·가격·휴일·예약 가능 여부·교통 운행 여부와 확인할 곳을 표로 작성하세요.\n\n## 10. 다음에 할 일\n사용자가 바로 할 수 있는 행동을 3~5개로 안내하세요. 마지막에는 다음 문장을 포함하세요: ‘여행 계획은 언제든지 다시 수정할 수 있어요. 변경된 내용을 입력해주시면 기별이가 새로운 계획으로 다시 정리해드릴게요.’`};
+      root.addEventListener('click',e=>{const choice=e.target.closest('.plan-choice');if(choice){const target=root.querySelector(`[data-plan="${choice.dataset.target}"]`);const isMulti=choice.closest('.multi');if(choice.dataset.value==='직접 입력'){if(target){target.value='';target.focus()}}else if(target){if(isMulti){const values=target.value?target.value.split(' · ').filter(Boolean):[];if(values.includes(choice.dataset.value)){values.splice(values.indexOf(choice.dataset.value),1);choice.classList.remove('selected')}else{values.push(choice.dataset.value);choice.classList.add('selected')}target.value=values.join(' · ')}else{target.value=choice.dataset.value;choice.parentElement.querySelectorAll('.plan-choice').forEach(b=>b.classList.toggle('selected',b===choice))}}return}const a=e.target.closest('[data-action]')?.dataset.action;if(!a)return;
+        if(a==='plan-start'){planData={};planShow('plan-step-1')}
+        if(a==='plan-back-choice')planShow('home');
+        if(a==='plan-next-1'){readPlan();planShow('plan-step-2');writePlan()}
+        if(a==='plan-back-1'){readPlan();planShow('plan-step-1');writePlan()}
+        if(a==='plan-next-2'){readPlan();planShow('plan-step-3');writePlan()}
+        if(a==='plan-back-2'){readPlan();planShow('plan-step-2');writePlan()}
+        if(a==='plan-next-3'){readPlan();planShow('plan-step-4');writePlan()}
+        if(a==='plan-back-3'){readPlan();planShow('plan-step-3');writePlan()}
+        if(a==='plan-review'){readPlan();summary();planShow('plan-review')}
+        if(a==='plan-back-4'){planShow('plan-step-4');writePlan()}
+        if(a==='plan-generate'){readPlan();localStorage.setItem('cti_ai_plan_input',JSON.stringify(planData));root.querySelector('#plan-prompt-text').value=buildPrompt();planShow('plan-prompt')}
+        if(a==='plan-copy-prompt'){navigator.clipboard?.writeText(root.querySelector('#plan-prompt-text').value);alert('프롬프트를 복사했습니다. ChatGPT나 Gemini에 붙여 넣어주세요.')}
+        if(a==='plan-open-chatgpt'){window.open('https://chatgpt.com/','_blank','noopener')}
+        if(a==='plan-open-gemini'){window.open('https://gemini.google.com/app','_blank','noopener')}
+        if(a==='plan-paste-result')planShow('plan-import')
+        if(a==='plan-back-prompt')planShow('plan-prompt')
+        if(a==='plan-show-imported'){const text=root.querySelector('#plan-import-text').value.trim();if(!text){alert('AI 결과를 먼저 붙여 넣어주세요.');return}root.querySelector('#plan-import-output').textContent=text;localStorage.setItem('cti_ai_plan_result',text);planShow('plan-import-result')}
+        if(a==='plan-back-import')planShow('plan-import')
+        if(a==='plan-back-review'){planShow('plan-review');summary()}
+        if(a==='plan-edit'){planShow('plan-step-1');writePlan()}
+        if(a==='plan-handoff'){localStorage.setItem('cti_ai_plan_draft',JSON.stringify(planData));alert('이 계획을 메인 여행 준비의 초안으로 넘길 준비가 되었습니다. 실제 일정 카드 저장은 다음 단계에서 연결합니다.');}
+      });
+    })();
+  </script>
+  <script>
+    (()=>{
+      const root=document.querySelector('#cti-prototype');if(!root)return;
+      const sheet=document.createElement('div');sheet.className='plan-sheet-backdrop hidden';sheet.innerHTML='<div class="plan-sheet" role="dialog" aria-modal="true"><h3></h3><div class="plan-sheet-options"></div><div class="plan-sheet-actions"><button class="plan-sheet-cancel">닫기</button><button class="plan-sheet-done">선택 완료</button></div></div>';root.appendChild(sheet);
+      let active=null,activeTarget=null,activeMulti=false;
+      root.querySelectorAll('.plan-choices').forEach(source=>{const first=source.closest('label')?.childNodes[0]?.textContent?.trim()||'항목';const target=source.querySelector('.plan-choice')?.dataset.target;if(!target)return;source.classList.add('sheet-source');const input=root.querySelector(`[data-plan="${target}"]`);if(input){input.classList.add('choice-input');input.style.display='none'}const trigger=document.createElement('button');trigger.type='button';trigger.className='plan-selector';trigger.dataset.sheetTarget=target;trigger.textContent='선택해 주세요';source.parentElement.insertBefore(trigger,source);trigger.addEventListener('click',()=>{active=source;activeTarget=input;activeMulti=source.classList.contains('multi');sheet.querySelector('h3').textContent=first+' 선택'+(activeMulti?' · 여러 개 가능':'');const current=activeTarget?.value?activeTarget.value.split(' · '):[];sheet.querySelector('.plan-sheet-options').innerHTML=[...source.querySelectorAll('.plan-choice')].map(b=>`<button type="button" class="plan-sheet-option ${current.includes(b.dataset.value)?'selected':''}" data-value="${b.dataset.value}">${b.textContent}</button>`).join('');sheet.classList.remove('hidden')});});
+      const updateTrigger=target=>{const input=root.querySelector(`[data-plan="${target}"]`),trigger=root.querySelector(`[data-sheet-target="${target}"]`);if(!input||!trigger)return;trigger.textContent=input.value||'선택해 주세요';trigger.classList.toggle('has-value',!!input.value)};
+      sheet.addEventListener('click',e=>{const option=e.target.closest('.plan-sheet-option');if(option&&activeTarget){if(option.dataset.value==='직접 입력'){activeTarget.value='';activeTarget.classList.remove('choice-input');activeTarget.style.display='';updateTrigger(activeTarget.dataset.plan);sheet.classList.add('hidden');activeTarget.focus();return}if(activeMulti){option.classList.toggle('selected')}else{activeTarget.value=option.dataset.value;activeTarget.classList.add('choice-input');activeTarget.style.display='none';updateTrigger(activeTarget.dataset.plan);sheet.classList.add('hidden')}}if(e.target.closest('.plan-sheet-done')&&activeTarget){const selected=[...sheet.querySelectorAll('.plan-sheet-option.selected')].map(b=>b.dataset.value).filter(v=>v!=='직접 입력');activeTarget.value=activeMulti?selected.join(' · '):(selected[0]||activeTarget.value);activeTarget.classList.add('choice-input');activeTarget.style.display='none';updateTrigger(activeTarget.dataset.plan);sheet.classList.add('hidden')}if(e.target.closest('.plan-sheet-cancel')||e.target===sheet)sheet.classList.add('hidden')});
+      root.querySelectorAll('[data-plan]').forEach(input=>input.addEventListener('input',()=>{if(input.classList.contains('choice-input')&&!input.value.includes(' · '))input.classList.remove('choice-input');updateTrigger(input.dataset.plan)}));
+      const addGuide=(screen,html)=>{const s=root.querySelector(`[data-screen="${screen}"]`);if(s&&!s.dataset.guideAdded){s.dataset.guideAdded='true';const back=s.querySelector('.back');if(back)back.insertAdjacentHTML('afterend',html)}};
+      addGuide('during-hub','<div class="gibyeori-guide compact-guide"><img src="assets/gibyeori/joy.png" alt="여행 중 안내하는 기별이"><div><strong>여행 중에도 기별이가 도와드릴게요.</strong><small>통역·문장·여행 정보를 바로 꺼내 보세요.</small></div></div>');
+      addGuide('return-hub','<div class="gibyeori-guide compact-guide"><img src="assets/gibyeori/relieved.png" alt="안도하는 기별이"><div><strong>이제 돌아갈 준비를 해볼까요?</strong><small>마지막 확인까지 기별이가 함께할게요.</small></div></div>');
+      addGuide('places','<div class="gibyeori-guide compact-guide"><img src="assets/gibyeori/nod.png" alt="기록을 돕는 기별이"><div><strong>중요한 정보를 기별이와 기록해요.</strong><small>저장해 두면 여행 중 바로 꺼내 볼 수 있어요.</small></div></div>');
+      const sheetGuide=sheet.querySelector('h3');if(sheetGuide)sheetGuide.insertAdjacentHTML('beforebegin','<img class="sheet-poke" src="assets/gibyeori/poke.png" alt="선택을 돕는 기별이">');
     })();
   </script>
 </div>
-
