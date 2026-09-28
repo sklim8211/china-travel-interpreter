@@ -764,10 +764,20 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
       const text=(root.querySelector('#audit-text')?.value||'').trim();
       if(!text){alert('예약확인서 내용을 먼저 붙여 넣어주세요.');return}
       const type=root.querySelector('#audit-type')?.value||'';
-      const isHotel=/호텔|숙소|체크인|체크아웃/i.test(type+' '+text)||/check-?in|check-?out|hotel|resort/i.test(text);
-      const isTrain=type==='열차권'||(/기차|열차|철도|역|shinkansen|railway|train/i.test(text)&&!/항공|공항|편명|flight|airline/i.test(text));
-      const isFlight=type==='항공권'||(/항공|항공권|편명|공항|flight|airline|e-ticket|boarding/i.test(text)&&!/기차|열차|철도|출발역|도착역/.test(text));
-      const isTicket=/투어|입장권|티켓/.test(type+' '+text)||/\b(?:admission|voucher)\b/i.test(text)||(/\bticket\b/i.test(text)&&!isFlight&&!isTrain);
+      /* 분류: 카테고리별 강한 신호(확실한 키워드)와 약한 신호(참고용, 다른 카테고리 텍스트에도 섞여 나올 수 있는 단어)를 점수로 나눠
+         가장 점수가 높은 하나만 채택 - "공항"처럼 애매한 단어가 여러 카테고리에 동시에 걸쳐도 서로 잘못 덮어쓰지 않게 함 */
+      const scoreOf=(strongRe,weakRe,typeMatch)=>(typeMatch?5:0)+(strongRe.test(text)?3:0)+(weakRe.test(text)?1:0);
+      const scores={
+        hotel:scoreOf(/체크인|체크아웃|check-?in|check-?out|호텔명|숙소명|hotel\s*name/i,/호텔|숙소|hotel|resort/i,type==='호텔·숙소'),
+        flight:scoreOf(/항공권|편명|e-ticket|boarding|flight\s*number/i,/항공|flight|airline|공항/i,type==='항공권'),
+        train:scoreOf(/열차명|열차번호|탑승수속|shinkansen|신칸센|train\s*number/i,/기차|열차|철도|train|railway/i,type==='열차권'),
+        ticket:scoreOf(/입장권|투어|admission|voucher/i,/(?<!e-)\bticket\b|티켓/i,type==='투어·입장권')
+      };
+      const best=Object.entries(scores).sort((a,b)=>b[1]-a[1])[0];
+      const isHotel=best[0]==='hotel'&&best[1]>0;
+      const isFlight=best[0]==='flight'&&best[1]>0;
+      const isTrain=best[0]==='train'&&best[1]>0;
+      const isTicket=best[0]==='ticket'&&best[1]>0;
       const timeOnly=v=>{const m=String(v||'').match(/\d{1,2}:\d{2}/);return m?m[0]:v};
       const arrowRoute=t=>{const line=t.split('\n').find(l=>l.includes('→')||l.includes('->'));if(!line)return'';return line.replace(/^[^:：]*[:：]\s*/,'').replace(/\d{1,2}:\d{2}\s*/,'').replace(/->/,'→').trim()};
       let count=0;
