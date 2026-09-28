@@ -749,7 +749,17 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
       }
       return'';
     };
-    const save=(key,value)=>{const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');if(!Array.isArray(all[key]))all[key]=[];const old=all[key][0]||{};all[key][0]={...old,...value};localStorage.setItem('cti_travel_cards',JSON.stringify(all))};
+    /* 카테고리별 예약번호 필드 - 같은 예약을 다시 붙여넣으면 새 카드 대신 기존 카드를 갱신하기 위한 중복 판별 기준 */
+    const bookingField={hotel:'hotel-booking',flight:'flight-booking',train:'train-booking',ticket:'ticket-booking'};
+    const save=(key,value)=>{
+      const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');
+      if(!Array.isArray(all[key]))all[key]=[];
+      const bf=bookingField[key];
+      const dupIdx=bf&&value[bf]?all[key].findIndex(c=>c[bf]&&c[bf]===value[bf]):-1;
+      if(dupIdx!==-1)all[key][dupIdx]={...all[key][dupIdx],...value};
+      else all[key].push(value);
+      localStorage.setItem('cti_travel_cards',JSON.stringify(all));
+    };
     const importCards=()=>{
       const text=(root.querySelector('#audit-text')?.value||'').trim();
       if(!text){alert('예약확인서 내용을 먼저 붙여 넣어주세요.');return}
@@ -845,7 +855,7 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
   (()=>{
     const root=document.querySelector('#cti-prototype');
     if(!root)return;
-    const syncStay=()=>{try{const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}'),hotel=(all.hotel||[])[0];if(!hotel||!(hotel['hotel-name']||hotel['hotel-address']||hotel['hotel-phone']))return;if(!Array.isArray(all.stay))all.stay=[];all.stay[0]={...(all.stay[0]||{}),'stay-name':hotel['hotel-name']||'','stay-address':hotel['hotel-address']||'','stay-phone':hotel['hotel-phone']||''};localStorage.setItem('cti_travel_cards',JSON.stringify(all))}catch(e){}};
+    const syncStay=()=>{try{const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}'),hotelList=all.hotel||[],hotel=hotelList[hotelList.length-1];if(!hotel||!(hotel['hotel-name']||hotel['hotel-address']||hotel['hotel-phone']))return;if(!Array.isArray(all.stay))all.stay=[];all.stay[0]={...(all.stay[0]||{}),'stay-name':hotel['hotel-name']||'','stay-address':hotel['hotel-address']||'','stay-phone':hotel['hotel-phone']||''};localStorage.setItem('cti_travel_cards',JSON.stringify(all))}catch(e){}};
     root.addEventListener('click',e=>{if(!e.target.closest('[data-action="import-reservation-cards"],[data-action="inline-import-reservation"]'))return;setTimeout(syncStay,50)});
   })();
   </script>
