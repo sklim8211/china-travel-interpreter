@@ -1307,3 +1307,11 @@ if(location.hash==='#during-hub'){
 }
 })();
 </script>
+<script>
+/* 10단계: 오프라인 대비 — 서비스워커 등록 (최소 캐싱) */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js',{scope:'/'}).catch(()=>{});
+  });
+}
+</script>
