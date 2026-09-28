@@ -380,6 +380,12 @@
         <div class="plan-kicker">AI 여행계획 결과</div><h2>여행계획 확인</h2>
         <div id="plan-import-output" class="plan-result-box plan-raw-output"></div>
         <button class="primary" data-action="plan-handoff">이 계획으로 준비 시작</button>
+        <div id="plan-emergency-preview" class="plan-emergency-preview hidden">
+          <div class="plan-emergency-head"><span>🆘</span><strong>AI가 찾은 목적지 긴급연락처</strong></div>
+          <div id="plan-emergency-list"></div>
+          <small class="plan-emergency-hint">AI가 찾은 정보이니 실제 상황 전에 한 번 더 확인해 주세요.</small>
+          <button type="button" class="secondary" data-action="plan-emergency-save">🆘 긴급연락처 카드에 추가하기</button>
+        </div>
       </section>
       <section data-screen="plan-result" class="hidden plan-screen">
         <button class="back" data-action="plan-back-review">← 입력 내용 확인</button>
@@ -660,6 +666,17 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
     #cti-prototype .plan-day{background:#fff;border:1px solid #e5e7eb;border-radius:13px;padding:12px 13px;margin:8px 0}.plan-day strong{display:block;font-size:13px}.plan-day small{display:block;color:#6b7280;line-height:1.5;margin-top:4px}
     #cti-prototype .plan-result-box{background:#fff;border:1px solid #e5e7eb;border-radius:13px;padding:13px;color:#4b5563;font-size:12px;line-height:1.6}
     #cti-prototype .plan-raw-output{white-space:pre-wrap;overflow-wrap:anywhere;max-height:480px;overflow:auto;font-size:13px;color:#1f2937}
+    #cti-prototype .plan-emergency-preview{background:#fff7ed;border:1px solid #fed7aa;border-radius:14px;padding:14px;margin-top:14px}
+    #cti-prototype .plan-emergency-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    #cti-prototype .plan-emergency-head span{font-size:18px}
+    #cti-prototype .plan-emergency-head strong{font-size:14px;color:#9a3412}
+    #cti-prototype .plan-emergency-item{background:#fff;border:1px solid #fde3bd;border-radius:10px;padding:10px 12px;margin-bottom:8px}
+    #cti-prototype .plan-emergency-item strong{display:block;font-size:14px;color:#1f2937}
+    #cti-prototype .plan-emergency-item .plan-emergency-phone{display:block;font-size:15px;font-weight:700;color:#9a3412;margin-top:2px}
+    #cti-prototype .plan-emergency-item small{display:block;color:#6b7280;font-size:12px;margin-top:2px}
+    #cti-prototype .plan-emergency-hint{display:block;color:#b45309;font-size:12px;margin:4px 0 10px;line-height:1.5}
+    #cti-prototype .plan-emergency-preview .secondary{margin-top:0}
+    #cti-prototype .plan-emergency-preview.saved .plan-emergency-hint{color:#15803d}
     #cti-prototype .gibyeori-welcome{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #f1e2c8;border-radius:16px;padding:8px 12px;margin:4px 0 14px}.gibyeori-welcome img{width:58px;height:58px;object-fit:contain}.gibyeori-welcome strong,.gibyeori-guide strong{display:block;font-size:14px}.gibyeori-welcome small,.gibyeori-guide small{display:block;color:#6b7280;font-size:11px;line-height:1.45;margin-top:4px}
     #cti-prototype .gibyeori-guide{display:flex;align-items:center;gap:9px;background:#f4f1ff;border:1px solid #ddd6fe;border-radius:15px;padding:8px 11px;margin:0 0 12px}.gibyeori-guide img{width:54px;height:54px;object-fit:contain}.gibyeori-guide.result-guide{background:#eefbf6;border-color:#cceedd}
     #cti-prototype .gibyeori-notice{display:flex;align-items:center;gap:9px;background:#fff8ed;border:1px solid #fed7aa;border-radius:13px;padding:9px 11px;color:#6b4b2a;font-size:12px;line-height:1.5}.gibyeori-notice img{width:48px;height:48px;object-fit:contain;flex:none}
@@ -683,6 +700,54 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
       const planNames={destination:'여행 국가',cities:'방문 도시',origin:'출발 지역',duration:'여행 기간',flexible:'날짜 조정',partySize:'여행 인원',relationship:'동반 관계',ages:'연령대',care:'고려할 점',pace:'여행 속도',interests:'관심사',mustVisit:'꼭 가보고 싶은 곳',avoid:'피하고 싶은 것',budget:'총 예산',lodging:'숙소 조건',transport:'이동 방법',notes:'추가 요청'};
       let planData={};
       const planShow=name=>{root.querySelectorAll('[data-screen]').forEach(s=>s.classList.toggle('hidden',s.dataset.screen!==name));root.querySelector('.screen')?.scrollTo?.(0,0)};
+      const planEscHtml=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+      const EMERGENCY_ROW_RE=/^\s*연락처\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*$/;
+      const parseEmergencyRows=text=>{
+        if(!text)return[];
+        const rows=[];
+        text.split(/\r?\n/).forEach(line=>{
+          const m=line.match(EMERGENCY_ROW_RE);
+          if(m&&m[1].trim()&&/\d{2,}/.test(m[2]))rows.push({name:m[1].trim(),phone:m[2].trim(),note:m[3].trim()});
+        });
+        return rows;
+      };
+      const renderEmergencyPreview=()=>{
+        const box=root.querySelector('#plan-emergency-preview'),list=root.querySelector('#plan-emergency-list');
+        if(!box||!list)return;
+        const rows=parseEmergencyRows(localStorage.getItem('cti_ai_plan_result')||'');
+        if(!rows.length){box.classList.add('hidden');return}
+        box.classList.remove('hidden');
+        box.classList.remove('saved');
+        box.dataset.rows=JSON.stringify(rows);
+        list.innerHTML=rows.map(r=>'<div class="plan-emergency-item"><strong>'+planEscHtml(r.name)+'</strong><span class="plan-emergency-phone">'+planEscHtml(r.phone)+'</span>'+(r.note?'<small>'+planEscHtml(r.note)+'</small>':'')+'</div>').join('');
+        const btn=box.querySelector('[data-action="plan-emergency-save"]');
+        if(btn){btn.disabled=false;btn.textContent='🆘 긴급연락처 카드에 추가하기'}
+        const hint=box.querySelector('.plan-emergency-hint');
+        if(hint)hint.textContent='AI가 찾은 정보이니 실제 상황 전에 한 번 더 확인해 주세요.';
+      };
+      const saveEmergencyPreview=()=>{
+        const box=root.querySelector('#plan-emergency-preview');
+        if(!box)return;
+        let rows=[];
+        try{rows=JSON.parse(box.dataset.rows||'[]')}catch(e){rows=[]}
+        if(!rows.length)return;
+        const all=JSON.parse(localStorage.getItem('cti_travel_cards')||'{}');
+        if(!Array.isArray(all.emergency))all.emergency=[];
+        rows.forEach(r=>{
+          const card={'emergency-name':r.name,'emergency-phone':r.phone,'emergency-note':'[AI 제공 · 확인 권장] '+(r.note||'')};
+          const dupIdx=all.emergency.findIndex(c=>c['emergency-phone']&&c['emergency-phone']===r.phone);
+          if(dupIdx!==-1)all.emergency[dupIdx]={...all.emergency[dupIdx],...card};
+          else all.emergency.push(card);
+        });
+        localStorage.setItem('cti_travel_cards',JSON.stringify(all));
+        box.classList.add('saved');
+        const btn=box.querySelector('[data-action="plan-emergency-save"]');
+        if(btn){btn.disabled=true;btn.textContent='추가 완료 ✅'}
+        const hint=box.querySelector('.plan-emergency-hint');
+        if(hint)hint.textContent='긴급연락처 카드에 추가했습니다. SOS 화면에서 확인할 수 있어요.';
+        const toastEl=root.querySelector('.toast');
+        if(toastEl){toastEl.textContent='긴급연락처 카드에 추가했습니다';toastEl.style.display='block';setTimeout(()=>toastEl.style.display='none',1600)}
+      };
       const readPlan=()=>{root.querySelectorAll('[data-plan]').forEach(el=>{planData[el.dataset.plan]=el.type==='checkbox'?el.checked:el.value.trim()})};
       const writePlan=()=>{root.querySelectorAll('[data-plan]').forEach(el=>{const v=planData[el.dataset.plan];if(el.type==='checkbox')el.checked=!!v;else el.value=v||''})};
       const summary=()=>{readPlan();const el=root.querySelector('#plan-summary');el.innerHTML=planKeys.filter(k=>planData[k]!==''&&planData[k]!==undefined&&planData[k]!==false).map(k=>`<div class="plan-summary-row"><strong>${planNames[k]}</strong><span>${planData[k]===true?'가능':planData[k]}</span></div>`).join('')||'<div class="hint">아직 입력한 내용이 없습니다.</div>'};
@@ -774,6 +839,21 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
 1|1|호텔 체크아웃|숙소에서 출발|-|-
 1|2|도톤보리|난바역 25번 출구|도보 5분|지하철
 1|3|오사카성|오사카성공원역|도보 8분|지하철
+
+## 12. 목적지 필수 연락처 데이터 (기계 처리용 — 이 섹션에는 이 형식 외 다른 문장을 쓰지 마세요)
+목적지 국가의 경찰, 구급차·소방, 가장 가까운 대한민국 대사관(또는 총영사관) 연락처를 찾아 아래 형식으로 정확히 3줄만 작성하세요.
+
+형식: 연락처|기관명|전화번호|메모
+
+- 기관명은 "경찰", "구급차·소방", "주OO 대한민국 대사관"(OO은 실제 도시·국가명) 중 하나로만 쓰세요.
+- 대사관 전화번호는 국제전화 형식(+국가번호)으로, 경찰·구급차 번호는 현지에서 그대로 누르는 번호로 쓰세요.
+- 메모에는 언제 쓰는 번호인지 한 줄로 간단히 쓰세요(예: "범죄·도난 신고").
+- 확실하지 않은 정보를 지어내지 말고, 확인이 안 되면 전화번호 칸에 "확인 필요"라고 쓰세요.
+
+예시:
+연락처|경찰|110|범죄·도난 신고
+연락처|구급차·소방|119|응급 의료·화재 신고
+연락처|주오사카 대한민국 총영사관|+81-6-4256-2345|여권 분실·사고 지원
 '`};
       root.addEventListener('click',e=>{const choice=e.target.closest('.plan-choice');if(choice){const target=root.querySelector(`[data-plan="${choice.dataset.target}"]`);const isMulti=choice.closest('.multi');if(choice.dataset.value==='직접 입력'){if(target){target.value='';target.focus()}}else if(target){if(isMulti){const values=target.value?target.value.split(' · ').filter(Boolean):[];if(values.includes(choice.dataset.value)){values.splice(values.indexOf(choice.dataset.value),1);choice.classList.remove('selected')}else{values.push(choice.dataset.value);choice.classList.add('selected')}target.value=values.join(' · ')}else{target.value=choice.dataset.value;choice.parentElement.querySelectorAll('.plan-choice').forEach(b=>b.classList.toggle('selected',b===choice))}}return}const a=e.target.closest('[data-action]')?.dataset.action;if(!a)return;
         if(a==='plan-start'){planData={};planShow('plan-step-1')}
@@ -792,7 +872,8 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         if(a==='plan-open-gemini'){window.open('https://gemini.google.com/app','_blank','noopener')}
         if(a==='plan-paste-result')planShow('plan-import')
         if(a==='plan-back-prompt')planShow('plan-prompt')
-        if(a==='plan-show-imported'){const text=root.querySelector('#plan-import-text').value.trim();if(!text){alert('AI 결과를 먼저 붙여 넣어주세요.');return}root.querySelector('#plan-import-output').textContent=text;localStorage.setItem('cti_ai_plan_result',text);planShow('plan-import-result')}
+        if(a==='plan-show-imported'){const text=root.querySelector('#plan-import-text').value.trim();if(!text){alert('AI 결과를 먼저 붙여 넣어주세요.');return}root.querySelector('#plan-import-output').textContent=text;localStorage.setItem('cti_ai_plan_result',text);renderEmergencyPreview();planShow('plan-import-result')}
+        if(a==='plan-emergency-save')saveEmergencyPreview();
         if(a==='plan-back-import')planShow('plan-import')
         if(a==='plan-back-review'){planShow('plan-review');summary()}
         if(a==='plan-edit'){planShow('plan-step-1');writePlan()}
