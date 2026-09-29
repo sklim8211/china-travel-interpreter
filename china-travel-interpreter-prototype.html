@@ -239,6 +239,7 @@
         <div class="sub">지금 필요한 여행의 단계를 선택하세요.</div>
         <div class="home-intro-row"><div class="gibyeori-welcome"><img src="assets/gibyeori/joy.png" alt="즐겁게 웃는 기별이"><div><strong>안녕하세요 기별이예요.</strong><small>저와 함께 여행준비해요</small></div></div><button class="home-sos" data-action="quick-info"><span>🆘</span><div><strong>SOS 비상연락정보</strong><small>비상시 목적지·숙소·긴급 연락처를 바로 확인하세요.</small></div></button></div>
         <button class="secondary standalone-plan-entry" data-action="plan-start">✨ AI와 여행계획 짜기<small>여행을 확정하기 전에 나라·도시별 계획을 먼저 살펴보세요.</small></button>
+        <div id="plan-resume-card" class="plan-resume-card hidden" data-action="plan-resume-paste" role="button" tabindex="0"><span class="plan-resume-icon">📋</span><div class="plan-resume-body"><strong>AI 여행계획 진행 중이에요</strong><small>AI에게 받은 답변을 아직 붙여넣지 않았어요. 눌러서 이어하기</small></div><span class="plan-resume-arrow">›</span></div>
         <div class="home-stage"><button class="stage-before" data-action="traveler-choice"><span class="stage-icon">🧳</span><strong>여행 준비</strong><small>여행 방식·목적지·날짜와 여행 일정 카드를 준비합니다.</small></button><button class="stage-during" data-action="during-hub"><span class="stage-icon">🗣️</span><strong>여행 중 사용</strong><small>AI 통역을 중심으로 통역 문장과 여행 정보를 바로 사용합니다.</small></button><button class="stage-after" data-action="value-info"><span class="stage-icon">🏠</span><strong>돌아오기 준비</strong><small>영수증·환불·귀국 교통편을 확인합니다.</small></button></div>
       </section>
       <section data-screen="during-hub" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>여행 중 사용</h2><div class="sub">현장에서 필요한 기능을 선택하세요.</div><button type="button" class="now-qr-btn" id="now-qr-btn">📱 이 화면 QR·링크로 바로 열기</button><div class="now-next-card" id="now-next-card"><div class="now-next-icon" id="now-next-icon">🧭</div><div class="now-next-body"><span class="now-next-time" id="now-next-time"></span><strong id="now-next-title">등록된 다음 일정이 없습니다</strong><small id="now-next-sub">여행 카드에 항공권·열차·숙소 정보를 저장하면 다음 일정을 보여드립니다.</small></div></div><div id="now-extra-list"></div><small class="now-extra-overflow" id="now-extra-overflow" style="display:none"></small><div class="now-route-card hidden" id="now-route-card"><div class="now-route-head"><span>🗺️</span><strong>오늘의 동선</strong><small id="now-route-day"></small></div><div class="now-route-steps" id="now-route-steps"></div></div><div class="now-checklist-card" data-action="now-checklist-open" role="button" tabindex="0"><div class="now-checklist-body"><small id="now-checklist-progress">0/0 완료</small><strong id="now-checklist-text">오늘 확인할 것</strong></div><span class="now-checklist-arrow">›</span></div><div class="now-sos-bar" data-action="quick-info" role="button" tabindex="0"><span>🆘</span><strong>SOS 비상연락정보</strong></div><div class="hero"><strong id="ai-title">한국어 ↔ 중국어</strong><span id="ai-description">상대방과 대화할 때 사용할 통역 기능입니다.</span></div><select class="lang" id="language-select" aria-label="통역 언어 선택"><option value="zh-CN">중국어 (간체)</option><option value="en-US">영어</option></select><div class="language-hint" id="language-hint">통역 언어: 중국어</div><button class="primary" data-action="ai-choice">AI 통역 시작</button><button class="secondary" data-action="phrases">바로 쓰는 상황별 문장</button><button class="secondary" data-action="places">📌 내 여행 카드</button></section>
@@ -361,10 +362,16 @@
         <button class="back" data-action="plan-back-review">← 입력 내용 확인</button>
         <div class="gibyeori-guide"><img src="assets/gibyeori/nod.png" alt="프롬프트를 준비하는 기별이"><div><strong>AI에게 보낼 요청문을 준비했어요.</strong><small>아래 요청문을 복사해 ChatGPT나 Gemini에 붙여 넣어주세요.</small></div></div>
         <div class="plan-kicker">AI 여행계획 요청문</div><h2>프롬프트 준비</h2>
+        <div class="plan-steps">
+          <div class="plan-step"><span class="plan-step-num">1</span><span><b>프롬프트 복사하기</b>를 눌러 아래 요청문을 복사하세요.</span></div>
+          <div class="plan-step"><span class="plan-step-num">2</span><span><b>ChatGPT 열기</b> 또는 <b>Gemini 열기</b>로 새 탭이 열리면, 복사한 내용을 붙여넣어 전송하세요.</span></div>
+          <div class="plan-step"><span class="plan-step-num">3</span><span>AI 답변이 나오면 <b>답변 전체를 복사</b>하세요.</span></div>
+          <div class="plan-step"><span class="plan-step-num">4</span><span>이 탭으로 <b>다시 돌아와서</b> 아래 <b>AI 결과 붙여넣기</b> 버튼을 누르고 붙여넣으세요.</span></div>
+        </div>
         <textarea id="plan-prompt-text" class="lang" rows="12" readonly></textarea>
-        <button class="primary" data-action="plan-copy-prompt">프롬프트 복사하기</button>
-        <div class="row"><button class="secondary" data-action="plan-open-chatgpt">ChatGPT 열기</button><button class="secondary" data-action="plan-open-gemini">Gemini 열기</button></div>
-        <button class="secondary" data-action="plan-paste-result">AI 결과 붙여넣기</button>
+        <button class="primary" data-action="plan-copy-prompt">① 프롬프트 복사하기</button>
+        <div class="row"><button class="secondary" data-action="plan-open-chatgpt">② ChatGPT 열기</button><button class="secondary" data-action="plan-open-gemini">② Gemini 열기</button></div>
+        <button class="secondary plan-paste-highlight" data-action="plan-paste-result">④ 여기로 돌아와서 AI 결과 붙여넣기</button>
       </section>
       <section data-screen="plan-import" class="hidden plan-screen">
         <button class="back" data-action="plan-back-prompt">← 프롬프트 준비</button>
@@ -651,6 +658,18 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
     #cti-prototype .confirm-option{background:#eef6ff;border-color:#cfe3ff}
     #cti-prototype .plan-entry small{display:block;color:#6b7280;font-size:11px;font-weight:400;line-height:1.45;margin-top:5px}
     #cti-prototype .plan-kicker{font-size:12px;color:#4f46e5;font-weight:700;margin:2px 0 8px}
+    #cti-prototype .plan-steps{background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin-bottom:14px}
+    #cti-prototype .plan-step{display:flex;gap:10px;align-items:flex-start}
+    #cti-prototype .plan-step+.plan-step{margin-top:10px}
+    #cti-prototype .plan-step-num{flex:none;width:20px;height:20px;border-radius:50%;background:#4f46e5;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:1px}
+    #cti-prototype .plan-step span:last-child{font-size:13px;color:#374151;line-height:1.5}
+    #cti-prototype .plan-paste-highlight{background:#eef2ff;border:1.5px solid #818cf8;color:#3730a3;font-weight:700}
+    #cti-prototype .plan-resume-card{display:flex;align-items:center;gap:10px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:14px;padding:12px 14px;margin:0 0 14px;cursor:pointer}
+    #cti-prototype .plan-resume-icon{font-size:20px;flex:none}
+    #cti-prototype .plan-resume-body{flex:1;min-width:0}
+    #cti-prototype .plan-resume-body strong{display:block;font-size:13px;color:#3730a3}
+    #cti-prototype .plan-resume-body small{display:block;color:#4f46e5;font-size:11px;margin-top:2px;line-height:1.4}
+    #cti-prototype .plan-resume-arrow{color:#818cf8;font-size:18px;flex:none}
     #cti-prototype .plan-screen label{display:block;font-size:13px;font-weight:700;margin:13px 0;color:#374151}
     #cti-prototype .plan-screen label .lang{display:block;margin-top:7px;margin-bottom:0;font-weight:400}
     #cti-prototype .plan-screen textarea{resize:vertical;line-height:1.45}
@@ -776,6 +795,11 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         if(!ordered.length){list.innerHTML='';if(empty)empty.style.display='block';return}
         if(empty)empty.style.display='none';
         list.innerHTML=ordered.map(r=>'<div class="destinfo-item"><span class="destinfo-icon">'+r.icon+'</span><div class="destinfo-body"><strong>'+planEscHtml(r.label)+'</strong><span>'+planEscHtml(r.content)+'</span></div></div>').join('');
+      };
+      const renderPlanResumeCard=()=>{
+        const card=root.querySelector('#plan-resume-card');
+        if(!card)return;
+        card.classList.toggle('hidden',localStorage.getItem('cti_ai_plan_pending')!=='1');
       };
       const readPlan=()=>{root.querySelectorAll('[data-plan]').forEach(el=>{planData[el.dataset.plan]=el.type==='checkbox'?el.checked:el.value.trim()})};
       const writePlan=()=>{root.querySelectorAll('[data-plan]').forEach(el=>{const v=planData[el.dataset.plan];if(el.type==='checkbox')el.checked=!!v;else el.value=v||''})};
@@ -921,13 +945,15 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         if(a==='plan-back-3'){readPlan();planShow('plan-step-3');writePlan()}
         if(a==='plan-review'){readPlan();summary();planShow('plan-review')}
         if(a==='plan-back-4'){planShow('plan-step-4');writePlan()}
-        if(a==='plan-generate'){readPlan();localStorage.setItem('cti_ai_plan_input',JSON.stringify(planData));root.querySelector('#plan-prompt-text').value=buildPrompt();planShow('plan-prompt')}
+        if(a==='plan-generate'){readPlan();localStorage.setItem('cti_ai_plan_input',JSON.stringify(planData));localStorage.setItem('cti_ai_plan_pending','1');root.querySelector('#plan-prompt-text').value=buildPrompt();planShow('plan-prompt')}
+        if(a==='plan-resume-paste')planShow('plan-import');
+        if(a==='home')renderPlanResumeCard();
         if(a==='plan-copy-prompt'){navigator.clipboard?.writeText(root.querySelector('#plan-prompt-text').value);alert('프롬프트를 복사했습니다. ChatGPT나 Gemini에 붙여 넣어주세요.')}
         if(a==='plan-open-chatgpt'){window.open('https://chatgpt.com/','_blank','noopener')}
         if(a==='plan-open-gemini'){window.open('https://gemini.google.com/app','_blank','noopener')}
         if(a==='plan-paste-result')planShow('plan-import')
         if(a==='plan-back-prompt')planShow('plan-prompt')
-        if(a==='plan-show-imported'){const text=root.querySelector('#plan-import-text').value.trim();if(!text){alert('AI 결과를 먼저 붙여 넣어주세요.');return}root.querySelector('#plan-import-output').textContent=text;localStorage.setItem('cti_ai_plan_result',text);renderEmergencyPreview();planShow('plan-import-result')}
+        if(a==='plan-show-imported'){const text=root.querySelector('#plan-import-text').value.trim();if(!text){alert('AI 결과를 먼저 붙여 넣어주세요.');return}root.querySelector('#plan-import-output').textContent=text;localStorage.setItem('cti_ai_plan_result',text);localStorage.removeItem('cti_ai_plan_pending');renderPlanResumeCard();renderEmergencyPreview();planShow('plan-import-result')}
         if(a==='plan-emergency-save')saveEmergencyPreview();
         if(a==='destinfo-open'){renderDestinfo();planShow('destinfo')}
         if(a==='destinfo-back')planShow('places');
@@ -936,6 +962,7 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         if(a==='plan-edit'){planShow('plan-step-1');writePlan()}
         if(a==='plan-handoff'){localStorage.setItem('cti_ai_plan_draft',JSON.stringify(planData));alert('이 계획을 메인 여행 준비의 초안으로 넘길 준비가 되었습니다. 실제 일정 카드 저장은 다음 단계에서 연결합니다.');}
       });
+      renderPlanResumeCard();
     })();
   </script>
   <script>
