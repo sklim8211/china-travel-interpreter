@@ -483,7 +483,8 @@
         <div class="turn"><p>말이 겹치지 않도록 한 사람씩 눌러 말합니다.</p><button data-action="other-turn">🎧 상대방이 말해요<br><small>중국어 → 한국어</small></button><button data-action="my-turn">🎙 내가 말해요<br><small>한국어 → 중국어</small></button></div>
         <div class="hint">실제 AI 통역은 온라인 AI 음성 앱에서 진행하고, 이 화면은 대화 순서를 안내합니다.</div>
       </section>
-      <section data-screen="places" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>📌 내 여행 일정 카드</h2><div class="sub">카드를 눌러 큰 화면에서 입력하고 저장하세요.</div><div id="travel-card-list"></div><details class="reservation-inline"><summary>📎 예약정보 바로 붙여넣기</summary><small>예약확인서 내용을 붙여넣으면 이 화면에서 바로 카드에 나눠 담습니다.</small><select id="inline-audit-type" class="lang"><option>호텔·숙소</option><option>항공권</option><option>열차권</option><option>투어·입장권</option><option>렌터카</option><option>보험·eSIM</option><option>긴급 연락처</option><option>기타 예약</option></select><textarea id="inline-audit-text" class="lang" rows="6" placeholder="예약확인서 내용을 붙여 넣으세요."></textarea><button class="primary" data-action="inline-import-reservation">카드에 바로 저장</button></details><button class="secondary" data-action="clear-places">입력 내용 모두 삭제</button><div class="hint">저장한 내용은 이 기기에만 보관됩니다.</div></section>
+      <section data-screen="places" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>📌 내 여행 일정 카드</h2><div class="sub">카드를 눌러 큰 화면에서 입력하고 저장하세요.</div><div id="travel-card-list"></div><button type="button" class="secondary" data-action="destinfo-open">🌍 목적지 기본 정보 보기</button><details class="reservation-inline"><summary>📎 예약정보 바로 붙여넣기</summary><small>예약확인서 내용을 붙여넣으면 이 화면에서 바로 카드에 나눠 담습니다.</small><select id="inline-audit-type" class="lang"><option>호텔·숙소</option><option>항공권</option><option>열차권</option><option>투어·입장권</option><option>렌터카</option><option>보험·eSIM</option><option>긴급 연락처</option><option>기타 예약</option></select><textarea id="inline-audit-text" class="lang" rows="6" placeholder="예약확인서 내용을 붙여 넣으세요."></textarea><button class="primary" data-action="inline-import-reservation">카드에 바로 저장</button></details><button class="secondary" data-action="clear-places">입력 내용 모두 삭제</button><div class="hint">저장한 내용은 이 기기에만 보관됩니다.</div></section>
+      <section data-screen="destinfo" class="hidden"><button class="back" data-action="destinfo-back">← 내 여행 카드</button><h2>🌍 목적지 기본 정보</h2><div class="sub">환전·로밍·교통카드처럼 미리 알아두면 편한 정보입니다.</div><div id="destinfo-list"></div><div id="destinfo-empty" class="hint" style="display:none">아직 정보가 없습니다. AI 여행계획을 만들 때 이 정보를 함께 받아 붙여 넣어보세요.</div></section>
       <section data-screen="quick-info" class="hidden"><button class="back" data-action="home">← 홈으로</button><h2>🆘 SOS 비상연락정보</h2><div class="sub">비상시 바로 보여주거나 연락할 정보를 모아 둡니다.</div><div id="sos-call-bar" class="sos-call-bar"></div><div id="quick-card-list"></div><div class="sos-phrase-card"><div class="sos-phrase-head"><span>🗣️</span><div><strong>상황별 도움 문장</strong><small>상황을 고르고 언어를 선택하면 바로 보여줄 수 있어요.</small></div></div><div class="sos-scenario-tabs"><button type="button" class="sos-tab active" data-sos-scenario="hospital"><span class="sos-tab-icon">🏥</span><span>병원</span></button><button type="button" class="sos-tab" data-sos-scenario="pharmacy"><span class="sos-tab-icon">💊</span><span>약국</span></button><button type="button" class="sos-tab" data-sos-scenario="hotel"><span class="sos-tab-icon">🏨</span><span>호텔</span></button><button type="button" class="sos-tab" data-sos-scenario="police"><span class="sos-tab-icon">👮</span><span>경찰서</span></button></div><select id="sos-lang-select" class="lang" aria-label="문장 언어 선택"><option value="zh-CN">중국어</option><option value="ja-JP">일본어</option><option value="en-US">영어</option></select><select id="sos-phrase-select" class="lang" aria-label="문장 선택"></select><div class="sos-phrase-value"><small id="sos-phrase-lang-label">중국어</small><strong id="sos-phrase-text"></strong></div><div class="sos-phrase-actions"><button type="button" data-action="sos-phrase-speak">🔊 소리 읽기</button><button type="button" data-action="sos-phrase-large">🔍 크게 보기</button></div></div></section>
       <section data-screen="travel-card-entry" class="hidden"><button class="back" data-action="card-back">← 여행 일정 카드</button><h2 id="travel-card-entry-title"></h2><div class="sub">필요한 정보만 크게 입력하세요.</div><div id="travel-card-fields"></div><button class="primary" data-action="card-save">저장하기</button><button class="secondary" data-action="card-large">🔍 큰 글씨로 보기</button><button class="secondary" data-action="card-speak">🔊 음성으로 듣기</button><button class="secondary" data-action="card-show">상대방에게 보여주기</button><button class="secondary" data-action="card-delete">이 카드 삭제</button></section>
     </div>
@@ -677,6 +678,10 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
     #cti-prototype .plan-emergency-hint{display:block;color:#b45309;font-size:12px;margin:4px 0 10px;line-height:1.5}
     #cti-prototype .plan-emergency-preview .secondary{margin-top:0}
     #cti-prototype .plan-emergency-preview.saved .plan-emergency-hint{color:#15803d}
+    #cti-prototype .destinfo-item{display:flex;gap:12px;background:#fff;border:1px solid #e5e7eb;border-radius:14px;padding:14px;margin-bottom:10px}
+    #cti-prototype .destinfo-icon{font-size:22px;flex:none;line-height:1.3}
+    #cti-prototype .destinfo-body strong{display:block;font-size:14px;color:#111827;margin-bottom:4px}
+    #cti-prototype .destinfo-body span{display:block;font-size:13px;color:#4b5563;line-height:1.55}
     #cti-prototype .gibyeori-welcome{display:flex;align-items:center;gap:10px;background:#fff;border:1px solid #f1e2c8;border-radius:16px;padding:8px 12px;margin:4px 0 14px}.gibyeori-welcome img{width:58px;height:58px;object-fit:contain}.gibyeori-welcome strong,.gibyeori-guide strong{display:block;font-size:14px}.gibyeori-welcome small,.gibyeori-guide small{display:block;color:#6b7280;font-size:11px;line-height:1.45;margin-top:4px}
     #cti-prototype .gibyeori-guide{display:flex;align-items:center;gap:9px;background:#f4f1ff;border:1px solid #ddd6fe;border-radius:15px;padding:8px 11px;margin:0 0 12px}.gibyeori-guide img{width:54px;height:54px;object-fit:contain}.gibyeori-guide.result-guide{background:#eefbf6;border-color:#cceedd}
     #cti-prototype .gibyeori-notice{display:flex;align-items:center;gap:9px;background:#fff8ed;border:1px solid #fed7aa;border-radius:13px;padding:9px 11px;color:#6b4b2a;font-size:12px;line-height:1.5}.gibyeori-notice img{width:48px;height:48px;object-fit:contain;flex:none}
@@ -747,6 +752,30 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         if(hint)hint.textContent='긴급연락처 카드에 추가했습니다. SOS 화면에서 확인할 수 있어요.';
         const toastEl=root.querySelector('.toast');
         if(toastEl){toastEl.textContent='긴급연락처 카드에 추가했습니다';toastEl.style.display='block';setTimeout(()=>toastEl.style.display='none',1600)}
+      };
+      const INFO_ROW_RE=/^\s*정보\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*$/;
+      const DESTINFO_LABELS=[{key:'환전',icon:'💱'},{key:'로밍·유심',icon:'📶'},{key:'교통카드',icon:'🚇'},{key:'전압·플러그',icon:'🔌'},{key:'음용수·팁 문화',icon:'💧'},{key:'시차·공휴일',icon:'🕒'},{key:'관광객 사기 주의',icon:'⚠️'}];
+      const parseInfoRows=text=>{
+        if(!text)return[];
+        const rows=[];
+        text.split(/\r?\n/).forEach(line=>{
+          const m=line.match(INFO_ROW_RE);
+          if(m&&m[1].trim()&&m[2].trim())rows.push({label:m[1].trim(),content:m[2].trim()});
+        });
+        return rows;
+      };
+      const renderDestinfo=()=>{
+        const list=root.querySelector('#destinfo-list'),empty=root.querySelector('#destinfo-empty');
+        if(!list)return;
+        const rows=parseInfoRows(localStorage.getItem('cti_ai_plan_result')||'');
+        const byLabel={};
+        rows.forEach(r=>{byLabel[r.label]=r.content});
+        const ordered=DESTINFO_LABELS.filter(d=>byLabel[d.key]).map(d=>({icon:d.icon,label:d.key,content:byLabel[d.key]}));
+        const known=new Set(DESTINFO_LABELS.map(d=>d.key));
+        rows.forEach(r=>{if(!known.has(r.label))ordered.push({icon:'📌',label:r.label,content:r.content})});
+        if(!ordered.length){list.innerHTML='';if(empty)empty.style.display='block';return}
+        if(empty)empty.style.display='none';
+        list.innerHTML=ordered.map(r=>'<div class="destinfo-item"><span class="destinfo-icon">'+r.icon+'</span><div class="destinfo-body"><strong>'+planEscHtml(r.label)+'</strong><span>'+planEscHtml(r.content)+'</span></div></div>').join('');
       };
       const readPlan=()=>{root.querySelectorAll('[data-plan]').forEach(el=>{planData[el.dataset.plan]=el.type==='checkbox'?el.checked:el.value.trim()})};
       const writePlan=()=>{root.querySelectorAll('[data-plan]').forEach(el=>{const v=planData[el.dataset.plan];if(el.type==='checkbox')el.checked=!!v;else el.value=v||''})};
@@ -854,6 +883,25 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
 연락처|경찰|110|범죄·도난 신고
 연락처|구급차·소방|119|응급 의료·화재 신고
 연락처|주오사카 대한민국 총영사관|+81-6-4256-2345|여권 분실·사고 지원
+
+## 13. 목적지 기본 정보 데이터 (기계 처리용 — 이 섹션에는 이 형식 외 다른 문장을 쓰지 마세요)
+아래 7개 항목 모두, 정해진 이름 그대로 정확히 7줄 작성하세요. 항목 이름은 절대 바꾸지 마세요.
+
+형식: 정보|항목명|내용
+
+항목명은 반드시 이 7개를 이 순서로 사용하세요: 환전, 로밍·유심, 교통카드, 전압·플러그, 음용수·팁 문화, 시차·공휴일, 관광객 사기 주의
+
+- 내용에는 세로선(|) 기호를 쓰지 말고 한두 문장으로 간결하게 쓰세요.
+- 확실하지 않은 내용을 지어내지 말고 "지역·매장마다 다름 · 현지에서 확인 필요"라고 쓰세요.
+
+예시(일본 오사카 기준):
+정보|환전|한국에서 소액만 미리 환전하고, 현지 편의점 ATM에서 필요할 때 인출하는 방식이 환율상 유리합니다.
+정보|로밍·유심|공항 유심 부스나 국내 통신사 로밍 상품 모두 무난하며, 5일 기준 대략 2만~3만원대입니다.
+정보|교통카드|이코카(ICOCA) 카드를 역 창구나 자판기에서 구입해 충전해 쓰면 됩니다.
+정보|전압·플러그|전압 100V, 플러그는 일본식 A타입이라 한국 기기도 별도 어댑터 없이 꽂을 수 있지만 전압 차이는 감안하세요.
+정보|음용수·팁 문화|수돗물을 그대로 마셔도 되고, 팁 문화는 따로 없습니다.
+정보|시차·공휴일|한국과 시차는 없습니다. 여행 기간 중 공휴일 여부는 별도로 확인하세요.
+정보|관광객 사기 주의|관광지 인근에서 호객하며 술집으로 이끄는 사례가 있으니 모르는 사람이 권하는 가게는 피하세요.
 '`};
       root.addEventListener('click',e=>{const choice=e.target.closest('.plan-choice');if(choice){const target=root.querySelector(`[data-plan="${choice.dataset.target}"]`);const isMulti=choice.closest('.multi');if(choice.dataset.value==='직접 입력'){if(target){target.value='';target.focus()}}else if(target){if(isMulti){const values=target.value?target.value.split(' · ').filter(Boolean):[];if(values.includes(choice.dataset.value)){values.splice(values.indexOf(choice.dataset.value),1);choice.classList.remove('selected')}else{values.push(choice.dataset.value);choice.classList.add('selected')}target.value=values.join(' · ')}else{target.value=choice.dataset.value;choice.parentElement.querySelectorAll('.plan-choice').forEach(b=>b.classList.toggle('selected',b===choice))}}return}const a=e.target.closest('[data-action]')?.dataset.action;if(!a)return;
         if(a==='plan-start'){planData={};planShow('plan-step-1')}
@@ -874,6 +922,8 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         if(a==='plan-back-prompt')planShow('plan-prompt')
         if(a==='plan-show-imported'){const text=root.querySelector('#plan-import-text').value.trim();if(!text){alert('AI 결과를 먼저 붙여 넣어주세요.');return}root.querySelector('#plan-import-output').textContent=text;localStorage.setItem('cti_ai_plan_result',text);renderEmergencyPreview();planShow('plan-import-result')}
         if(a==='plan-emergency-save')saveEmergencyPreview();
+        if(a==='destinfo-open'){renderDestinfo();planShow('destinfo')}
+        if(a==='destinfo-back')planShow('places');
         if(a==='plan-back-import')planShow('plan-import')
         if(a==='plan-back-review'){planShow('plan-review');summary()}
         if(a==='plan-edit'){planShow('plan-step-1');writePlan()}
