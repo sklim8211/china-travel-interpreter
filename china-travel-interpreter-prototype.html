@@ -182,13 +182,15 @@
     #cti-prototype .now-route-head strong{font-size:14px;color:#1d4ed8;flex:1}
     #cti-prototype .now-route-head small{font-size:11px;font-weight:700;color:#fff;background:#2563eb;border-radius:999px;padding:3px 9px}
     #cti-prototype .now-route-steps{display:flex;flex-direction:column;gap:0}
-    #cti-prototype .now-route-step{display:flex;gap:10px;padding:6px 0;position:relative}
-    #cti-prototype .now-route-step:not(:last-child):before{content:'';position:absolute;left:12px;top:26px;bottom:-6px;width:1px;background:#bfdbfe}
-    #cti-prototype .now-route-icon{width:24px;height:24px;flex:none;display:flex;align-items:center;justify-content:center;font-size:14px;background:#fff;border:1px solid #bfdbfe;border-radius:50%;z-index:1}
-    #cti-prototype .now-route-body{flex:1;min-width:0;padding-top:1px}
-    #cti-prototype .now-route-body strong{display:block;font-size:13px;color:#1e3a8a}
-    #cti-prototype .now-route-body small{display:block;font-size:11px;color:#60758f;margin-top:1px}
-    #cti-prototype .now-route-body small.route-walk{color:#2563eb;font-weight:700}
+    #cti-prototype .now-route-step{display:flex;gap:10px;padding:9px 0;position:relative}
+    #cti-prototype .now-route-step:not(:last-child):before{content:'';position:absolute;left:13px;top:32px;bottom:-9px;width:1px;background:#bfdbfe}
+    #cti-prototype .now-route-icon{width:26px;height:26px;flex:none;display:flex;align-items:center;justify-content:center;font-size:15px;background:#fff;border:1px solid #bfdbfe;border-radius:50%;z-index:1}
+    #cti-prototype .now-route-body{flex:1;min-width:0;padding-top:2px}
+    #cti-prototype .now-route-body strong{display:block;font-size:15px;color:#1e3a8a}
+    #cti-prototype .now-route-body small{display:block;font-size:12px;color:#60758f;margin-top:2px;line-height:1.4}
+    #cti-prototype .now-route-body small.route-address{color:#1e3a5f;font-weight:600;font-size:13px}
+    #cti-prototype .now-route-toggle{display:block;width:100%;background:none;border:none;border-top:1px dashed #bfdbfe;margin-top:6px;padding:10px 0 2px;color:#2563eb;font:inherit;font-size:12px;font-weight:700;cursor:pointer;text-align:center}
+    #cti-prototype .now-route-body small.route-anchor .route-walk{color:#2563eb;font-weight:700}
     #cti-prototype .now-qr-btn{display:block;width:100%;margin:0 0 12px;padding:10px 14px;border-radius:12px;border:1px solid #e5e7eb;background:#fff;color:#374151;font-size:13px;font-weight:700;text-align:center;cursor:pointer}
     #cti-prototype [data-screen="list"] .favorites-empty{padding:32px 16px;text-align:center;color:#b08355;font-size:13px;line-height:1.6}
     /* 바로 쓰는 상황별 문장 리뉴얼 (categories/list/detail) — 따뜻한 미니멀 스타일 */
@@ -881,18 +883,19 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
 ## 11. 오늘의 동선 데이터 (기계 처리용 — 이 섹션에는 이 형식 외 다른 문장을 쓰지 마세요)
 하루 동선을 한 줄에 한 장소씩, 파이프(|) 기호로 구분해 작성하세요.
 
-형식: 일차|순서|장소명|위치기준점|도보시간|이동수단
+형식: 일차|순서|장소명|주소|위치기준점|도보시간|이동수단
 
-- 위치기준점: 그 장소와 가장 가까운 지하철역 또는 잘 알려진 랜드마크를 쓰세요. 둘 다 마땅치 않으면 대략적인 동네 이름을 쓰세요. 주소는 쓰지 마세요.
+- 주소: 그 장소의 실제 주소(도로명 또는 지번)를 최대한 구체적으로 쓰세요. 정확한 주소를 모르면 "확인 필요"라고 쓰세요. 첫 장소가 사용자 본인의 숙소라 주소를 알 수 없으면 "-"로 쓰세요.
+- 위치기준점: 그 장소와 가장 가까운 지하철역 또는 잘 알려진 랜드마크를 쓰세요. 둘 다 마땅치 않으면 대략적인 동네 이름을 쓰세요.
 - 그날의 첫 장소는, 숙소 이름 자체가 인지하기 쉬우면 위치기준점에 "숙소에서 출발"이라고 쓰세요. 숙소가 외지거나 이름만으로 인지가 안 되면 위 기준(역·랜드마크→동네 이름)을 그대로 적용하세요.
 - 도보시간: 도보로 이동하는 구간에만 "도보 N분" 형태로 쓰세요. 지하철·버스·택시 구간은 이 칸을 비워두거나 "-"로 쓰세요.
 - 이동수단: 이전 장소에서 이 장소로 오는 수단의 종류만 쓰세요(도보/지하철/버스/택시). 소요시간은 여기 쓰지 마세요.
 - 운영시간·입장료·예약 가능 여부·혼잡도·계절/날씨에 따라 달라지는 정보는 이 섹션에 절대 포함하지 마세요.
 
 예시:
-1|1|호텔 체크아웃|숙소에서 출발|-|-
-1|2|도톤보리|난바역 25번 출구|도보 5분|지하철
-1|3|오사카성|오사카성공원역|도보 8분|지하철
+1|1|호텔 체크아웃|-|숙소에서 출발|-|-
+1|2|도톤보리|오사카시 주오구 도톤보리|난바역 25번 출구|도보 5분|지하철
+1|3|오사카성|오사카시 주오구 오사카조 1-1|오사카성공원역|도보 8분|지하철
 
 ## 12. 목적지 필수 연락처 데이터 (기계 처리용 — 이 섹션에는 이 형식 외 다른 문장을 쓰지 마세요)
 목적지 국가의 경찰, 구급차·소방, 가장 가까운 대한민국 대사관(또는 총영사관) 연락처를 찾아 아래 형식으로 정확히 3줄만 작성하세요.
@@ -1410,13 +1413,21 @@ const dayEl=card.querySelector('#now-route-day');
 const stepsEl=card.querySelector('#now-route-steps');
 const escHtml=s=>String(s==null?'':s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const TRANSPORT_ICON={'도보':'🚶','지하철':'🚇','버스':'🚌','택시':'🚕','기차':'🚆','비행기':'✈️'};
-const ROUTE_ROW_RE=/^\s*(\d+)\s*\|\s*(\d+)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*$/;
+const ROUTE_ROW_RE=/^\s*(\d+)\s*\|\s*(\d+)\s*\|(.+)$/;
+const NO_VALUE=new Set(['','-','확인 필요']);
 const parseRouteRows=text=>{
   if(!text)return[];
   const rows=[];
   text.split(/\r?\n/).forEach(line=>{
     const m=line.match(ROUTE_ROW_RE);
-    if(m&&m[3].trim())rows.push({day:+m[1],order:+m[2],place:m[3].trim(),anchor:m[4].trim(),walk:m[5].trim(),transport:m[6].trim()});
+    if(!m)return;
+    const parts=m[3].split('|').map(s=>s.trim());
+    let place,address,anchor,walk,transport;
+    if(parts.length>=5){[place,address,anchor,walk,transport]=parts}
+    else if(parts.length>=4){[place,anchor,walk,transport]=parts;address=''}
+    else return;
+    if(!place)return;
+    rows.push({day:+m[1],order:+m[2],place,address:NO_VALUE.has(address)?'':address,anchor,walk,transport});
   });
   rows.sort((a,b)=>a.day-b.day||a.order-b.order);
   return rows;
@@ -1437,21 +1448,33 @@ const tripDayNumber=()=>{
     return diff;
   }catch(e){return null}
 };
+const ROUTE_COLLAPSE_LIMIT=4;
+let routeExpanded=false;
+let routeExpandedDay=null;
+const routeStepHtml=(r,i)=>{
+  const icon=i===0?'📍':(TRANSPORT_ICON[r.transport]||'➡️');
+  const address=r.address?'<small class="route-address">📍 '+escHtml(r.address)+'</small>':'';
+  const walk=(r.walk&&r.walk!=='-')?' · <span class="route-walk">'+escHtml(r.walk)+'</span>':'';
+  return '<div class="now-route-step"><span class="now-route-icon">'+icon+'</span><span class="now-route-body"><strong>'+escHtml(r.place)+'</strong>'+address+'<small class="route-anchor">'+escHtml(r.anchor)+walk+'</small></span></div>';
+};
 const renderTodayRoute=()=>{
   const dayNum=tripDayNumber();
   if(!dayNum){card.classList.add('hidden');return}
+  if(dayNum!==routeExpandedDay){routeExpanded=false;routeExpandedDay=dayNum}
   let rows=[];
   try{rows=parseRouteRows(localStorage.getItem('cti_ai_plan_result')||'')}catch(e){rows=[]}
   const todays=rows.filter(r=>r.day===dayNum);
   if(!todays.length){card.classList.add('hidden');return}
   card.classList.remove('hidden');
   dayEl.textContent=dayNum+'일차';
-  stepsEl.innerHTML=todays.map((r,i)=>{
-    const icon=i===0?'📍':(TRANSPORT_ICON[r.transport]||'➡️');
-    const walk=(r.walk&&r.walk!=='-')?'<small class="route-walk">'+escHtml(r.walk)+'</small>':'';
-    return '<div class="now-route-step"><span class="now-route-icon">'+icon+'</span><span class="now-route-body"><strong>'+escHtml(r.place)+'</strong><small>'+escHtml(r.anchor)+'</small>'+walk+'</span></div>';
-  }).join('');
+  const showAll=routeExpanded||todays.length<=ROUTE_COLLAPSE_LIMIT;
+  const visible=showAll?todays:todays.slice(0,ROUTE_COLLAPSE_LIMIT);
+  let html=visible.map(routeStepHtml).join('');
+  if(!showAll)html+='<button type="button" class="now-route-toggle" data-route-toggle>나머지 '+(todays.length-ROUTE_COLLAPSE_LIMIT)+'곳 더보기 ⌄</button>';
+  else if(todays.length>ROUTE_COLLAPSE_LIMIT)html+='<button type="button" class="now-route-toggle" data-route-toggle>접기 ⌃</button>';
+  stepsEl.innerHTML=html;
 };
+stepsEl.addEventListener('click',e=>{if(e.target.closest('[data-route-toggle]')){routeExpanded=!routeExpanded;renderTodayRoute()}});
 const obs=new MutationObserver(()=>{if(!screen.classList.contains('hidden'))renderTodayRoute()});
 obs.observe(screen,{attributes:true,attributeFilter:['class']});
 if(!screen.classList.contains('hidden'))renderTodayRoute();
