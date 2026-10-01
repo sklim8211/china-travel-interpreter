@@ -547,7 +547,6 @@ const renderQuickCards=()=>{const q=root.querySelector('#quick-card-list');if(q)
 const openTravelCard=(key,id=null,group='travel')=>{activeTravelCard=key;activeTravelId=id===null?null:+id;activeTravelGroup=group;const defs=group==='quick'?quickCardDefs:travelCardDefs,d=defs[key],p=cardStore()[key]||[],v=p[activeTravelId]||{};root.querySelector('#travel-card-entry-title').textContent=d.title+(activeTravelId===null?' 추가':' 수정');root.querySelector('#travel-card-fields').innerHTML=d.fields.map(f=>'<label style="display:block;font-size:16px;font-weight:600;margin:14px 0 7px">'+f[1]+'</label><input id="card-'+f[0]+'" class="lang" type="'+(f[2]||'text')+'" value="'+String(v[f[0]]||'').replace(/"/g,'&quot;')+'" placeholder="'+f[1]+'">').join('');show('travel-card-entry')};
 const saveTravelCard=()=>{const defs=activeTravelGroup==='quick'?quickCardDefs:travelCardDefs,d=defs[activeTravelCard],all=cardStore(),v={};d.fields.forEach(f=>v[f[0]]=root.querySelector('#card-'+f[0]).value.trim());v._savedAt=Date.now();v._savedAtLabel=new Date().toLocaleDateString('ko-KR');if(!all[activeTravelCard])all[activeTravelCard]=[];if(activeTravelId===null)all[activeTravelCard].push(v);else all[activeTravelCard][activeTravelId]=v;localStorage.setItem('cti_travel_cards',JSON.stringify(all));say('카드에 저장했습니다');if(activeTravelGroup==='quick'){show('quick-info');renderQuickCards()}else{show('places');renderTravelCards()}};
 const phaseFromDates=()=>{try{const d=JSON.parse(localStorage.getItem('cti_trip_dates')||'{}');if(!d.start||!d.end)return checklistPhase;const now=new Date();now.setHours(0,0,0,0);const st=new Date(d.start+'T00:00:00'),en=new Date(d.end+'T23:59:59');if(now<st)return 'before';if(now<=en)return 'during';return 'after'}catch(e){return checklistPhase}};
-      const tripActiveNow=()=>{try{const d=JSON.parse(localStorage.getItem('cti_trip_dates')||'{}');if(!d.start||!d.end)return false;const now=new Date();now.setHours(0,0,0,0);const st=new Date(d.start+'T00:00:00'),en=new Date(d.end+'T23:59:59');return now>=st&&now<=en}catch(e){return false}};
       const applyDatePhase=()=>{checklistPhase=phaseFromDates();const labels={before:'출발 전 준비를 먼저 확인하세요.',during:'여행 중 필요한 확인사항을 먼저 보여드립니다.',after:'귀국 전·후 정산과 환불을 확인하세요.'};const el=root.querySelector('#essential-timing-hint');if(el)el.textContent=labels[checklistPhase]||'한 번에 하나씩 확인하고 완료 표시하세요.';if(checklistPhase==='during'){const today=new Date().toISOString().slice(0,10),last=localStorage.getItem('cti_receipt_reminder_date');if(last!==today){localStorage.setItem('cti_receipt_reminder_date',today);setTimeout(()=>say('오늘 영수증을 사진으로 남기고 결제 내역과 함께 보관하세요.'),250)}}};
       const recordEssentialTitles=['항공권·열차 정보 저장','숙소 예약·취소 조건 확인','여행사 일정표 저장','여행자보험·긴급 연락처 저장','여행사·긴급 연락처 저장','전체 일정표와 복귀 시간 저장','가이드·기사 연락처 저장'];
       const essentialCardTarget=(title)=>{const has=w=>title.includes(w);if(has('항공권')&&has('열차'))return['flight','train'];if(has('항공권'))return['flight'];if(has('열차'))return['train'];if(has('숙소 예약'))return['hotel'];if(has('티켓'))return['ticket'];if(has('보험')&&has('긴급 연락처'))return['insurance','emergency'];if(has('보험'))return['insurance'];if(has('긴급 연락처'))return['emergency'];return null};const essentialRecordKey=(title)=>'cti_essential_record_'+title;
@@ -575,16 +574,17 @@ const phaseFromDates=()=>{try{const d=JSON.parse(localStorage.getItem('cti_trip_
           progressEl.textContent=checklistDoneCount+'/'+items.length+' 완료';
           root.querySelector('#essential-checklist-progress').textContent=checklistDoneCount+'/'+items.length+' 완료 · 눌러서 확인';
         }
-        const tripNow=tripActiveNow();
+        /* 목적지 기본 정보·실속 챙기기는 '출발 전'에만 필요한 사전 정보라, 여행이 시작된 뒤(여행 중·귀국 전후)엔 계속 숨긴다. */
+        const tripStarted=checklistPhase!=='before';
         const pc=root.querySelector('#practical-highlight-card');
         if(pc){
-          pc.classList.toggle('hidden',tripNow);
+          pc.classList.toggle('hidden',tripStarted);
           const mode=(travelerMode==='semi'?'semi':'free'),all=practicalCommon.concat(practicalByMode[mode]||[]),prev=root.querySelector('#practical-highlight-preview');
           if(prev)prev.textContent=all.length?(all[0].t+(all.length>1?' 외 '+(all.length-1)+'건 더보기':'')):'비용·시간을 아끼는 팁을 미리 확인하세요';
         }
         const dc=root.querySelector('#destinfo-highlight-card');
         if(dc){
-          dc.classList.toggle('hidden',tripNow);
+          dc.classList.toggle('hidden',tripStarted);
           const dPrev=root.querySelector('#destinfo-highlight-preview');
           if(dPrev){
             const info=typeof window.ctiDestinfoPreview==='function'?window.ctiDestinfoPreview():null;
