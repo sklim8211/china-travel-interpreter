@@ -2,7 +2,7 @@
    지금 이 순간 카드 / SOS / 숙소정보는 localStorage에만 의존하므로,
    이 앱의 뼈대(HTML)와 정적 자산(음성·캐릭터 이미지)만 캐시해두면
    인터넷이 없어도 화면 자체는 열리고, 그 안의 정보는 그대로 보인다. */
-const CACHE_NAME = 'cti-cache-v1';
+const CACHE_NAME = 'cti-cache-v2';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -61,9 +61,11 @@ self.addEventListener('fetch', event => {
   const isHtml = req.mode === 'navigate' || (req.headers.get('accept') || '').includes('text/html');
 
   if (isHtml) {
-    // 화면(HTML)은 최신 내용을 우선 시도하고, 오프라인이면 마지막으로 저장된 화면을 보여줌
+    // 화면(HTML)은 최신 내용을 우선 시도하고, 오프라인이면 마지막으로 저장된 화면을 보여줌.
+    // cache:'no-store'로 브라우저 자체 HTTP 캐시까지 건너뛰어, 이미 한번 열어본 브라우저(앱 내장
+    // 브라우저 포함)에서도 배포 직후 옛 화면이 재사용되지 않고 항상 서버에서 새로 받아오게 한다.
     event.respondWith(
-      fetch(req)
+      fetch(req, { cache: 'no-store' })
         .then(res => {
           const copy = res.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
