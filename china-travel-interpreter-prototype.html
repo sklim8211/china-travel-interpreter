@@ -82,10 +82,11 @@
     #cti-prototype [data-screen="traveler-choice"] .tile{height:92px;min-height:92px;box-sizing:border-box;border-radius:18px;background:#f7faff;border-color:#dbeafe}
     #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-free"]{background:#eef6ff;border-color:#cfe3ff}
     #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-semi"]{background:#f7f2ff;border-color:#e5d8ff}
+    #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-package"]{background:#fff5ed;border-color:#ffdcbf}
     #cti-prototype [data-screen="traveler-choice"] .back{padding-bottom:8px}
     #cti-prototype [data-screen="traveler-choice"] h2{margin-bottom:8px}
     #cti-prototype [data-screen="traveler-choice"] .sub{margin-bottom:10px}
-    #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-free"],#cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-semi"]{height:58px;min-height:58px;padding:10px 12px;margin:5px 0!important}
+    #cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-free"],#cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-semi"],#cti-prototype [data-screen="traveler-choice"] .tile[data-action="choose-package"]{height:58px;min-height:58px;padding:10px 12px;margin:5px 0!important}
     #cti-prototype [data-screen="traveler-choice"] .tile small{font-size:10px;margin-top:2px}
     #cti-prototype [data-screen="traveler-choice"] .hint{font-size:11px;margin:7px 0 10px}
     #cti-prototype [data-screen="traveler-choice"] h3{font-size:16px;margin:10px 0 7px}
@@ -172,6 +173,8 @@
     #cti-prototype .prep-highlight-card strong{display:block;font-size:14px;font-weight:700}
     #cti-prototype .prep-highlight-card small{display:block;color:#92702c;font-size:11px;margin-top:2px}
     #cti-prototype .prep-highlight-card .prep-highlight-arrow{font-size:18px;color:#92702c}
+    #cti-prototype .prep-section-label{font-size:14px;font-weight:700;margin:16px 2px 2px}
+    #cti-prototype .prep-section-label small{display:block;font-weight:400;color:#6b7280;font-size:11px;margin-top:2px}
     #cti-prototype .now-route-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:16px;padding:14px 16px;margin:0 0 10px}
     #cti-prototype .now-route-card.hidden{display:none}
     #cti-prototype .now-route-head{display:flex;align-items:center;gap:8px;margin-bottom:10px}
@@ -289,6 +292,7 @@
         <div class="sub">여행 방식과 여행지를 한 화면에서 선택하세요.</div>
         <button class="tile" data-action="choose-free" style="width:100%;margin:8px 0">🧭 자유여행<small>항공·숙소·교통을 직접 선택해요</small></button>
         <button class="tile" data-action="choose-semi" style="width:100%;margin:8px 0">🧳 반자유여행<small>일부 일정은 직접 움직여요</small></button>
+        <button class="tile" data-action="choose-package" style="width:100%;margin:8px 0">🚌 패키지 자유시간<small>단체 일정 중 자유시간 준비를 챙겨요</small></button>
         <div class="hint">선택한 방식은 나중에 다시 바꿀 수 있습니다.</div>
         <h3>여행 대륙</h3>
         <div class="grid"><button class="tile" data-action="continent-asia">🌏 아시아<small>가까워도 나라마다 다릅니다</small></button><button class="tile" data-action="continent-europe">🏰 유럽<small>국경을 넘어도 준비는 필요합니다</small></button><button class="tile" data-action="continent-na">🗽 북아메리카<small>넓게 움직일수록 계획이 중요합니다</small></button><button class="tile" data-action="continent-sa">🌎 남아메리카<small>이동 조건을 먼저 확인하세요</small></button><button class="tile" data-action="continent-africa">🐘 아프리카<small>지역별 차이를 확인하세요</small></button><button class="tile" data-action="continent-oceania">🌊 오세아니아<small>도시와 섬의 이동을 따로 봅니다</small></button></div>
@@ -400,7 +404,7 @@
         <div class="sub" id="essential-timing-hint">한 번에 하나씩 확인하고 완료 표시하세요.</div>
         <div class="prep-highlight-card" id="essential-dates-box" style="cursor:default;align-items:flex-start"><span class="prep-highlight-icon">📅</span><div class="prep-highlight-body" style="flex:1"><strong>여행 날짜</strong><div style="display:flex;gap:8px;margin-top:8px"><input id="essential-trip-start" class="lang" type="date" style="flex:1;min-width:0"><input id="essential-trip-end" class="lang" type="date" style="flex:1;min-width:0"></div><small id="essential-dates-hint" style="display:block;margin-top:6px"></small></div></div>
         <div class="step-summary"><strong id="essential-phase-title">출발 전 준비</strong><small id="essential-progress">0 / 3 완료</small></div>
-        <div class="place" id="essential-checklist-box"><strong>이번 단계에서 확인할 것</strong><div id="essential-checklist-items"></div><small id="essential-checklist-progress"></small></div>
+        <div id="essential-checklist-box"><div class="prep-section-label">이번 단계에서 확인할 것<small id="essential-checklist-progress"></small></div><div id="essential-checklist-items"></div></div>
         <div class="prep-highlight-card" data-action="places" role="button" tabindex="0"><span class="prep-highlight-icon">📌</span><div class="prep-highlight-body"><strong>내 여행 카드</strong><small id="travelcards-highlight-preview">항공권·숙소 등 예약 정보를 저장하세요</small></div><span class="prep-highlight-arrow">›</span></div>
         <div class="prep-highlight-card" id="destinfo-highlight-card" data-action="destinfo-open" role="button" tabindex="0"><span class="prep-highlight-icon">🌍</span><div class="prep-highlight-body"><strong>목적지 기본 정보</strong><small id="destinfo-highlight-preview">환전·로밍·교통카드처럼 미리 알아두면 편한 정보</small></div><span class="prep-highlight-arrow">›</span></div>
         <div class="prep-highlight-card" id="practical-highlight-card" data-action="open-practical-cards" role="button" tabindex="0"><span class="prep-highlight-icon">💡</span><div class="prep-highlight-body"><strong>여행 실속 챙기기</strong><small id="practical-highlight-preview">비용·시간을 아끼는 팁을 미리 확인하세요</small></div><span class="prep-highlight-arrow">›</span></div>
@@ -564,7 +568,7 @@ const phaseFromDates=()=>{try{const d=JSON.parse(localStorage.getItem('cti_trip_
         if(progressEl)progressEl.classList.toggle('hidden',!showChecklist);
         if(showChecklist){
           progressEl.textContent=items.filter((x,i)=>done[checklistPhase+'-'+i]||essentialCardFilled(x)).length+'/'+items.length+' 완료';
-          root.querySelector('#essential-checklist-items').innerHTML=items.map((x,i)=>'<button class="step-item" data-action="essential-open" data-index="'+i+'"><span><strong>'+(done[checklistPhase+'-'+i]||essentialCardFilled(x)?'✓ ':'')+x+'</strong><small></small></span><span>›</span></button>').join('');
+          root.querySelector('#essential-checklist-items').innerHTML=items.map((x,i)=>{const isDone=done[checklistPhase+'-'+i]||essentialCardFilled(x);return '<div class="prep-highlight-card" data-action="essential-open" data-index="'+i+'" role="button" tabindex="0"><span class="prep-highlight-icon">'+(isDone?'✅':'📝')+'</span><div class="prep-highlight-body"><strong>'+x+'</strong><small>'+(isDone?'확인 완료':'탭해서 확인하고 기록하세요')+'</small></div><span class="prep-highlight-arrow">›</span></div>'}).join('');
           root.querySelector('#essential-checklist-progress').textContent='완료한 항목은 기기에 저장됩니다.';
         }
         const tripNow=tripActiveNow();
