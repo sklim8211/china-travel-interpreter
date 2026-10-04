@@ -2,13 +2,11 @@
    지금 이 순간 카드 / SOS / 숙소정보는 localStorage에만 의존하므로,
    이 앱의 뼈대(HTML)와 정적 자산(음성·캐릭터 이미지)만 캐시해두면
    인터넷이 없어도 화면 자체는 열리고, 그 안의 정보는 그대로 보인다. */
-const CACHE_NAME = 'cti-cache-v3';
+const CACHE_NAME = 'cti-cache-v4';
 const CORE_ASSETS = [
   '/',
   '/index.html',
   '/china-travel-interpreter-prototype.html',
-  '/cities/index.json',
-  '/cities/tokyo.json',
   '/assets/gibyeori/joy.png',
   '/assets/gibyeori/nod.png',
   '/assets/gibyeori/relieved.png',
@@ -74,20 +72,6 @@ self.addEventListener('fetch', event => {
           return res;
         })
         .catch(() => caches.match(req).then(cached => cached || caches.match('/china-travel-interpreter-prototype.html')))
-    );
-    return;
-  }
-
-  // 도시 정보(JSON)는 내용이 자주 고쳐지므로 최신을 먼저 받고, 오프라인이면 마지막 저장본을 쓴다
-  if (url.pathname.startsWith('/cities/')) {
-    event.respondWith(
-      fetch(req, { cache: 'no-store' })
-        .then(res => {
-          const copy = res.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(req, copy));
-          return res;
-        })
-        .catch(() => caches.match(req))
     );
     return;
   }
