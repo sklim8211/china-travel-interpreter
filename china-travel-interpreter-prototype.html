@@ -910,19 +910,46 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         const toastEl=root.querySelector('.toast');
         if(toastEl){toastEl.textContent='긴급연락처 카드에 추가했습니다';toastEl.style.display='block';setTimeout(()=>toastEl.style.display='none',1600)}
       };
-      const INFO_ROW_RE=/^\s*정보\s*\|\s*([^|]*?)\s*\|\s*([^|]*?)\s*$/;
+      const INFO_ROW_RE=/^\s*정보\s*\|\s*([^|]+?)\s*\|\s*(.+?)\s*$/;
       const DESTINFO_LABELS=[{key:'환전',icon:'💱'},{key:'로밍·유심',icon:'📶'},{key:'교통카드',icon:'🚇'},{key:'전압·플러그',icon:'🔌'},{key:'음용수·팁 문화',icon:'💧'},{key:'시차·공휴일',icon:'🕒'},{key:'관광객 사기 주의',icon:'⚠️'}];
-      const CITY_ROW_RE=/^\s*도시\s*\|\s*([^|]+?)\s*$/;
+      const CITY_ROW_RE=/^\s*도시\s*\|\s*([^|]+?)\s*(?:\|.*)?$/;
       const DESTINFO_CITY_LABELS=[{key:'공항→시내 이동',icon:'✈️'},{key:'택시·호출 앱',icon:'🚕'},{key:'숙소 동네',icon:'🏨'}];
       const normInfoLabel=l=>String(l||'').replace(/\s*(?:→|->|➝|⇒)\s*/g,'→').replace(/\s+/g,' ').trim();
+      /* AI가 줄 앞에 -, *, 번호, #, 굵은 글씨, 표 테두리(|), 백틱을 붙여도 읽을 수 있게 벗겨낸다 */
+      const cleanInfoLine=line=>{
+        let t=String(line||'').replace(/[`]/g,'').replace(/\*\*|__/g,'');
+        t=t.replace(/^\s*(?:[-*•>]+|#{1,6}|\d+[.)])\s*/,'').trim();
+        if(/^\|?\s*:?-{2,}/.test(t))return '';
+        t=t.replace(/^\|\s*/,'').replace(/\s*\|$/,'');
+        return t;
+      };
+      /* 항목 이름이 조금 달라도(공항에서 시내로, 유심/로밍 …) 정해진 이름으로 맞춰 준다 */
+      const canonInfoLabel=l=>{
+        const n=normInfoLabel(l),k=n.replace(/[\s·/,]/g,'').toLowerCase();
+        const exact=DESTINFO_LABELS.concat(DESTINFO_CITY_LABELS).find(d=>d.key.replace(/[\s·/,]/g,'').toLowerCase()===k);
+        if(exact)return exact.key;
+        if(/공항/.test(k)&&/시내|도심|이동|→|에서|가는|access|transfer/.test(k)||/airport/.test(k)&&/city|transfer|access/.test(k))return '공항→시내 이동';
+        if(/택시|호출|우버|uber|grab|taxi/.test(k))return '택시·호출 앱';
+        if(/숙소|동네|지역|호텔|area/.test(k))return '숙소 동네';
+        if(/환전/.test(k))return '환전';
+        if(/로밍|유심|심카드|esim|이심|sim/.test(k))return '로밍·유심';
+        if(/교통카드|교통패스|교통권|ic카드/.test(k))return '교통카드';
+        if(/전압|플러그|콘센트|어댑터/.test(k))return '전압·플러그';
+        if(/음용수|수돗물|식수|팁/.test(k))return '음용수·팁 문화';
+        if(/시차|공휴일|휴일/.test(k))return '시차·공휴일';
+        if(/사기|바가지|호객|소매치기|주의/.test(k))return '관광객 사기 주의';
+        return n;
+      };
       const parseInfoRows=text=>{
         if(!text)return[];
         const rows=[];let city='';
-        text.split(/\r?\n/).forEach(line=>{
+        text.split(/\r?\n/).forEach(raw=>{
+          const line=cleanInfoLine(raw);
+          if(!line)return;
           const c=line.match(CITY_ROW_RE);
           if(c){city=c[1].trim();return}
           const m=line.match(INFO_ROW_RE);
-          if(m&&m[1].trim()&&m[2].trim())rows.push({label:normInfoLabel(m[1]),content:m[2].trim(),city});
+          if(m&&m[1].trim()&&m[2].trim())rows.push({label:canonInfoLabel(m[1]),content:m[2].trim(),city});
         });
         return rows;
       };
@@ -959,7 +986,7 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         const list=root.querySelector('#destinfo-list'),empty=root.querySelector('#destinfo-empty');
         if(!list)return;
         const ordered=buildDestinfoList();
-        if(!ordered.length){list.innerHTML='';if(empty)empty.style.display='block';return}
+        if(!ordered.length){list.innerHTML='';if(empty){const had=(localStorage.getItem('cti_ai_plan_result')||'').trim().length>30;empty.textContent=had?'붙여 넣은 답변에서 정보를 읽지 못했어요. 형식이 달라진 것 같아요. AI에게 "13번 목적지 기본 정보 데이터를 형식대로 다시 써 줘"라고 요청해 보세요.':'아직 정보가 없습니다. AI 여행계획을 만들 때 이 정보를 함께 받아 붙여 넣어보세요.';empty.style.display='block'}return}
         if(empty)empty.style.display='none';
         const common=ordered.filter(r=>!r.city),cities=[];
         ordered.forEach(r=>{if(r.city&&!cities.includes(r.city))cities.push(r.city)});
