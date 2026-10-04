@@ -974,7 +974,9 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
         const segs=String(content).split(/\s\/\s/).map(x=>x.trim()).filter(Boolean);
         let note='';
         if(segs.length){const last=segs[segs.length-1],m=last.match(/^(.*?[가-힣A-Za-z0-9)])[.。]\s+(.+)$/);if(m){segs[segs.length-1]=m[1];note=m[2]}}
-        return segs.map(sg=>{const i=sg.indexOf(' — ');return i>-1?'<div class="destinfo-seg"><b>'+planEscHtml(sg.slice(0,i))+'</b><span>'+planEscHtml(sg.slice(i+3).replace(/ — /g,' · '))+'</span></div>':'<div class="destinfo-seg"><span>'+planEscHtml(sg)+'</span></div>'}).join('')+(note?'<div class="destinfo-note">'+planEscHtml(note)+'</div>':'');
+        let head='';
+        if(segs.length){const hm=segs[0].match(/^(.{2,14}?)\s*기준\s*[:：]\s*(.+)$/);if(hm){head=hm[1]+' 기준';segs[0]=hm[2]}}
+        return (head?'<div class="destinfo-note" style="margin:0 0 2px">'+planEscHtml(head)+'</div>':'')+segs.map(sg=>{const i=sg.indexOf(' — ');return i>-1?'<div class="destinfo-seg"><b>'+planEscHtml(sg.slice(0,i))+'</b><span>'+planEscHtml(sg.slice(i+3).replace(/ — /g,' · '))+'</span></div>':'<div class="destinfo-seg"><span>'+planEscHtml(sg)+'</span></div>'}).join('')+(note?'<div class="destinfo-note">'+planEscHtml(note)+'</div>':'');
       };
       const destItemHtml=r=>{
         const segLabels=['공항→시내 이동','숙소 동네'];
@@ -1152,11 +1154,11 @@ const valueDetail=(group,index)=>{const x=getValueItems(group)[index],m=promptMe
 정보|환전|한국에서 소액만 미리 환전하고, 현지 편의점 ATM에서 필요할 때 인출하는 방식이 환율상 유리합니다.
 정보|로밍·유심|공항 유심 부스나 국내 통신사 로밍 상품 모두 무난하며, 5일 기준 대략 2만~3만원대입니다.
 정보|교통카드|이코카(ICOCA) 카드를 역 창구나 자판기에서 구입해 충전해 쓰면 됩니다.
-정보|전압·플러그|전압 100V, 플러그는 일본식 A타입이라 한국 기기도 별도 어댑터 없이 꽂을 수 있지만 전압 차이는 감안하세요.
+정보|전압·플러그|전압 100V에 플러그는 납작한 두 핀의 A타입이라, 둥근 핀인 한국 플러그는 변환 어댑터(일명 돼지코)가 있어야 꽂을 수 있습니다. 휴대폰·노트북 충전기는 100~240V 겸용이 많아 어댑터만 있으면 됩니다.
 정보|음용수·팁 문화|수돗물을 그대로 마셔도 되고, 팁 문화는 따로 없습니다.
 정보|시차·공휴일|한국과 시차는 없습니다. 여행 기간 중 공휴일 여부는 별도로 확인하세요.
 정보|관광객 사기 주의|관광지 인근에서 호객하며 술집으로 이끄는 사례가 있으니 모르는 사람이 권하는 가게는 피하세요.
-(도시 줄 예시 — 형식 참고용이며 실제 내용은 당신이 아는 정보로 쓰세요)
+(도시 줄 예시 — 형식 참고용입니다. 문장을 그대로 베끼지 말고, 도시마다 그 도시에 맞는 내용을 당신이 아는 정보로 쓰세요)
 도시|도쿄
 정보|공항→시내 이동|나리타 기준: N'EX — 도쿄역까지 약 1시간 — 약 3,000엔대 / 스카이라이너 — 닛포리까지 약 40분 — 약 2,000엔대 / 버스 — 약 1시간 — 약 1,000엔대. 전철은 23시 전후 끊기니 심야 도착이면 버스·택시를 고려하세요.
 정보|택시·호출 앱|GO, Uber 같은 앱으로 부르면 목적지를 글자로 입력해 말이 안 통해도 되고, 길에서는 '空車(빈 차)' 표시가 켜진 차를 세우면 됩니다. 뒷문은 기사님이 자동으로 열고 닫습니다.
