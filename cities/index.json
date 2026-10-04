@@ -1,0 +1,5 @@
+{
+  "cities": [
+    { "name": "도쿄", "file": "tokyo.json", "aliases": ["東京", "tokyo", "Tokyo"] }
+  ]
+}
